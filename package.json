@@ -1,0 +1,28 @@
+{
+  "name": "tilloo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^1.5.2",
+    "body-parser": "^1.15.0",
+    "commander": "^2.9.0",
+    "compression": "^1.6.1",
+    "cron": "^1.1.0",
+    "disque-eventemitter": "^0.2.0",
+    "disqueue-node": "^1.1.1",
+    "easy-table": "^1.0.0",
+    "express": "^4.13.4",
+    "moment": "^2.11.2",
+    "mongodb": "^2.1.7",
+    "mongoose": "^4.4.3",
+    "morgan": "^1.6.1",
+    "socket.io": "^1.4.5",
+    "socket.io-client": "^1.4.5"
+  }
+}

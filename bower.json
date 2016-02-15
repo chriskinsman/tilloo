@@ -1,0 +1,28 @@
+{
+  "name": "tilloo",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Chris Kinsman <chris@kinsman.net>"
+  ],
+  "license": "MIT",
+  "moduleType": [
+    "node"
+  ],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-material": "^1.0.5",
+    "angular-material-data-table": "^0.9.11",
+    "angular-route": "^1.5.0",
+    "angular": "^1.5.0"
+  }
+}

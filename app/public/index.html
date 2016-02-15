@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <title>Tilloo</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="initial-scale=1" />
+
+    <base href="/">
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'/>
+    <link href="/bower_components/angular-material/angular-material.css" rel="stylesheet" />
+    <link href="/bower_components/angular-material-data-table/dist/md-data-table.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/public/assets/css/app.css"/>
+</head>
+
+<body ng-app="tillooApp" layout="column" ng-cloak>
+
+<md-toolbar>
+    <h1>Tilloo</h1>
+</md-toolbar>
+
+<div flex layout="row">
+
+    <md-content flex id="content">
+        <div ng-view id="app-container"></div>
+    </md-content>
+
+</div>
+
+<script type="text/javascript" src="/bower_components/angular/angular.js"></script>
+<script type="text/javascript" src="/bower_components/angular-route/angular-route.js"></script>
+<script type="text/javascript" src="/bower_components/angular-animate/angular-animate.js"></script>
+<script type="text/javascript" src="/bower_components/angular-aria/angular-aria.js"></script>
+<script type="text/javascript" src="/bower_components/angular-material/angular-material.js"></script>
+<script type="text/javascript" src="/bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
+
+<script type="text/javascript" src="/public/job/module.js"></script>
+<script type="text/javascript" src="/public/job/JobsService.js"></script>
+<script type="text/javascript" src="/public/job/JobsController.js"></script>
+<script type="text/javascript" src="/public/job/JobDetailController.js"></script>
+
+
+<script type="text/javascript" src="/public/app.js"></script>
+
+<!--<script src="./src/users/Users.js"></script>-->
+<!--<script src="./src/users/UserController.js"></script>-->
+<!--<script src="./src/users/UserService.js"></script>-->
+
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+<h2>Job Detail</h2>
+<div flex layout="row">
+    <md-table-container>
+        <table md-table>
+            <thead md-head md-order="query.order" md-on-reorder="onReorder" class="md-head">
+            <tr md-row>
+                <th md-column md-order-by="_id"><span>Id</span></th>
+                <th md-column md-order-by="path"><span>Path</span></th>
+                <th md-column><span>Args</span></th>
+                <th md-column md-order-by="queueName"><span>Queue</span></th>
+                <th md-column md-order-by="pid"><span>PID</span></t>
+                <th md-column md-order-by="result"><span>Result</span></th>
+                <th md-column md-order-by="started"><span>Started</span></th>
+                <th md-column md-order-by="completed"><span>Completed</span></th>
+                <th md-column md-order-by="status"><span>Status</span></th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row ng-repeat="run in runs | orderBy: query.order">
+                <td md-cell>{{run._id}}</td>
+                <td md-cell>{{run.path}}</td>
+                <td md-cell>{{run.args.join(' ')}}</td>
+                <td md-cell>{{run.queueName}}</td>
+                <td md-cell>{{run.pid}}</td>
+                <td md-cell>{{run.result}}</td>
+                <td md-cell>{{run.startedAt}}</td>
+                <td md-cell>{{run.completedAt}}</td>
+                <td md-cell>{{run.status}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+</div>
