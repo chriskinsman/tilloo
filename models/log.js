@@ -14,7 +14,7 @@ Log.pre('save', function(done) {
     return done();
 });
 
-Log.statics.append = function(runId, output, callback) {
+Log.statics.append = function append(runId, output, callback) {
     new model({runId: runId, output: output}).save(function(err) {
         if(err) {
             console.error(err);
@@ -22,6 +22,10 @@ Log.statics.append = function(runId, output, callback) {
 
         callback(err);
     });
+};
+
+Log.statics.findOutputForRun = function outputForRun(runId, callback) {
+    model.find({runId: new mongoose.Types.ObjectId(runId)}, 'output', {sort: {createdAt: 1}}, callback);
 };
 
 var model = mongoose.model('log', Log);

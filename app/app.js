@@ -8,6 +8,7 @@ var express = require('express');
 var compression = require('compression');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
+var favicon = require('serve-favicon');
 
 var config = require('../lib/config');
 
@@ -25,12 +26,13 @@ app.use(compression());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
+app.use(favicon(__dirname + '/public/assets/favicon.ico'));
 app.use('/bower_components', express.static(path.join(__dirname, 'bower_components')));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.get('/api/job', job.list);
 app.get('/api/job/detail', job.runDetailList);
+app.get('/api/job/run', job.outputForRun);
 
 app.get('*', function(req, res){ res.sendFile(__dirname + '/public/index.html');});
 

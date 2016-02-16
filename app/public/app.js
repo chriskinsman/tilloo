@@ -6,6 +6,7 @@ var tillooApp = angular.module("tillooApp", ['tillooApp.job', 'ngRoute', 'ngMate
     $routeProvider.
     when('/', { templateUrl: '/public/job/jobs.html', controller: 'JobsController'}).
     when('/job/:jobId', {templateUrl: '/public/job/jobdetail.html', controller: 'JobDetailController'}).
+    when('/job/run/:runId', {templateUrl: '/public/job/rundetail.html', controller: 'RunDetailController'}).
     otherwise({ redirectTo: '/' });
 
     $mdIconProvider
@@ -18,9 +19,7 @@ var tillooApp = angular.module("tillooApp", ['tillooApp.job', 'ngRoute', 'ngMate
         .icon("phone"      , "./assets/svg/phone.svg"       , 512);
 
     $mdThemingProvider.theme('default')
-        .primaryPalette('brown')
-        .accentPalette('red');
-
+        .primaryPalette('light-blue');
 
     $locationProvider.html5Mode(true);
     $httpProvider.defaults.useXDomain = true;

@@ -2,6 +2,7 @@
 
 var Job = require('../../models/job');
 var Run = require('../../models/run');
+var Log = require('../../models/log');
 
 var JobRoutes = {};
 
@@ -28,6 +29,20 @@ JobRoutes.runDetailList = function list(req, res) {
             res.status(200).send(runs);
         }
     });
+};
+
+JobRoutes.outputForRun = function outputForRun(req, res) {
+    var runId = req.query.runId;
+
+    Log.findOutputForRun(runId, function(err, output) {
+        if(err) {
+            res.status(500).send(err);
+        }
+        else {
+            res.status(200).send(output);
+        }
+    });
+
 };
 
 

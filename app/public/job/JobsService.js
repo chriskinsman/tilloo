@@ -5,12 +5,16 @@ angular.module('tillooApp.job')
 
         var JobService = {};
 
-        JobService.list = function() {
+        JobService.list = function list() {
             return JobService._remoteCall('', {});
         };
 
-        JobService.runDetailList = function(jobId) {
+        JobService.runDetailList = function runDetailList(jobId) {
             return JobService._remoteCall('/detail', {jobId: jobId});
+        };
+
+        JobService.runOutput = function runOutput(runId) {
+            return JobService._remoteCall('/run', {runId: runId});
         };
 
 

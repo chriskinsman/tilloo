@@ -1,4 +1,4 @@
-<h2>Job Detail</h2>
+<h2>Job Runs</h2>
 <div flex layout="row">
     <md-table-container>
         <table md-table>
@@ -17,7 +17,7 @@
             </thead>
             <tbody md-body>
             <tr md-row ng-repeat="run in runs | orderBy: query.order">
-                <td md-cell>{{run._id}}</td>
+                <td md-cell><a ng-href="/job/run/{{run._id}}">{{run._id}}</a></td>
                 <td md-cell>{{run.path}}</td>
                 <td md-cell>{{run.args.join(' ')}}</td>
                 <td md-cell>{{run.queueName}}</td>
