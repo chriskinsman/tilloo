@@ -14,6 +14,7 @@
     "commander": "^2.9.0",
     "compression": "^1.6.1",
     "cron": "^1.1.0",
+    "debug": "^2.2.0",
     "disque-eventemitter": "^0.2.0",
     "disqueue-node": "^1.1.1",
     "easy-table": "^1.0.0",

@@ -2,9 +2,9 @@ var mongoose = require('mongoose');
 var ObjectId = require('mongoose').Types.ObjectId;
 var CronJob = require('cron').CronJob;
 var util = require('util');
-var debuglog = util.debuglog('TILLOO');
+var debug = require('debug')('tilloo:job');
 
-var config = require('../lib/config')
+var config = require('../lib/config');
 var constants = require('../lib/constants');
 var Run = require('./run');
 
@@ -63,11 +63,11 @@ Job.methods.startCron = function() {
         var run = self.newRun();
         run.save(function(err, run) {
             if(err) {
-                debuglog("unable to save run for %s.", self.name);
+                debug("unable to save run for %s.", self.name);
                 console.error(err);
             }
             else {
-                debuglog("sending start message for %s.", self.name);
+                debug("sending start message for %s.", self.name);
                 // send message with run
                 disq.addJob({ queue: self.queueName, job: JSON.stringify({runId: run._id, path: self.path, args: self.args, timeout: self.timeout}), timeout: 0}, function(err) {
                     if(err) {
@@ -90,7 +90,7 @@ Job.methods.startCron = function() {
         if(self.mutex) {
             Run.findOne({jobId: new ObjectId(self._id)}, null, {sort: {createdAt: -1}}, function(err, run) {
                 if(run && (run.status === 'busy' || run.status === 'idle')) {
-                    debuglog('Mutex not scheduling jobId: %s, runId: %s already running', self._id, run._id);
+                    debug('Mutex not scheduling jobId: %s, runId: %s already running', self._id, run._id);
                 }
                 else {
                     triggerRun();
@@ -102,20 +102,20 @@ Job.methods.startCron = function() {
         }
     });
 
-    debuglog("starting cron %s for %s.", this.schedule, this.name);
+    debug("starting cron %s for %s.", this.schedule, this.name);
     this.__cron.start();
 };
 
 Job.methods.stopCron = function() {
     if(this.__cron) {
-        debuglog("stopping cron %s for %s.", this.schedule, this.name);
+        debug("stopping cron %s for %s.", this.schedule, this.name);
         this.__cron.stop();
         delete this.__cron;
     }
 };
 
 Job.statics.loadAllJobs = function(callback) {
-    debuglog("loading all jobs");
+    debug("loading all jobs");
     model.find({deleted: false, enabled: true}, function(err, jobs) {
         return callback(err, jobs);
     });

@@ -18,21 +18,21 @@ var logger = require('./lib/logger');
 var status = require('./lib/status');
 
 mongoose.connect(config.db);
-var debuglog = util.debuglog('TILLOO');
+var debug = require('debug')('tilloo:scheduler');
 
 var _loadedJobs = {};
 
 Job.loadAllJobs(function(err, jobs) {
-    debuglog('loading jobs');
+    debug('loading jobs');
     jobs.forEach(function(job) {
-        debuglog('found job %s', job.name);
+        debug('found job %s', job.name);
         if(job.schedule && job.schedule.trim()!=='') {
-            debuglog('setting up cron %s for %s', job.schedule, job.name);
+            debug('setting up cron %s for %s', job.schedule, job.name);
             _loadedJobs[job._id] = job;
             job.startCron();
         }
     });
-    debuglog('jobs loaded');
+    debug('jobs loaded');
 });
 
 
@@ -41,14 +41,14 @@ Job.loadAllJobs(function(err, jobs) {
 // updatedAt that is more than 5 minutes old and
 // marks it as failed
 setInterval(function() {
-    debuglog('garbage collecting zombie runs');
+    debug('garbage collecting zombie runs');
     Run.find({
         $and: [{updatedAt: {$lte: moment().subtract(5, 'minutes').toDate()}},
                 {$or: [{status: 'busy'}, {status: 'idle'}]}
             ]},
         function(err, zombieRuns) {
             async.eachLimit(zombieRuns, 5, function(zombieRun, done) {
-                debuglog('settting status to fail runId: %s', zombieRun._id);
+                debug('settting status to fail runId: %s', zombieRun._id);
                 zombieRun.status = 'fail';
                 zombieRun.save(done);
             }, function(err) {
@@ -80,7 +80,7 @@ ee.on('job', function(job, done) {
                     else {
                         _loadedJobs[jobId] = dbJob;
                         dbJob.startCron();
-                        debuglog('updated jobId: %s', jobId);
+                        debug('updated jobId: %s', jobId);
                         console.dir(Object.keys(_loadedJobs));
                         callback();
                     }
@@ -96,7 +96,7 @@ ee.on('job', function(job, done) {
                 delete _loadedJobs[jobId];
                 // Stop it
                 loadedJob.stopCron();
-                debuglog('removed jobId: %s', jobId);
+                debug('removed jobId: %s', jobId);
                 console.dir(Object.keys(_loadedJobs));
             }
 

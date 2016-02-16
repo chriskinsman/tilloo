@@ -31,6 +31,7 @@ Run.find({jobId: new ObjectId(commander.args[0])}, null, {sort: {startedAt: 1}},
             table.cell('Id', run._id);
             table.cell('Path', run.path);
             table.cell('Queue', run.queueName);
+            table.cell('Worker', run.worker);
             table.cell('Status', run.status);
             table.cell('PID', run.pid);
             table.cell('Result', run.result);
