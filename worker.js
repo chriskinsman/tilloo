@@ -58,7 +58,7 @@ ee.on('job', function(job, done) {
                 if(err) {
                     console.error('Unable to queue status for jobId: %s, runId: %s, status: %s', job.jobId, message.runId, message);
                 }
-            })
+            });
         });
 
         var runningPid;
@@ -103,7 +103,7 @@ killee.on('job', function(job, done) {
                     console.error('Unable to queue status for jobId: %s, runId: %s, status: %s', job.jobId, message.runId, message);
                 }
                 done();
-            })
+            });
         }
     });
 });

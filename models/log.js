@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var Log = new mongoose.Schema({
     runId: { type: mongoose.Schema.ObjectId, required: true, index: true},
     output: {type: String, required: true},
-    createdAt: {type: Date, default: function() { return new Date()}}
+    createdAt: {type: Date, default: function() { return new Date();}}
 });
 
 Log.pre('save', function(done) {

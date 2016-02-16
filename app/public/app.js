@@ -1,7 +1,8 @@
-'use strict';
+
 
 var tillooApp = angular.module("tillooApp", ['tillooApp.job', 'ngRoute', 'ngMaterial', 'md.data.table'])
 .config(['$routeProvider', '$locationProvider', '$httpProvider', '$sceDelegateProvider', '$mdThemingProvider', '$mdIconProvider', function ($routeProvider, $locationProvider, $httpProvider, $sceDelegateProvider, $mdThemingProvider, $mdIconProvider) {
+    'use strict';
     $routeProvider.
     when('/', { templateUrl: '/public/job/jobs.html', controller: 'JobsController'}).
     when('/job/:jobId', {templateUrl: '/public/job/jobdetail.html', controller: 'JobDetailController'}).

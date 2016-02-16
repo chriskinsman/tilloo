@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('tillooApp.job')
     .controller('JobsController', ['jobService', '$scope', function (jobService, $scope) {
     'use strict';

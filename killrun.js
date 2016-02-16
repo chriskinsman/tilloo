@@ -36,6 +36,6 @@ Run.findByRunId(commander.args[0], function(err, run) {
                 console.info('kill sent to worker: %s, pid: %d', run.worker, run.pid);
                 process.exit(0);
             }
-        })
+        });
     }
 });

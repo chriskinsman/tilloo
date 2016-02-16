@@ -70,7 +70,7 @@ if(commander.jobdescription) {
 }
 
 if(commander.mutex !== undefined) {
-    job.mutex = commander.mutex
+    job.mutex = commander.mutex;
 }
 
 job.save(function(err, dbJob) {

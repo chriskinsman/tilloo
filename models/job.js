@@ -27,7 +27,7 @@ var Job = new mongoose.Schema({
     }},
     queueName: {type: String, default: constants.QUEUES.DEFAULT_WORKER},
     enabled: {type: Boolean, default: 'true'},
-    createdAt: {type: Date, default: function() { return new Date()}},
+    createdAt: {type: Date, default: function() { return new Date();}},
     updatedAt: {type: Date},
     lastRanAt: {type: Date},
     lastStatus: {type: String},

@@ -87,7 +87,7 @@ Job.findById(new ObjectId(jobId), function(err, dbJob) {
         }
 
         if(commander.mutex !== undefined) {
-            dbJob.mutex = commander.mutex
+            dbJob.mutex = commander.mutex;
         }
 
         dbJob.save(function(err, dbJob) {
