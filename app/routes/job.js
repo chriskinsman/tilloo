@@ -6,7 +6,7 @@ var Log = require('../../models/log');
 
 var JobRoutes = {};
 
-JobRoutes.list = function list(req, res) {
+JobRoutes.getJobs = function getJobs(req, res) {
     Job.findAllJobs(function(err, jobs) {
         if(err) {
             console.error(err);
@@ -20,9 +20,8 @@ JobRoutes.list = function list(req, res) {
 
 JobRoutes.getJob = function getJob(req, res) {
     var jobId = req.params.jobId;
-    Job.findByObjectId(jobId, function(err, job) {
+    Job.findByJobId(jobId, function(err, job) {
         if(err) {
-            console.error(err);
             res.status(500).send(err);
         }
         else {
@@ -31,7 +30,19 @@ JobRoutes.getJob = function getJob(req, res) {
     });
 };
 
-JobRoutes.runDetailList = function list(req, res) {
+JobRoutes.getRun = function getRun(req, res) {
+    var runId = req.params.runId;
+    Run.findByRunId(runId, function(err, run) {
+        if(err) {
+            res.status(500).send(err);
+        }
+        else {
+            res.status(200).send(run);
+        }
+    });
+};
+
+JobRoutes.getRuns = function getJobs(req, res) {
     var jobId = req.params.jobId;
 
     Run.findDetailsForJob(jobId, function(err, runs) {

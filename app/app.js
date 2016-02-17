@@ -30,10 +30,11 @@ app.use(favicon(__dirname + '/public/assets/favicon.ico'));
 app.use('/bower_components', express.static(path.join(__dirname, 'bower_components')));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
-app.get('/api/job', job.list);
+app.get('/api/job', job.getJobs);
 app.get('/api/job/:jobId', job.getJob);
-app.get('/api/job/:jobId/runs', job.runDetailList);
-app.get('/api/run/:runId', job.outputForRun);
+app.get('/api/job/:jobId/runs', job.getRuns);
+app.get('/api/run/:runId', job.getRun);
+app.get('/api/run/:runId/output', job.outputForRun);
 
 app.get('*', function(req, res){ res.sendFile(__dirname + '/public/index.html');});
 

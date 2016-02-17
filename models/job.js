@@ -125,7 +125,7 @@ Job.statics.findAllJobs = function findAllJobs(callback) {
     model.find({deleted: false}, null, {sort: {name: 1}}, callback);
 };
 
-Job.statics.findByObjectId = function findById(jobId, callback) {
+Job.statics.findByJobId = function findByJobId(jobId, callback) {
     model.findById(new ObjectId(jobId), callback);
 };
 

@@ -9,7 +9,7 @@ angular.module('tillooApp.job')
         };
 
         function getJobs() {
-            $scope.promise = jobService.list();
+            $scope.promise = jobService.getJobs();
             $scope.promise.then(success);
         }
 
@@ -45,7 +45,7 @@ angular.module('tillooApp.job')
                     }
                 });
             })
-        };
+        }
 
         var socket = io('http://localhost:7700');
         socket.on('status', updateStatus);

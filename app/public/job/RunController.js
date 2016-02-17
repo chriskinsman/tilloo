@@ -1,5 +1,5 @@
 angular.module('tillooApp.job')
-    .controller('JobDetailController', ['jobService', '$scope', '$routeParams', function (jobService, $scope, $routeParams) {
+    .controller('RunDetailController', ['jobService', '$scope', '$routeParams', function (jobService, $scope, $routeParams) {
         'use strict';
 
         $scope.selected = [];
@@ -8,18 +8,18 @@ angular.module('tillooApp.job')
             order: 'name'
         };
 
-        function getRunDetails() {
-            $scope.promise = jobService.runDetailList($routeParams.jobId);
+        function getRunOutput() {
+            $scope.promise = jobService.getLogs($routeParams.runId);
             $scope.promise.then(success);
         }
 
         function success(runs) {
-            $scope.runs = runs.data;
+            $scope.loglines = runs.data;
         }
 
         //$scope.onReorder = function (order) {
         //    getRunDetails(angular.extend({}, $scope.query, {order: order}));
         //};
 
-        getRunDetails($scope.query);
+        getRunOutput($scope.query);
     }]);

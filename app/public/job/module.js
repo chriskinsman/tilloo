@@ -1,2 +1,2 @@
 // define the module
-angular.module('tillooApp.job', ['md.data.table']);
+angular.module('tillooApp.job', ['md.data.table', 'ngOnlyNumberApp']);

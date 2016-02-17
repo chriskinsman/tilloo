@@ -1,12 +1,12 @@
 
 
-var tillooApp = angular.module("tillooApp", ['tillooApp.job', 'ngRoute', 'ngMaterial', 'md.data.table'])
+var tillooApp = angular.module("tillooApp", ['tillooApp.job', 'ngRoute', 'ngMaterial', 'md.data.table', 'ngOnlyNumberApp'])
 .config(['$routeProvider', '$locationProvider', '$httpProvider', '$sceDelegateProvider', '$mdThemingProvider', '$mdIconProvider', function ($routeProvider, $locationProvider, $httpProvider, $sceDelegateProvider, $mdThemingProvider, $mdIconProvider) {
     'use strict';
     $routeProvider.
     when('/', { templateUrl: '/public/job/jobs.html', controller: 'JobsController'}).
-    when('/job/:jobId', {templateUrl: '/public/job/jobdetail.html', controller: 'JobDetailController'}).
-    when('/job/run/:runId', {templateUrl: '/public/job/rundetail.html', controller: 'RunDetailController'}).
+    when('/job/:jobId', {templateUrl: '/public/job/job.html', controller: 'JobController'}).
+    when('/run/:runId', {templateUrl: '/public/job/run.html', controller: 'RunController'}).
     otherwise({ redirectTo: '/' });
 
     $mdIconProvider
