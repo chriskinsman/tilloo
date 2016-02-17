@@ -16,6 +16,7 @@ var Run = require('./models/run');
 var logger = require('./lib/logger');
 // Don't remove.  Loading this causes status to start
 var status = require('./lib/status');
+var webstatus = require('./lib/webstatus');
 
 mongoose.connect(config.db);
 var debug = require('debug')('tilloo:scheduler');
@@ -71,7 +72,7 @@ ee.on('job', function(job, done) {
         }
 
         function updateJob(jobId, callback) {
-            deleteJob(jobId, function() {
+            deleteJob(jobId, true, function() {
                 Job.findById(new ObjectId(jobId), function(err, dbJob) {
                     if(err) {
                         console.error(err);
@@ -81,14 +82,14 @@ ee.on('job', function(job, done) {
                         _loadedJobs[jobId] = dbJob;
                         dbJob.startCron();
                         debug('updated jobId: %s', jobId);
-                        console.dir(Object.keys(_loadedJobs));
+                        webstatus.sendJobChange(jobId);
                         callback();
                     }
                 });
             });
         }
 
-        function deleteJob(jobId, callback) {
+        function deleteJob(jobId, partOfUpdate, callback) {
             if(_loadedJobs[jobId]) {
                 // Get it
                 var loadedJob = _loadedJobs[jobId];
@@ -100,6 +101,9 @@ ee.on('job', function(job, done) {
                 console.dir(Object.keys(_loadedJobs));
             }
 
+            if(!partOfUpdate) {
+                webstatus.sendJobChange(jobId);
+            }
             callback();
         }
 
@@ -114,7 +118,7 @@ ee.on('job', function(job, done) {
 
             case 'deleted':
                 // Job has been deleted
-                deleteJob(message.jobId, done);
+                deleteJob(message.jobId, false, done);
                 break;
 
             case 'updated':

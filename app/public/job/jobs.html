@@ -26,7 +26,7 @@
                 <td md-cell>{{job.timeout}}</td>
                 <td md-cell>{{job.path}}</td>
                 <td md-cell>{{job.args.join(' ')}}</td>
-                <td md-cell>{{job.lastRanAt}}</td>
+                <td md-cell>{{job.lastRanAt | date : 'M/d/yy h:mm a'}}</td>
                 <td md-cell>{{job.lastStatus}}</td>
             </tr>
             </tbody>

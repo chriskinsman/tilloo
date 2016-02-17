@@ -125,5 +125,9 @@ Job.statics.findAllJobs = function findAllJobs(callback) {
     model.find({deleted: false}, null, {sort: {name: 1}}, callback);
 };
 
+Job.statics.findByObjectId = function findById(jobId, callback) {
+    model.findById(new ObjectId(jobId), callback);
+};
+
 var model = mongoose.model('job', Job);
 module.exports = model;

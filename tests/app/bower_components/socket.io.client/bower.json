@@ -1,0 +1,22 @@
+{
+  "name": "socket.io.client",
+  "version": "1.3.5",
+  "homepage": "https://github.com/jamesjieye/socket.io.client",
+  "authors": [
+    "James Ye <james.ye@hotmail.com>"
+  ],
+  "description": "socket.io client js copied from http://socket.io/download/",
+  "main": "dist/socket.io-1.3.5.js",
+  "keywords": [
+    "socket.io",
+    "socket.io-client"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

@@ -6,15 +6,19 @@ angular.module('tillooApp.job')
         var JobService = {};
 
         JobService.list = function list() {
-            return JobService._remoteCall('', {});
+            return JobService._remoteCall('job', {});
+        };
+
+        JobService.getJob = function getJob(jobId) {
+            return JobService._remoteCall('job/' + jobId, {})
         };
 
         JobService.runDetailList = function runDetailList(jobId) {
-            return JobService._remoteCall('/detail', {jobId: jobId});
+            return JobService._remoteCall('job/' + jobId + '/run', {});
         };
 
         JobService.runOutput = function runOutput(runId) {
-            return JobService._remoteCall('/run', {runId: runId});
+            return JobService._remoteCall('run/' + runId, {});
         };
 
 
@@ -54,9 +58,9 @@ angular.module('tillooApp.job')
 
             if (options.post === true)
             {
-                return $http.post("/api/job" + path, params);
+                return $http.post("/api/" + path, params);
             } else {
-                return $http.get("/api/job" + path, {params:params});
+                return $http.get("/api/" + path, {params:params});
             }
         };
 

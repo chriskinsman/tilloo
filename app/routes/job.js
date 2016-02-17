@@ -18,8 +18,21 @@ JobRoutes.list = function list(req, res) {
     });
 };
 
+JobRoutes.getJob = function getJob(req, res) {
+    var jobId = req.params.jobId;
+    Job.findByObjectId(jobId, function(err, job) {
+        if(err) {
+            console.error(err);
+            res.status(500).send(err);
+        }
+        else {
+            res.status(200).send(job);
+        }
+    });
+};
+
 JobRoutes.runDetailList = function list(req, res) {
-    var jobId = req.query.jobId;
+    var jobId = req.params.jobId;
 
     Run.findDetailsForJob(jobId, function(err, runs) {
         if(err) {
@@ -32,7 +45,7 @@ JobRoutes.runDetailList = function list(req, res) {
 };
 
 JobRoutes.outputForRun = function outputForRun(req, res) {
-    var runId = req.query.runId;
+    var runId = req.params.runId;
 
     Log.findOutputForRun(runId, function(err, output) {
         if(err) {
