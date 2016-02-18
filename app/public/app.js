@@ -1,6 +1,6 @@
 
 
-var tillooApp = angular.module("tillooApp", ['tillooApp.job', 'ngRoute', 'ngMaterial', 'md.data.table', 'ngOnlyNumberApp'])
+var tillooApp = angular.module("tillooApp", ['tillooApp.job', 'ngRoute', 'ngMaterial', 'md.data.table'])
 .config(['$routeProvider', '$locationProvider', '$httpProvider', '$sceDelegateProvider', '$mdThemingProvider', '$mdIconProvider', function ($routeProvider, $locationProvider, $httpProvider, $sceDelegateProvider, $mdThemingProvider, $mdIconProvider) {
     'use strict';
     $routeProvider.

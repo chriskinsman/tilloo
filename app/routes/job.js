@@ -1,5 +1,7 @@
 'use strict';
 
+var async = require('async');
+
 var Job = require('../../models/job');
 var Run = require('../../models/run');
 var Log = require('../../models/log');
@@ -44,13 +46,29 @@ JobRoutes.getRun = function getRun(req, res) {
 
 JobRoutes.getRuns = function getJobs(req, res) {
     var jobId = req.params.jobId;
+    var page = parseInt(req.query.page);
+    var pageSize = parseInt(req.query.pageSize);
+    var sort = req.query.sort;
 
-    Run.findDetailsForJob(jobId, function(err, runs) {
+    async.parallel({
+        runs: function(done) {
+            sort = sort || {startedAt: -1};
+            if(page && pageSize) {
+                Run.findRunsForJobPaginated(jobId, page, pageSize, sort, done);
+            }
+            else {
+                Run.findRunsForJob(jobId, sort, done);
+            }
+        },
+        count: function(done) {
+            Run.countRunsForJob(jobId, done);
+        }
+    }, function(err, result) {
         if(err) {
             res.status(500).send(err);
         }
         else {
-            res.status(200).send(runs);
+            res.status(200).send(result);
         }
     });
 };

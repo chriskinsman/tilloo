@@ -5,24 +5,38 @@ angular.module('tillooApp.job')
         $scope.selected = [];
 
         $scope.query = {
-            order: '-startedAt'
+            order: '-startedAt',
+            page: 1,
+            pageSize: 20
         };
 
-        function getRuns() {
-            $scope.promise = jobService.getRuns($routeParams.jobId);
-            $scope.promise.then(success);
+        $scope.showDetail = false;
+        $scope.toggleDetails = function toggleDetails() {
+            $scope.showDetail = !$scope.showDetail;
+        };
+
+        $scope.onPaginate = function(page, limit) {
+            $scope.query.page = page;
+            $scope.query.pageSize = limit;
+
+            getRuns($scope.query);
+        };
+
+        function getRuns(query) {
+            jobService.getRuns($routeParams.jobId, query.page, query.pageSize).then(function(result) {
+                $scope.runs = result.data.runs;
+                $scope.query.runCount = result.data.count;
+            });
+
         }
 
         function getJob() {
             jobService.getJob($routeParams.jobId).then(function(result) {
                 $timeout(function() {
                     $scope.job = result.data;
+                    $scope.job.displayArgs = $scope.job.args.join(' ');
                 });
             });
-        }
-
-        function success(runs) {
-            $scope.runs = runs.data;
         }
 
         function updateStatus(status) {
@@ -61,5 +75,5 @@ angular.module('tillooApp.job')
         });
 
         getJob();
-        getRuns();
+        getRuns($scope.query);
     }]);

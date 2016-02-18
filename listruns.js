@@ -1,7 +1,6 @@
 'use strict';
 
 var mongoose = require('mongoose');
-var ObjectId = require('mongoose').Types.ObjectId;
 var commander = require('commander');
 var Table = require('easy-table');
 
@@ -21,7 +20,7 @@ if(commander.args.length !== 1) {
 
 
 var table = new Table();
-Run.find({jobId: new ObjectId(commander.args[0])}, null, {sort: {startedAt: 1}}, function(err, runs) {
+Run.findRunsForJob(commander.args[0], {startedAt: 1}, function(err, runs) {
     if(err) {
         console.error(err);
         process.exit(1);

@@ -25,8 +25,20 @@ Run.pre('save', function(done) {
     return done();
 });
 
-Run.statics.findDetailsForJob = function findDetailsForJob(jobId, callback) {
-    model.find({jobId: new mongoose.Types.ObjectId(jobId)}, null, {sort: {startedAt: -1}}, callback);
+Run.statics.findRunsForJob = function findRunsForJob(jobId, sort, callback) {
+    model.find({jobId: new mongoose.Types.ObjectId(jobId)}, null, {sort: sort}, callback);
+};
+
+Run.statics.findRunsForJobPaginated = function findRunsForJobPaginated(jobId, page, pageSize, sort, callback) {
+    model.find({jobId: new mongoose.Types.ObjectId(jobId)}, null, {sort: sort})
+        .skip((page-1) * pageSize)
+        .limit(pageSize)
+        .exec(callback);
+};
+
+
+Run.statics.countRunsForJob = function countRunsForJob(jobId, callback) {
+    model.count({jobId: new mongoose.Types.ObjectId(jobId)}, callback);
 };
 
 Run.statics.findByRunId = function findByRunId(runId, callback) {

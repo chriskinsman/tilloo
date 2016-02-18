@@ -25,7 +25,6 @@
     "angular-route": "^1.5.0",
     "angular": "^1.5.0",
     "socket.io.client": "^1.3.5",
-    "lodash": "^4.4.0",
-    "ng-only-number": "*"
+    "lodash": "^4.4.0"
   }
 }

@@ -1,5 +1,5 @@
-<h2>Job - {{job._id}}  <md-button>Details</md-button></h2>
-<div id="details" ng-hide="true">
+<h2>Job - {{job._id}}  <md-button ng-click="toggleDetails()">Details</md-button></h2>
+<div id="details" ng-show="showDetail">
     <div layout="column" layout-gt-xs="row">
         <md-input-container>
             <input type="text" ng-model="job.name" placeholder="Name">
@@ -26,10 +26,10 @@
             <input type="text" ng-model="job.path" placeholder="Path">
         </md-input-container>
         <md-input-container>
-            <input type="text" ng-model="job.args.join(' ')" disabled placeholder="Args">
+            <input type="text" ng-model="job.displayArgs" disabled placeholder="Args">
         </md-input-container>
         <md-input-container>
-            <input type="text" ng-model="job.timeout" ng-only-number placeholder="Timeout">
+            <input type="text" ng-model="job.timeout" placeholder="Timeout">
         </md-input-container>
         <md-input-container>
             <md-checkbox ng-model="job.mutex" aria-label="Mutex">Mutex</md-checkbox>
@@ -51,9 +51,6 @@
             <thead md-head md-order="query.order" md-on-reorder="onReorder" class="md-head">
             <tr md-row>
                 <th md-column md-order-by="_id"><span>Id</span></th>
-                <!--<th md-column md-order-by="path"><span>Path</span></th>-->
-                <!--<th md-column><span>Args</span></th>-->
-                <!--<th md-column md-order-by="queueName"><span>Queue</span></th>-->
                 <th md-column md-order-by="worker"><span>Worker</span></th>
                 <th md-column md-order-by="pid" md-numeric><span>PID</span></t>
                 <th md-column md-order-by="result" md-numeric><span>Result</span></th>
@@ -65,9 +62,6 @@
             <tbody md-body>
             <tr md-row ng-repeat="run in runs | orderBy: query.order">
                 <td md-cell><a ng-href="/run/{{run._id}}">{{run._id}}</a></td>
-                <!--<td md-cell>{{run.path}}</td>-->
-                <!--<td md-cell>{{run.args.join(' ')}}</td>-->
-                <!--<td md-cell>{{run.queueName}}</td>-->
                 <td md-cell>{{run.worker}}</td>
                 <td md-cell>{{run.pid}}</td>
                 <td md-cell>{{run.result}}</td>
@@ -77,5 +71,6 @@
             </tr>
             </tbody>
         </table>
+        <md-table-pagination md-limit="query.pageSize" md-page="query.page" md-total="{{query.runCount}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
     </md-table-container>
 </div>
