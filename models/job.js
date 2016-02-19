@@ -56,35 +56,51 @@ Job.methods.newRun = function() {
     });
 };
 
+Job.methods.triggerRun = function(callback) {
+    var self = this;
+    var run = self.newRun();
+    run.save(function(err, run) {
+        if(err) {
+            debug("unable to save run for %s.", self.name);
+            console.error(err);
+            if(callback) {
+                return callback(err);
+            }
+        }
+        else {
+            debug("sending start message for %s.", self.name);
+            // send message with run
+            disq.addJob({ queue: self.queueName, job: JSON.stringify({runId: run._id, path: self.path, args: self.args, timeout: self.timeout}), timeout: 0}, function(err) {
+                if(err) {
+                    console.error(err);
+                    if(callback) {
+                        return callback(err);
+                    }
+                }
+                else {
+                    self.lastRanAt = new Date();
+                    self.save(function(err) {
+                        if(err) {
+                            console.error(err);
+                            if(callback) {
+                                return callback(err);
+                            }
+                        }
+                        else {
+                            if(callback) {
+                                return callback();
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    });
+};
+
 Job.methods.startCron = function() {
     var self = this;
 
-    function triggerRun() {
-        var run = self.newRun();
-        run.save(function(err, run) {
-            if(err) {
-                debug("unable to save run for %s.", self.name);
-                console.error(err);
-            }
-            else {
-                debug("sending start message for %s.", self.name);
-                // send message with run
-                disq.addJob({ queue: self.queueName, job: JSON.stringify({runId: run._id, path: self.path, args: self.args, timeout: self.timeout}), timeout: 0}, function(err) {
-                    if(err) {
-                        console.error(err);
-                    }
-                    else {
-                        self.lastRanAt = new Date();
-                        self.save(function(err) {
-                            if(err) {
-                                console.error(err);
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    }
 
     this.__cron = new CronJob(this.schedule, function() {
         if(self.mutex) {
@@ -93,12 +109,12 @@ Job.methods.startCron = function() {
                     debug('Mutex not scheduling jobId: %s, runId: %s already running', self._id, run._id);
                 }
                 else {
-                    triggerRun();
+                    self.triggerRun();
                 }
             });
         }
         else {
-            triggerRun();
+            self.triggerRun();
         }
     });
 

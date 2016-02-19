@@ -11,7 +11,7 @@ var sleepIntervalInSeconds = 5;
 
 console.info('Working %d seconds', sleepSeconds);
 async.doWhilst(function(done) {
-    console.info('Doing work');
+    console.info('Doing work seconds: ' + iterations);
     setTimeout(done, sleepIntervalInSeconds * 1000);
 }, function() {
     iterations += sleepIntervalInSeconds;

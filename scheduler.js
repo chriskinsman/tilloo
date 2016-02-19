@@ -98,7 +98,6 @@ ee.on('job', function(job, done) {
                 // Stop it
                 loadedJob.stopCron();
                 debug('removed jobId: %s', jobId);
-                console.dir(Object.keys(_loadedJobs));
             }
 
             if(!partOfUpdate) {

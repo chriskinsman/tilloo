@@ -1,4 +1,4 @@
-<h2>Run</h2>
-<div flex layout="row">
-    <p class="output" ng-repeat="line in loglines">{{line.output}}</p>
+<h2>Run - {{runId}}</h2>
+<div flex layout="row" ng-repeat="line in loglines">
+    <span class="output">{{line.output}}</span>
 </div>

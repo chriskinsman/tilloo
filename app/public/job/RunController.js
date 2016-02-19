@@ -1,8 +1,8 @@
 angular.module('tillooApp.job')
-    .controller('RunDetailController', ['jobService', '$scope', '$routeParams', function (jobService, $scope, $routeParams) {
+    .controller('RunController', ['jobService', '$scope', '$routeParams', '$timeout', function (jobService, $scope, $routeParams, $timeout) {
         'use strict';
 
-        $scope.selected = [];
+        $scope.runId = $routeParams.runId;
 
         $scope.query = {
             order: 'name'
@@ -10,16 +10,26 @@ angular.module('tillooApp.job')
 
         function getRunOutput() {
             $scope.promise = jobService.getLogs($routeParams.runId);
-            $scope.promise.then(success);
+            $scope.promise.then(function(result) {
+                $scope.loglines = result.data;
+            });
         }
 
-        function success(runs) {
-            $scope.loglines = runs.data;
+        function addToLog(message) {
+            $timeout(function() {
+                $scope.loglines.push({output: message.output});
+            });
+
         }
 
-        //$scope.onReorder = function (order) {
-        //    getRunDetails(angular.extend({}, $scope.query, {order: order}));
-        //};
+        var socket = io('http://localhost:7700');
+        socket.on('log', addToLog);
+
+        // Clear event handler when leaving
+        $scope.$on('$destroy', function() {
+            socket.removeListener('log', addToLog);
+        });
+
 
         getRunOutput($scope.query);
     }]);
