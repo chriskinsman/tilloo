@@ -14,8 +14,8 @@ Log.pre('save', function(done) {
     return done();
 });
 
-Log.statics.append = function append(runId, output, callback) {
-    new model({runId: runId, output: output}).save(function(err) {
+Log.statics.append = function append(runId, output, createdAt, callback) {
+    new model({runId: runId, output: output, createdAt: createdAt}).save(function(err) {
         if(err) {
             console.error(err);
         }

@@ -44,6 +44,7 @@ ee.on('job', function(job, done) {
         var script = new Script(job.jobId, message.runId, message.path, message.args, message.timeout);
         script.on('output', function(message) {
             debug(message.output);
+            message.createdAt = new Date();
             disq.addJob({queue: constants.QUEUES.LOGGER, job: JSON.stringify(message), timeout: 0}, function(err) {
                 if(err) {
                     console.error('Unable to queue output for jobId: %s, runId: %s, output: %s', job.jobId, message.runId, message.output);

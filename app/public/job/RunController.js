@@ -16,10 +16,11 @@ angular.module('tillooApp.job')
         }
 
         function addToLog(message) {
-            $timeout(function() {
-                $scope.loglines.push({output: message.output});
-            });
-
+            if(message.runId === $scope.runId) {
+                $timeout(function () {
+                    $scope.loglines.push({output: message.output});
+                });
+            }
         }
 
         var socket = io('http://localhost:7700');
