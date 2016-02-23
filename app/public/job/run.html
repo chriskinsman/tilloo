@@ -1,4 +1,15 @@
-<h2>Run - {{runId}}</h2>
+<h2>Run <md-button ng-click="stopRun()" ng-disabled="stopDisabled">Stop</md-button></h2>
+<div flex>
+    JobId: {{run.jobId}}
+</div>
+<div flex>
+    RunId: {{runId}}
+</div>
+<div flex>
+    Status: {{run.status}}
+</div>
+
+<h2>Output</h2>
 <div flex layout="row" ng-repeat="line in loglines">
     <span class="output">{{line.output}}</span>
 </div>

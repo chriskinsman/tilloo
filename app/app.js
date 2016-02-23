@@ -35,6 +35,7 @@ app.get('/api/job/:jobId', job.getJob);
 app.get('/api/job/:jobId/runs', job.getRuns);
 app.get('/api/run/:runId', job.getRun);
 app.get('/api/run/:runId/output', job.outputForRun);
+app.post('/api/run/:runId/stop', job.stopRun);
 
 app.get('*', function(req, res){ res.sendFile(__dirname + '/public/index.html');});
 

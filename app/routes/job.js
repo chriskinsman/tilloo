@@ -6,6 +6,9 @@ var Job = require('../../models/job');
 var Run = require('../../models/run');
 var Log = require('../../models/log');
 
+var runs = require('../../lib/runs');
+var jobs = require('../../lib/jobs');
+
 var JobRoutes = {};
 
 JobRoutes.getJobs = function getJobs(req, res) {
@@ -85,6 +88,19 @@ JobRoutes.outputForRun = function outputForRun(req, res) {
         }
     });
 
+};
+
+JobRoutes.stopRun = function stopRun(req, res) {
+    var runId = req.params.runId;
+
+    runs.killRun(runId, false, function(err) {
+        if(err) {
+            res.status(500).send(err);
+        }
+        else {
+            res.status(200).send('message sent');
+        }
+    });
 };
 
 
