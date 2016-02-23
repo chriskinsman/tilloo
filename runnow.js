@@ -4,8 +4,7 @@ var mongoose = require('mongoose');
 var commander = require('commander');
 
 var config = require('./lib/config');
-var constants = require('./lib/constants');
-var Job = require('./models/job');
+var jobs = require('./lib/jobs');
 
 mongoose.connect(config.db);
 
@@ -18,23 +17,13 @@ if(commander.args.length !== 1) {
     process.exit(1);
 }
 
-
-Job.findByJobId(commander.args[0], function(err, job) {
+jobs.triggerRun(commander.args[0], function(err) {
     if(err) {
-        console.error(err);
+        console.error('Unable to trigger run err: ' + err);
         process.exit(1);
     }
     else {
-        job.triggerRun(function(err) {
-            if(err) {
-                console.error('Unable to trigger run err: ' + err);
-                process.exit(1);
-            }
-            else {
-                console.info('Run triggered');
-                process.exit(0);
-            }
-        });
-
+        console.info('Run triggered');
+        process.exit(0);
     }
 });

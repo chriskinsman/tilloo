@@ -33,6 +33,10 @@ angular.module('tillooApp.job')
             return JobService._remoteCall('run/' + runId + '/stop', null, {post: true});
         };
 
+        JobService.runJob = function runJob(jobId) {
+            return JobService._remoteCall('job/' + jobId + '/run', null, {post: true});
+        };
+
         JobService._remoteCall = function(path, params, options)
         {
             options = options || {};

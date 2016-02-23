@@ -9,11 +9,9 @@
                 <th md-column><span>Schedule</span></th>
                 <th md-column md-order-by="queueName"><span>Queue</span></th>
                 <th md-column md-order-by="enabled">Enabled</th>
-                <th md-column md-order-by="timeout" data-md-numeric>Timeout</th>
-                <th md-column md-order-by="path">Path</th>
-                <th md-column>Args</th>
                 <th md-column md-order-by="lastRanAt">Last Ran</th>
                 <th md-column md-order-by="lastStatus">Last Status</th>
+                <th md-column></th>
             </tr>
             </thead>
             <tbody md-body>
@@ -23,11 +21,9 @@
                 <td md-cell>{{job.schedule}}</td>
                 <td md-cell>{{job.queueName}}</td>
                 <td md-cell>{{job.enabled}}</td>
-                <td md-cell>{{job.timeout}}</td>
-                <td md-cell>{{job.path}}</td>
-                <td md-cell>{{job.args.join(' ')}}</td>
                 <td md-cell>{{job.lastRanAt | date : 'M/d/yy h:mm a'}}</td>
                 <td md-cell>{{job.lastStatus}}</td>
+                <td md-cell><md-button ng-click="runJob(job._id)" ng-disabled="job.mutex && job.status === 'busy'">Run</md-button></td>
             </tr>
             </tbody>
         </table>

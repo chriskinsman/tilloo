@@ -103,5 +103,18 @@ JobRoutes.stopRun = function stopRun(req, res) {
     });
 };
 
+JobRoutes.triggerRun = function triggerRun(req, res) {
+    var jobId = req.params.jobId;
+
+    jobs.triggerRun(jobId, function(err) {
+        if(err) {
+            res.status(500).send(err);
+        }
+        else {
+            res.status(200).send('triggered');
+        }
+    });
+};
+
 
 module.exports = JobRoutes;
