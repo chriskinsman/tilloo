@@ -1,4 +1,9 @@
-<h2>Job - {{job._id}}  <md-button ng-click="toggleDetails()">Details</md-button></h2>
+<h2>Job <md-button ng-click="toggleDetails()">Details</md-button></h2>
+
+<div flex>
+    JobId: {{job._id}}
+</div>
+
 <div id="details" ng-show="showDetail">
     <div layout="column" layout-gt-xs="row">
         <md-input-container>
@@ -44,7 +49,7 @@
         </md-input-container>
     </div>
 </div>
-<h2>Runs</h2>
+<h2>Runs <td md-cell><md-button ng-click="runJob(job._id)" ng-disabled="job.mutex && job.status === 'busy'">Run</md-button></td></h2>
 <div flex layout="row">
     <md-table-container>
         <table md-table>

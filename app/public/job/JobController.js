@@ -64,6 +64,11 @@ angular.module('tillooApp.job')
             }
         }
 
+        $scope.runJob = function runJob(jobId) {
+            jobService.runJob(jobId);
+        };
+
+
         var socket = io('http://localhost:7700');
         socket.on('status', updateStatus);
         socket.on('jobchange', updateJob);
