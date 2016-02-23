@@ -1,4 +1,5 @@
 <h2>Jobs</h2>
+<md-button class="md-raised" ng-click="addJob()">Add</md-button>
 <div flex layout="row">
     <md-table-container>
         <table md-table>
@@ -8,22 +9,23 @@
                 <th md-column md-order-by="name"><span>Name</span></th>
                 <th md-column><span>Schedule</span></th>
                 <th md-column md-order-by="queueName"><span>Queue</span></th>
-                <th md-column md-order-by="enabled">Enabled</th>
                 <th md-column md-order-by="lastRanAt">Last Ran</th>
                 <th md-column md-order-by="lastStatus">Last Status</th>
                 <th md-column></th>
             </tr>
             </thead>
             <tbody md-body>
-            <tr md-row ng-repeat="job in jobs | orderBy: query.order">
+            <tr md-row ng-repeat="job in jobs | orderBy: query.order" ng-class="{'disabled' : !job.enabled }">
                 <td md-cell><a ng-href="/job/{{job._id}}">{{job._id}}</a></td>
                 <td md-cell>{{job.name}}</td>
                 <td md-cell>{{job.schedule}}</td>
                 <td md-cell>{{job.queueName}}</td>
-                <td md-cell>{{job.enabled}}</td>
                 <td md-cell>{{job.lastRanAt | date : 'M/d/yy h:mm a'}}</td>
                 <td md-cell>{{job.lastStatus}}</td>
-                <td md-cell><md-button ng-click="runJob(job._id)" ng-disabled="job.mutex && job.status === 'busy'">Run</md-button></td>
+                <td md-cell>
+                    <md-button class="md-raised" ng-click="editJob(job._id)">Edit</md-button>
+                    <md-button class="md-raised" ng-click="runJob(job._id)" ng-disabled="job.mutex && job.lastStatus === 'busy'">Run</md-button>
+                </td>
             </tr>
             </tbody>
         </table>
