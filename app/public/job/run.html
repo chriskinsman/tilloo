@@ -1,15 +1,5 @@
-<h2>Run <md-button ng-click="stopRun()" ng-disabled="stopDisabled">Stop</md-button></h2>
-<div flex>
-    JobId: {{run.jobId}}
-</div>
-<div flex>
-    RunId: {{runId}}
-</div>
-<div flex>
-    Status: {{run.status}}
-</div>
+<h2>Run - {{runId}} {{run.status}} <md-button class="md-fab md-mini" ng-click="stopRun()" ng-disabled="stopDisabled"><md-icon md-svg-src="/bower_components/material-design-icons/av/svg/production/ic_stop_24px.svg"></md-icon></md-button></h2>
 
-<h2>Output</h2>
 <div flex layout="row" ng-repeat="line in loglines">
     <span class="output">{{line.output}}</span>
 </div>

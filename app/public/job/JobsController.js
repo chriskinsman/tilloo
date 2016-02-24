@@ -52,6 +52,10 @@ angular.module('tillooApp.job')
             });
         }
 
+        $scope.deleteJob = function deleteJob(jobId) {
+            jobService.deleteJob(jobId);
+        };
+
         $scope.runJob = function runJob(jobId) {
             jobService.runJob(jobId);
         };

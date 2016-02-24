@@ -1,8 +1,4 @@
-<h2>Job <md-button ng-click="toggleDetails()">Details</md-button></h2>
-
-<div flex>
-    JobId: {{job._id}}
-</div>
+<h2>{{job.name}} - {{job._id}} <md-button class="md-fab md-mini" ng-click="runJob(job._id)" ng-disabled="job.mutex && job.lastStatus === 'busy'"><md-icon md-svg-src="/bower_components/material-design-icons/av/svg/production/ic_play_arrow_24px.svg"></md-icon></md-button></h2>
 
 <div id="details" ng-show="showDetail">
     <div layout="column" layout-gt-xs="row">
@@ -49,7 +45,7 @@
         </md-input-container>
     </div>
 </div>
-<h2>Runs <td md-cell><md-button ng-click="runJob(job._id)" ng-disabled="job.mutex && job.status === 'busy'">Run</md-button></td></h2>
+
 <div flex layout="row">
     <md-table-container>
         <table md-table>
@@ -62,6 +58,7 @@
                 <th md-column md-order-by="startedAt"><span>Started</span></th>
                 <th md-column md-order-by="completedAt"><span>Completed</span></th>
                 <th md-column md-order-by="status"><span>Status</span></th>
+                <th md-column></th>
             </tr>
             </thead>
             <tbody md-body>
@@ -73,6 +70,7 @@
                 <td md-cell>{{run.startedAt | date : 'M/d/yy h:mm a'}}</td>
                 <td md-cell>{{run.completedAt | date : 'M/d/yy h:mm a'}}</td>
                 <td md-cell>{{run.status}}</td>
+                <td md-cell><md-button ng-show="run.status ==='busy'" class="md-fab md-mini" ng-click="stopRun(run._id)" ng-disabled="stopDisabled"><md-icon md-svg-src="/bower_components/material-design-icons/av/svg/production/ic_stop_24px.svg"></md-icon></md-button></td>
             </tr>
             </tbody>
         </table>

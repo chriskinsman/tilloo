@@ -116,5 +116,17 @@ JobRoutes.triggerRun = function triggerRun(req, res) {
     });
 };
 
+JobRoutes.deleteJob = function deleteJob(req, res) {
+    var jobId = req.params.jobId;
+
+    jobs.remove(jobId, function(err) {
+        if(err) {
+            res.status(500).send(err);
+        }
+        else {
+            res.status(200).send('triggered');
+        }
+    });
+};
 
 module.exports = JobRoutes;

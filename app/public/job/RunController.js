@@ -20,7 +20,7 @@ angular.module('tillooApp.job')
             });
         }
 
-        function getJob() {
+        function getRun() {
             jobService.getRun($routeParams.runId).then(function(runResult) {
                 $scope.run = runResult.data;
                 $scope.stopDisabled = !(runResult.data.status === 'busy' || runResult.data.status === 'idle');
@@ -57,5 +57,5 @@ angular.module('tillooApp.job')
 
 
         getRunOutput($scope.query);
-        getJob();
+        getRun();
     }]);

@@ -68,6 +68,10 @@ angular.module('tillooApp.job')
             jobService.runJob(jobId);
         };
 
+        $scope.stopRun = function stopRun(runId) {
+            jobService.stopRun(runId);
+        };
+
 
         var socket = io('http://localhost:7700');
         socket.on('status', updateStatus);

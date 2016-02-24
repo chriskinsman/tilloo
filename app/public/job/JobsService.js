@@ -37,6 +37,10 @@ angular.module('tillooApp.job')
             return JobService._remoteCall('job/' + jobId + '/run', null, {post: true});
         };
 
+        JobService.deleteJob = function deleteJob(jobId) {
+            return JobService._remoteCall('job/' + jobId + '/delete', null, {post: true});
+        };
+
         JobService._remoteCall = function(path, params, options)
         {
             options = options || {};

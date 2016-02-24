@@ -33,6 +33,7 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 app.get('/api/job', job.getJobs);
 app.get('/api/job/:jobId', job.getJob);
 app.get('/api/job/:jobId/runs', job.getRuns);
+app.post('/api/job/:jobId/delete', job.deleteJob);
 app.post('/api/job/:jobId/run', job.triggerRun);
 app.get('/api/run/:runId', job.getRun);
 app.get('/api/run/:runId/output', job.outputForRun);
