@@ -55,6 +55,7 @@ angular.module('tillooApp.job')
                     });
                 });
             }
+            updateJob(status);
         }
 
         function updateJob(jobMessage) {
