@@ -2,16 +2,12 @@
 'use strict';
 
 var mongoose = require('mongoose');
-var ObjectId = require('mongoose').Types.ObjectId;
 var commander = require('commander');
-var Disqueue = require('disqueue-node');
 
 var config = require('./lib/config');
-var constants = require('./lib/constants');
-var Job = require('./models/job');
+var jobs = require('./lib/jobs');
 
 mongoose.connect(config.db);
-var disq = new Disqueue(config.disque);
 
 function list(val) {
     return val.split(',');
@@ -43,70 +39,52 @@ if(!jobId) {
     showHelpAndExit();
 }
 
-Job.findById(new ObjectId(jobId), function(err, dbJob) {
-    if(err || !dbJob) {
-        console.error('Job not found', err);
+var jobDef = {};
+
+if(commander.enabled) {
+    jobDef.enabled = commander.enabled.toLowerCase() === 'true';
+}
+
+if(commander.schedule) {
+    jobDef.schedule = commander.schedule;
+}
+
+if(commander.path) {
+    jobDef.path = commander.path;
+}
+
+if(commander.jobname) {
+    jobDef.name = commander.jobname;
+}
+
+if(commander.timeout) {
+    jobDef.timeout = commander.timeout;
+}
+
+if(commander.queue) {
+    jobDef.queueName = commander.queue;
+}
+
+if(commander.jobargs) {
+    jobDef.args = commander.jobargs;
+}
+
+if(commander.jobdescription) {
+    jobDef.description = commander.jobdescription;
+}
+
+if(commander.mutex !== undefined) {
+    jobDef.mutex = commander.mutex;
+}
+
+
+jobs.update(jobId, jobDef, function(err) {
+    if(err) {
+        console.error('Error updating job err:', err);
         process.exit(1);
     }
     else {
-        var action = 'updated';
-        if(commander.enabled) {
-            dbJob.enabled = commander.enabled.toLowerCase() === 'true';
-            // Change the action to deleted so the scheduler
-            // drops it
-            if(!dbJob.enabled) {
-                action = 'deleted';
-            }
-        }
-
-        if(commander.schedule) {
-            dbJob.schedule = commander.schedule;
-        }
-
-        if(commander.path) {
-            dbJob.path = commander.path;
-        }
-
-        if(commander.jobname) {
-            dbJob.name = commander.jobname;
-        }
-
-        if(commander.timeout) {
-            dbJob.timeout = commander.timeout;
-        }
-
-        if(commander.queue) {
-            dbJob.queueName = commander.queue;
-        }
-
-        if(commander.jobargs) {
-            dbJob.args = commander.jobargs;
-        }
-
-        if(commander.jobdescription) {
-            dbJob.description = commander.jobdescription;
-        }
-
-        if(commander.mutex !== undefined) {
-            dbJob.mutex = commander.mutex;
-        }
-
-        dbJob.save(function(err, dbJob) {
-            if(err) {
-                console.error(err);
-                process.exit(1);
-            }
-            else {
-                var message = {jobId: jobId,action: action};
-                disq.addJob({queue: constants.QUEUES.SCHEDULER, job: JSON.stringify(message), timeout: 0}, function(err) {
-                    if(err) {
-                        console.error(err);
-                    }
-                    console.info('Job updated');
-                    process.exit(0);
-                });
-            }
-        });
+        console.info('Job updated');
+        process.exit(0);
     }
 });
-
