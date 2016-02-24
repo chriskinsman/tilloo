@@ -62,9 +62,33 @@ angular.module('tillooApp.job')
 
         $scope.addJob = function addJob() {
             $mdDialog.show({
+                controller: AddController,
+                templateUrl: '/public/job/editjob.tmpl.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: true,
+                locals: {
 
+                }
             });
         };
+
+        function AddController($scope, $mdDialog) {
+            $scope.job = {
+                schedule: '0 0 */1 * * *',
+                queueName: 'tilloo.worker',
+                enabled: true,
+                mutex: true
+            };
+
+            $scope.cancel = function cancel() {
+                $mdDialog.cancel();
+            };
+
+            $scope.save = function save() {
+                jobService.createJob($scope.job);
+                $mdDialog.hide();
+            };
+        }
 
         var socket = io('http://localhost:7700');
         socket.on('status', updateStatus);

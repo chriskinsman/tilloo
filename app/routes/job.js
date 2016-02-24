@@ -129,4 +129,16 @@ JobRoutes.deleteJob = function deleteJob(req, res) {
     });
 };
 
+JobRoutes.createJob = function createJob(req, res) {
+    var jobDef = req.body.jobDef;
+    jobs.add(jobDef, function(err, job) {
+        if(err) {
+            res.status(500).send(err);
+        }
+        else {
+            res.status(200).send(job._id);
+        }
+    });
+};
+
 module.exports = JobRoutes;

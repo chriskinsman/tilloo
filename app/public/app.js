@@ -20,7 +20,7 @@ var tillooApp = angular.module("tillooApp", ['tillooApp.job', 'ngRoute', 'ngMate
 
     $mdThemingProvider.theme('default')
         .primaryPalette('light-blue')
-        .accentPalette('light-blue', {
+        .accentPalette('blue', {
             'default': '100'
         });
 
