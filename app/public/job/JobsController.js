@@ -115,14 +115,16 @@ angular.module('tillooApp.job')
             };
         }
 
-        var socket = io('http://localhost:7700');
-        socket.on('status', updateStatus);
-        socket.on('jobchange', updateJob);
+        jobService.getConfig().then(function(result) {
+            var socket = io('http://' + result.data.scheduler.host + ':' + result.data.scheduler.port);
+            socket.on('status', updateStatus);
+            socket.on('jobchange', updateJob);
 
-        // Clear event handler when leaving
-        $scope.$on('$destroy', function() {
-            socket.removeListener('status', updateStatus);
-            socket.removeListener('jobchange', updateJob);
+            // Clear event handler when leaving
+            $scope.$on('$destroy', function () {
+                socket.removeListener('status', updateStatus);
+                socket.removeListener('jobchange', updateJob);
+            });
         });
 
         getJobs();

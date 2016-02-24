@@ -5,6 +5,10 @@ angular.module('tillooApp.job')
 
         var JobService = {};
 
+        JobService.getConfig = function getJobs() {
+            return $http.get("/api/config", {cache: true});
+        };
+
         JobService.getJobs = function getJobs() {
             return JobService._remoteCall('job', {});
         };

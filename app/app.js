@@ -20,7 +20,7 @@ var app = express();
 var job = require('./routes/job');
 
 // All environments
-app.set('port', process.env.PORT || 7770);
+app.set('port', process.env.PORT || config.web.port);
 app.use(morgan("dev"));
 app.use(compression());
 
@@ -30,6 +30,7 @@ app.use(favicon(__dirname + '/public/assets/favicon.ico'));
 app.use('/bower_components', express.static(path.join(__dirname, 'bower_components')));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
+app.use('/api/config', express.static(path.join(__dirname, '../config.json')));
 app.get('/api/job', job.getJobs);
 app.post('/api/job/create', job.createJob);
 app.get('/api/job/:jobId', job.getJob);
