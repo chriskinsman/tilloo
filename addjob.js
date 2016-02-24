@@ -3,14 +3,11 @@
 
 var mongoose = require('mongoose');
 var commander = require('commander');
-var Disqueue = require('disqueue-node');
 
 var config = require('./lib/config');
-var constants = require('./lib/constants');
-var Job = require('./models/job');
+var jobs = require('./lib/jobs');
 
 mongoose.connect(config.db);
-var disq = new Disqueue(config.disque);
 
 function list(val) {
     return val.split(',');
@@ -32,6 +29,7 @@ function showHelpAndExit() {
     process.exit(1);
 }
 
+
 var schedule = commander.args[0];
 var path = commander.args[1];
 
@@ -45,48 +43,42 @@ if(!path) {
     showHelpAndExit();
 }
 
-var job = new Job({schedule: schedule, path: path});
+var jobDef = {schedule: schedule, path: path};
 
 if(commander.jobname) {
-    job.name = commander.jobname;
+    jobDef.name = commander.jobname;
 }
 else {
-    job.name = path;
+    jobDef.name = path;
 }
 
 if(commander.timeout) {
-    job.timeout = commander.timeout;
+    jobDef.timeout = commander.timeout;
 }
 
 if(commander.queue) {
-    job.queueName = commander.queue;
+    jobDef.queueName = commander.queue;
 }
 
 if(commander.jobargs) {
-    job.args = commander.jobargs;
+    jobDef.args = commander.jobargs;
 }
 
 if(commander.jobdescription) {
-    job.description = commander.jobdescription;
+    jobDef.description = commander.jobdescription;
 }
 
 if(commander.mutex !== undefined) {
-    job.mutex = commander.mutex;
+    jobDef.mutex = commander.mutex;
 }
 
-job.save(function(err, dbJob) {
+jobs.add(jobDef, function(err) {
     if(err) {
-        console.error(err);
+        console.error('Error adding job err: ', err);
         process.exit(1);
     }
     else {
-        var message = {jobId: dbJob._id,action: 'new'};
-        disq.addJob({queue: constants.QUEUES.SCHEDULER, job: JSON.stringify(message), timeout: 0}, function(err) {
-            if(err) {
-                console.error(err);
-            }
-            console.info('Job added');
-            process.exit(0);
-        });
+        console.info('Job added');
+        process.exit(0);
     }
 });

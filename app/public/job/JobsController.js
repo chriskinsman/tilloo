@@ -38,7 +38,12 @@ angular.module('tillooApp.job')
                 console.log(result);
                 $timeout(function() {
                     if(jobIndex!==-1) {
-                        $scope.jobs[jobIndex] = result.data;
+                        if(result.data.deleted) {
+                            $scope.jobs.splice(jobIndex, 1);
+                        }
+                        else {
+                            $scope.jobs[jobIndex] = result.data;
+                        }
                     }
                     else {
                         $scope.jobs.push(result.data);
