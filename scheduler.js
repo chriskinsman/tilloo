@@ -109,19 +109,19 @@ ee.on('job', function(job, done) {
 
         var message = JSON.parse(job.body);
         switch(message.action) {
-            case constants.JOBSTATUS.NEW:
+            case constants.SCHEDULERACTION.NEW:
                 // New job has been added.  Make sure to handle case where
                 // message is old and job has already been loaded in scheduler
                 // if this is the case we ignore the message
                 updateJob(message.jobId, done);
                 break;
 
-            case constants.JOBSTATUS.DELETED:
+            case constants.SCHEDULERACTION.DELETED:
                 // Job has been deleted
                 deleteJob(message.jobId, false, done);
                 break;
 
-            case constants.JOBSTATUS.UPDATED:
+            case constants.SCHEDULERACTION.UPDATED:
                 // Job has changed
                 updateJob(message.jobId, done);
                 break;

@@ -10,7 +10,7 @@ angular.module('tillooApp.job')
         };
 
         JobService.getJob = function getJob(jobId) {
-            return JobService._remoteCall('job/' + jobId, {})
+            return JobService._remoteCall('job/' + jobId, {});
         };
 
         JobService.getRuns = function getRuns(jobId, page, pageSize, sort) {

@@ -52,7 +52,7 @@ angular.module('tillooApp.job')
         // Clear event handler when leaving
         $scope.$on('$destroy', function() {
             socket.removeListener('log', addToLog);
-            socket.removeListener('status', buttonStatus)
+            socket.removeListener('status', buttonStatus);
         });
 
 

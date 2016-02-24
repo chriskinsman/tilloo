@@ -24,7 +24,7 @@ angular.module('tillooApp.job')
                 if(job) {
                     $timeout(function() {
                         job.lastStatus = status.status;
-                        if(status.status='busy') {
+                        if(status.status==='busy') {
                             job.lastRanAt = new Date();
                         }
                     });
@@ -34,7 +34,7 @@ angular.module('tillooApp.job')
 
         function updateJob(jobMessage) {
             jobService.getJob(jobMessage.jobId).then(function(result) {
-                var jobIndex = _.findIndex($scope.jobs, function (item) { return item._id == jobMessage.jobId});
+                var jobIndex = _.findIndex($scope.jobs, function (item) { return item._id == jobMessage.jobId; });
                 console.log(result);
                 $timeout(function() {
                     if(jobIndex!==-1) {
@@ -49,7 +49,7 @@ angular.module('tillooApp.job')
                         $scope.jobs.push(result.data);
                     }
                 });
-            })
+            });
         }
 
         $scope.runJob = function runJob(jobId) {
