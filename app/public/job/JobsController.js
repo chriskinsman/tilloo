@@ -1,5 +1,5 @@
 angular.module('tillooApp.job')
-    .controller('JobsController', ['jobService', '$scope', '$timeout', function (jobService, $scope, $timeout) {
+    .controller('JobsController', ['jobService', '$scope', '$timeout', '$mdDialog', function (jobService, $scope, $timeout, $mdDialog) {
         'use strict';
 
         $scope.selected = [];
@@ -49,6 +49,12 @@ angular.module('tillooApp.job')
 
         $scope.runJob = function runJob(jobId) {
             jobService.runJob(jobId);
+        };
+
+        $scope.addJob = function addJob() {
+            $mdDialog.show({
+
+            });
         };
 
         var socket = io('http://localhost:7700');

@@ -1,3 +1,6 @@
+#! /usr/bin/env node
+'use strict';
+
 var mongoose = require('mongoose');
 
 var config = require('./lib/config');
