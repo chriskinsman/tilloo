@@ -1,5 +1,6 @@
 <h2>Jobs</h2>
-<md-button class="md-raised" ng-click="addJob()">Add</md-button>
+<md-button class="md-fab" aria-label="Add Job" ng-click="addJob()">
+    <md-icon md-svg-src="/bower_components/material-design-icons/content/svg/production/ic_add_24px.svg"></md-icon></md-button>
 <div flex layout="row">
     <md-table-container>
         <table md-table>
@@ -23,8 +24,8 @@
                 <td md-cell>{{job.lastRanAt | date : 'M/d/yy h:mm a'}}</td>
                 <td md-cell>{{job.lastStatus}}</td>
                 <td md-cell>
-                    <md-button class="md-raised" ng-click="editJob(job._id)">Edit</md-button>
-                    <md-button class="md-raised" ng-click="runJob(job._id)" ng-disabled="job.mutex && job.lastStatus === 'busy'">Run</md-button>
+                    <md-button class="md-fab md-mini" ng-click="editJob(job._id)"><md-icon md-svg-src="/bower_components/material-design-icons/action/svg/production/ic_settings_24px.svg"></md-icon></md-button>
+                    <md-button class="md-fab md-mini" ng-click="runJob(job._id)" ng-disabled="job.mutex && job.lastStatus === 'busy'"><md-icon md-svg-src="/bower_components/material-design-icons/av/svg/production/ic_play_arrow_24px.svg"></md-icon></md-button>
                 </td>
             </tr>
             </tbody>

@@ -19,7 +19,10 @@ var tillooApp = angular.module("tillooApp", ['tillooApp.job', 'ngRoute', 'ngMate
         .icon("phone"      , "./assets/svg/phone.svg"       , 512);
 
     $mdThemingProvider.theme('default')
-        .primaryPalette('light-blue');
+        .primaryPalette('light-blue')
+        .accentPalette('light-blue', {
+            'default': '100'
+        });
 
     $locationProvider.html5Mode(true);
     $httpProvider.defaults.useXDomain = true;
