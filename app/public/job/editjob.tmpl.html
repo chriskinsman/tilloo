@@ -2,7 +2,7 @@
     <form>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>Edit Job</h2>
+                <h2>{{title}}</h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="cancel()">
                     <md-icon md-svg-src="/bower_components/material-design-icons/content/svg/production/ic_clear_24px.svg" aria-label="Close dialog"></md-icon>
@@ -15,7 +15,7 @@
                     <input md-autofocus type="text" ng-model="job.name" placeholder="Name" required>
                 </md-input-container>
                 <md-input-container>
-                    <input type="text" ng-model="job.schedule" placeholder="Schedule" required ng-pattern="(28|\*) (2|\*) (7|\*) (1|\*) (1|\*) (1|\*)">
+                    <input type="text" ng-model="job.schedule" placeholder="Schedule" required>
                 </md-input-container>
                 <md-input-container>
                     <input type="text" ng-model="job.queueName" placeholder="Queue" required>
@@ -47,7 +47,7 @@
                 Cancel
             </md-button>
             <md-button class="md-primary" type="submit" ng-click="save()" >
-                Save
+                {{OkTitle}}
             </md-button>
         </md-dialog-actions>
     </form>

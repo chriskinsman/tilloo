@@ -10,11 +10,9 @@ angular.module('tillooApp.job')
 
         function getJobs() {
             $scope.promise = jobService.getJobs();
-            $scope.promise.then(success);
-        }
-
-        function success(jobs) {
-            $scope.jobs = jobs.data;
+            $scope.promise.then(function(jobs) {
+                $scope.jobs = jobs.data;
+            });
         }
 
         function updateStatus(status) {
@@ -64,20 +62,30 @@ angular.module('tillooApp.job')
             $mdDialog.show({
                 controller: AddController,
                 templateUrl: '/public/job/editjob.tmpl.html',
-                parent: angular.element(document.body),
-                clickOutsideToClose: true,
-                locals: {
+                parent: angular.element(document.body)
+            });
+        };
 
+        $scope.editJob = function editJob(jobId) {
+            $mdDialog.show({
+                controller: EditController,
+                templateUrl: '/public/job/editjob.tmpl.html',
+                parent: angular.element(document.body),
+                locals: {
+                    jobId: jobId
                 }
             });
         };
 
         function AddController($scope, $mdDialog) {
+            $scope.title = "Add Job";
+            $scope.OkTitle = "Add";
             $scope.job = {
                 schedule: '0 0 */1 * * *',
                 queueName: 'tilloo.worker',
                 enabled: true,
-                mutex: true
+                mutex: true,
+                timeout: 0
             };
 
             $scope.cancel = function cancel() {
@@ -86,6 +94,23 @@ angular.module('tillooApp.job')
 
             $scope.save = function save() {
                 jobService.createJob($scope.job);
+                $mdDialog.hide();
+            };
+        }
+
+        function EditController($scope, $mdDialog, jobId) {
+            $scope.title = "Edit Job";
+            $scope.OkTitle = "Update";
+            jobService.getJob(jobId).then(function(result) {
+                $scope.job = result.data;
+            });
+
+            $scope.cancel = function cancel() {
+                $mdDialog.cancel();
+            };
+
+            $scope.save = function save() {
+                jobService.updateJob(jobId, $scope.job);
                 $mdDialog.hide();
             };
         }

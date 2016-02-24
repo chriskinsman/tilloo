@@ -36,6 +36,7 @@ app.get('/api/job/:jobId', job.getJob);
 app.get('/api/job/:jobId/runs', job.getRuns);
 app.post('/api/job/:jobId/delete', job.deleteJob);
 app.post('/api/job/:jobId/run', job.triggerRun);
+app.post('/api/job/:jobId/update', job.updateJob);
 app.get('/api/run/:runId', job.getRun);
 app.get('/api/run/:runId/output', job.outputForRun);
 app.post('/api/run/:runId/stop', job.stopRun);

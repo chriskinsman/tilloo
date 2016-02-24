@@ -45,6 +45,10 @@ angular.module('tillooApp.job')
             return JobService._remoteCall('job/create', {jobDef: jobDef}, {post: true});
         };
 
+        JobService.updateJob = function updateJob(jobId, jobDef) {
+            return JobService._remoteCall('job/' + jobId + '/update', {jobDef: jobDef}, {post: true});
+        };
+
         JobService._remoteCall = function(path, params, options)
         {
             options = options || {};
