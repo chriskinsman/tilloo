@@ -3,16 +3,17 @@
   "version": "1.0.0",
   "description": "A distributed cron with cli and web ui",
   "main": "index.js",
+  "repository": "https://github.com/chriskinsman/tilloo.git",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
-  "bin" : {
-      "tilloo-scheduler" : "./bin/scheduler.js",
-      "tilloo-cli" : "./bin/tilloo-cli.js",
-      "tilloo-worker" : "./bin/worker.js",
-      "tilloo-web" : "./app/app.js"
+  "author": "Chris Kinsman",
+  "license": "MIT",
+  "bin": {
+    "tilloo-scheduler": "./bin/scheduler.js",
+    "tilloo-cli": "./bin/tilloo-cli.js",
+    "tilloo-worker": "./bin/worker.js",
+    "tilloo-web": "./app/app.js"
   },
   "dependencies": {
     "async": "^1.5.2",
@@ -38,6 +39,7 @@
     "gulp-jshint": "^2.0.0",
     "jshint": "^2.9.1",
     "jshint-stylish": "^2.1.0",
-    "map-stream": "0.0.6"
+    "map-stream": "0.0.6",
+    "nodeunit": "^0.9.1"
   }
 }
