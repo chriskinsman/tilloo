@@ -2,7 +2,6 @@
   "name": "tilloo",
   "version": "1.0.0",
   "description": "A distributed cron with cli and web ui",
-  "main": "index.js",
   "repository": "https://github.com/chriskinsman/tilloo.git",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
