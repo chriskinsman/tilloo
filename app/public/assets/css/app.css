@@ -131,3 +131,11 @@ table.md-table:not(.md-row-select) td.md-cell:nth-child(n+2):nth-last-child(n+2)
 tr.disabled td.md-cell {
   color: lightgray;
 }
+
+md-chips-wrap {
+  margin: 18px 0;
+}
+
+.md-errors-spacer {
+  min-height: 0px !important;
+}

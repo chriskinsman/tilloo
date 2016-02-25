@@ -26,9 +26,8 @@
                 <md-input-container class="md-block">
                     <input type="text" ng-model="job.path" placeholder="Path" required>
                 </md-input-container>
-                <md-input-container class="md-block">
-                    <input type="text" ng-model="job.displayArgs" placeholder="Args">
-                </md-input-container>
+                <md-chips class="md-input-container" ng-model="job.args" placeholder="Enter an argument" secondary-placeholder="+Argument">
+                </md-chips>
                 <md-input-container>
                     <input type="text" ng-model="job.timeout" placeholder="Timeout">
                 </md-input-container>

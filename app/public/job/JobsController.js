@@ -83,6 +83,7 @@ angular.module('tillooApp.job')
             $scope.job = {
                 schedule: '0 0 */1 * * *',
                 queueName: 'tilloo.worker',
+                args: [],
                 enabled: true,
                 mutex: true,
                 timeout: 0
