@@ -34,7 +34,7 @@ Job.loadAllJobs(function(err, jobs) {
             job.startCron();
         }
     });
-    debug('jobs loaded');
+    console.info('Scheduler started connected to %s', config.db);
 });
 
 
@@ -45,7 +45,7 @@ Job.loadAllJobs(function(err, jobs) {
 setInterval(function() {
     debug('garbage collecting zombie runs');
     Run.find({
-        $and: [{updatedAt: {$lte: moment().subtract(5, 'minutes').toDate()}},
+        $and: [{updatedAt: {$lte: moment().subtract(config.scheduler.garbageCollectZombies, 'minutes').toDate()}},
                 {$or: [{status: 'busy'}, {status: 'idle'}]}
             ]},
         function(err, zombieRuns) {
@@ -63,6 +63,7 @@ setInterval(function() {
 }, 60000);
 
 // Used so scheduler is notified of changes and can add/remove/change jobs
+console.info('Listening to %s:%d queue: %s', config.disque.host, config.disque.port, constants.QUEUES.SCHEDULER);
 var ee = new DisqEventEmitter(config.disque, constants.QUEUES.SCHEDULER);
 ee.on('job', function(job, done) {
     // Immediately ack job to remove from queue.  If we have a failure
