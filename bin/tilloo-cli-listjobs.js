@@ -4,8 +4,8 @@
 var mongoose = require('mongoose');
 var Table = require('easy-table');
 
-var config = require('./lib/config');
-var Job = require('./models/job');
+var config = require('../lib/config');
+var Job = require('../models/job');
 
 mongoose.connect(config.db);
 

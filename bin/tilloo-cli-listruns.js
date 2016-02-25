@@ -5,8 +5,8 @@ var mongoose = require('mongoose');
 var commander = require('commander');
 var Table = require('easy-table');
 
-var config = require('./lib/config');
-var Run = require('./models/run');
+var config = require('../lib/config');
+var Run = require('../models/run');
 
 mongoose.connect(config.db);
 

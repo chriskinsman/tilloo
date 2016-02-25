@@ -4,8 +4,8 @@
 var mongoose = require('mongoose');
 var commander = require('commander');
 
-var config = require('./lib/config');
-var jobs = require('./lib/jobs');
+var config = require('../lib/config');
+var jobs = require('../lib/jobs');
 
 mongoose.connect(config.db);
 

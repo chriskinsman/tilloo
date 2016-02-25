@@ -8,6 +8,12 @@
   },
   "author": "",
   "license": "ISC",
+  "bin" : {
+      "tilloo-scheduler" : "./bin/scheduler.js",
+      "tilloo-cli" : "./bin/tilloo-cli.js",
+      "tilloo-worker" : "./bin/worker.js",
+      "tilloo-web" : "./app/app.js"
+  },
   "dependencies": {
     "async": "^1.5.2",
     "body-parser": "^1.15.0",

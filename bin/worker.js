@@ -10,9 +10,9 @@ var mongoose = require('mongoose');
 var Disqueue = require('disqueue-node');
 var commander = require('commander');
 
-var config = require('./lib/config');
-var constants = require('./lib/constants');
-var Script = require('./lib/script');
+var config = require('../lib/config');
+var constants = require('../lib/constants');
+var Script = require('../lib/script');
 
 var disq = new Disqueue(config.disque);
 mongoose.connect(config.db);

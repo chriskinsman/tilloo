@@ -4,9 +4,9 @@
 var mongoose = require('mongoose');
 var commander = require('commander');
 
-var config = require('./lib/config');
-var constants = require('./lib/constants');
-var runs = require('./lib/runs');
+var config = require('../lib/config');
+var constants = require('../lib/constants');
+var runs = require('../lib/runs');
 
 mongoose.connect(config.db);
 

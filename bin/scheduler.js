@@ -9,15 +9,15 @@ var ObjectId = require('mongoose').Types.ObjectId;
 var moment = require('moment');
 var DisqEventEmitter = require('disque-eventemitter');
 
-var config = require('./lib/config');
-var constants = require('./lib/constants');
-var Job = require('./models/job');
-var Run = require('./models/run');
+var config = require('../lib/config');
+var constants = require('../lib/constants');
+var Job = require('../models/job');
+var Run = require('../models/run');
 // Don't remove.  Loading this causes logger to start
-var logger = require('./lib/logger');
+var logger = require('../lib/logger');
 // Don't remove.  Loading this causes status to start
-var status = require('./lib/status');
-var webstatus = require('./lib/webstatus');
+var status = require('../lib/status');
+var webstatus = require('../lib/webstatus');
 
 mongoose.connect(config.db);
 var debug = require('debug')('tilloo:scheduler');

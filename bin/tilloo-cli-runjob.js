@@ -4,27 +4,27 @@
 var mongoose = require('mongoose');
 var commander = require('commander');
 
-var config = require('./lib/config');
-var jobs = require('./lib/jobs');
+var config = require('../lib/config');
+var jobs = require('../lib/jobs');
 
 mongoose.connect(config.db);
 
 commander.version('0.0.1')
-    .usage('<id>', 'Id of job')
+    .usage('<jobId>')
     .parse(process.argv);
 
 if(commander.args.length !== 1) {
-    commander.help();
+    commander.outputHelp();
     process.exit(1);
 }
 
-jobs.remove(commander.args[0], function(err) {
+jobs.triggerRun(commander.args[0], function(err) {
     if(err) {
-        console.error('Problems deleting job err: ' + err);
+        console.error('Unable to trigger run err: ' + err);
         process.exit(1);
     }
     else {
-        console.info('Deleted');
+        console.info('Run triggered');
         process.exit(0);
     }
 });
