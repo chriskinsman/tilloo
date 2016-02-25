@@ -3,6 +3,7 @@
 
 var mongoose = require('mongoose');
 var Table = require('easy-table');
+var moment = require('moment');
 
 var config = require('../lib/config');
 var Job = require('../models/job');
@@ -21,11 +22,8 @@ Job.find({deleted: false}, null, {sort: {name: 1}}, function(err, jobs) {
             table.cell('Name', job.name);
             table.cell('Schedule', job.schedule);
             table.cell('Enabled', job.enabled);
-            table.cell('Timeout', job.timeout);
             table.cell('Queue', job.queueName);
-            table.cell('Path', job.path);
-            table.cell('Args', job.args.join(' '));
-            table.cell('Last Ran', job.lastRanAt);
+            table.cell('Last Ran', moment(job.lastRanAt).format('l LTS'));
             table.cell('Last Status', job.lastStatus);
             table.newRow();
         });
