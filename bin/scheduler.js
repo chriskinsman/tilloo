@@ -16,8 +16,8 @@ var Run = require('../models/run');
 // Don't remove.  Loading this causes logger to start
 var logger = require('../lib/logger');
 // Don't remove.  Loading this causes status to start
-var status = require('../lib/status');
-var webstatus = require('../lib/webstatus');
+var status = require('../lib/disqstatus');
+var iostatus = require('../lib/iostatus');
 
 mongoose.connect(config.db);
 var debug = require('debug')('tilloo:scheduler');
@@ -83,7 +83,7 @@ ee.on('job', function(job, done) {
                         _loadedJobs[jobId] = dbJob;
                         dbJob.startCron();
                         debug('updated jobId: %s', jobId);
-                        webstatus.sendJobChange(jobId);
+                        iostatus.sendJobChange(jobId);
                         callback();
                     }
                 });
@@ -102,7 +102,7 @@ ee.on('job', function(job, done) {
             }
 
             if(!partOfUpdate) {
-                webstatus.sendJobChange(jobId);
+                iostatus.sendJobChange(jobId);
             }
             callback();
         }
