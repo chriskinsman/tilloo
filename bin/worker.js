@@ -24,6 +24,7 @@ var workername = os.hostname() + ':' + process.pid;
 
 commander.version('0.0.1')
     .option('-q, --queue <queue>', 'Name of queue to process. defaults to tilloo.worker')
+    .option('-p, --parallel <parllel>', 'Number of parallel jobs to support.  Overrides default', parseInt)
     .parse(process.argv);
 
 var queue = constants.QUEUES.DEFAULT_WORKER;
@@ -31,9 +32,14 @@ if(commander.queue) {
     queue = commander.queue;
 }
 
-console.info('Listening to %s:%d queue: %s', config.disque.host, config.disque.port, queue);
+var parallelJobs = config.worker.parallelJobs;
+if(commander.parallel) {
+    parallelJobs = commander.parallel;
+}
 
-var ee = new DisqEventEmitter(config.disque, queue, {concurrency: 10});
+console.info('Listening to %s:%d queue: %s parallel: %d', config.disque.host, config.disque.port, queue, parallelJobs);
+
+var ee = new DisqEventEmitter(config.disque, queue, {concurrency: parallelJobs});
 ee.on('job', function(job, done) {
     ee.ack(job, function(err) {
         if(err) {
