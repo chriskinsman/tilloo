@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+  - 4.2.2
+
+before_install:
+
+install:
+  - shippable_retry npm install
+  - shippable_retry bower install
+
+script:
+  - gulp lint
