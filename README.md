@@ -42,7 +42,7 @@ We leverage:
  * disque <https://github.com/antirez/disque> for communication
  
  
-Both of these must be installed prior to using Tillo.
+Both of these must be installed prior to using Tilloo.
 
 ### Configuration
 
