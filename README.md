@@ -151,7 +151,7 @@ __Arguments__
 
 ## Config Documentation
 
-The config file has sensible defaults filled in already.  All values present in the shipped config file must remain in the file.
+The config file has sensible defaults filled in.  All keys present in the shipped config file must remain.  Removing settings will cause tilloo to fail to run.
 
 __Settings__
 
