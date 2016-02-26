@@ -40,5 +40,8 @@
     "jshint-stylish": "^2.1.0",
     "map-stream": "0.0.6",
     "nodeunit": "^0.9.1"
+  },
+  "engines": {
+    "node": ">= 4.2.0"
   }
 }
