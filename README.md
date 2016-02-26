@@ -73,6 +73,81 @@ Open a web browser to http://localhost:7770.
 
 Enjoy!
 
+## CLI Documentation
+
+Running npm link will put symlinks to the tilloo-cli into your /usr/local/bin directory.
+
+### tilloo-cli addjob <schedule> <path> [options]
+
+Adds a job to the system.  
+
+__Arguments__
+
+* schedule - cron style schedule of the form * * * * * *. i.e. 0 0 */1 * * * to run once an hour
+* path - Path to the executable to run.  The path is relative to the worker directory.  Absolute paths are allowed.
+
+__Options__
+
+* --jobname <name> - Friendly name of job.  If not specified defaults to the path.
+* --timeout <seconds> - Max time to allow job to run before it is killed.
+* --queue <queue> - Name of queue to send job to.  Defaults to: tilloo.worker
+* --jobargs <args> - Ordered comma separated list of job arguments i.e. --jobargs "300,test"
+* --jobdescription <description> - Notes about job
+* --mutex <true||false> - If set to true only a single instance of job is allowed to run.  Defaults to true.
+
+### tilloo-cli deletejob <jobId>
+
+Deletes a job from the system.
+
+__Arguments__
+
+* jobId - The id of the job to delete.
+
+### tilloo-cli jobdetail <jobId>
+
+Get a json description of the job. Includes job details not shown elsewhere. Useful for debugging.
+
+__Arguments__
+
+* jobId - The id of the job to get details for.
+
+### tilloo-cli killrun <runId>
+
+__Arguments__
+
+* runId - The id of the run of a job to kill.  The runId is not the same as the jobId.  The runId is associated with a particular run of a job.
+
+__Options__
+
+* --force - If a worker is killed a job can be left in a busy state but will never complete.  If the job has mutex = true it can prevent the next scheduled execution of the job.  These zombie jobs will be cleaned up by default every 5 minutes.  You can use the option to force it to be cleaned up immediately.
+
+### tilloo-cli listjobs
+
+Lists all jobs
+
+### tilloo-cli listruns <jobId>
+
+Lists all runs for a jobId chronological order
+
+__Arguments__
+
+* jobId - The id of the job to list all runs for
+
+### tilloo-cli rundetail <runId>
+
+Get a json description of the run.  Includes run details not shown elsewhere.  Useful for debugging.
+
+__Arguments__
+
+* runId - The id of the run to get details for.
+
+### tilloo-cli runoutput <runId>
+
+Gets the stdout/stderr from the run of a job.
+
+__Arguments__
+
+* runId - The id of the run to get output for.
 
 ## People
 

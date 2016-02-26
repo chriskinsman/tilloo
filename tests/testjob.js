@@ -1,3 +1,6 @@
+#! /usr/bin/env node
+'use strict';
+
 var async = require('async');
 var commander = require('commander');
 
@@ -8,6 +11,8 @@ commander.version('0.0.1')
 var sleepSeconds = parseInt(commander.args[0]);
 var iterations = 0;
 var sleepIntervalInSeconds = 5;
+
+console.info(commander.args[1]);
 
 console.info('Working %d seconds', sleepSeconds);
 async.doWhilst(function(done) {
