@@ -77,7 +77,7 @@ Enjoy!
 
 Running npm link will put symlinks to the tilloo-cli into your /usr/local/bin directory.
 
-### tilloo-cli addjob <schedule> <path> [options]
+### tilloo-cli addjob &lt;schedule&gt; &lt;path&gt; [options]
 
 Adds a job to the system.  
 
