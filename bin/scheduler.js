@@ -42,10 +42,11 @@ Job.loadAllJobs(function(err, jobs) {
 // Looks any run in a idle or busy state with an
 // updatedAt that is more than 5 minutes old and
 // marks it as failed
+debug('zombie garbage collection interval: %d minutes', config.scheduler.zombieFrequency);
 setInterval(function() {
     debug('garbage collecting zombie runs');
     Run.find({
-        $and: [{updatedAt: {$lte: moment().subtract(config.scheduler.garbageCollectZombies, 'minutes').toDate()}},
+        $and: [{updatedAt: {$lte: moment().subtract(config.scheduler.zombieAge, 'minutes').toDate()}},
                 {$or: [{status: 'busy'}, {status: 'idle'}]}
             ]},
         function(err, zombieRuns) {
@@ -60,7 +61,7 @@ setInterval(function() {
             });
         }
     );
-}, 60000);
+}, config.scheduler.zombieFrequency * 60000);
 
 // Used so scheduler is notified of changes and can add/remove/change jobs
 console.info('Listening to %s:%d queue: %s', config.disque.host, config.disque.port, constants.QUEUES.SCHEDULER);

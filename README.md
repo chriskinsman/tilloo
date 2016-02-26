@@ -149,6 +149,24 @@ __Arguments__
 
 * runId - The id of the run to get output for.
 
+## Config Documentation
+
+The config file has sensible defaults filled in already.  All values present in the shipped config file must remain in the file.
+
+__Settings__
+
+* db - Mongodb database connection string.  This is passed directly to mongoose under the covers and supports any mongodb options.
+* disque - Settings for disque. This whole block is passed to <https://www.npmjs.com/package/disqueue-node>. Any valid options for disqueue-node will work here.
+* scheduler - Settings pertaining to the scheduler
+  * host - The host the scheduler resides on. This is used by tilloo-web to connect to the web sockets interface the scheduler exposes.
+  * port - The port the web sockets interface is exposed on.
+  * zombieAge - If a job hasn't seen a heartbeat in this many minutes it is marked as failed.
+  * zombieFrequency - How frequently the zombie garbage collector should start in minutes
+* worker - Settings pertaining to the worker
+  * parallelJobs - How many jobs should be allowed to run in parallel per worker
+* web - Settings pertaining to the web interface
+  * port - The port to start the web interface on  
+
 ## People
 
 The author is [Chris Kinsman](https://github.com/chriskinsman)

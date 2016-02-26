@@ -7,7 +7,8 @@
   "scheduler" : {
     "host": "127.0.0.1",
     "port": 7700,
-    "garbageCollectZombies": 5
+    "zombieAge": 5,
+    "zombieFrequency" : 5
   },
   "worker": {
     "parallelJobs": 10
