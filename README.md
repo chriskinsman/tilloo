@@ -88,14 +88,14 @@ __Arguments__
 
 __Options__
 
-* --jobname <name> - Friendly name of job.  If not specified defaults to the path.
-* --timeout <seconds> - Max time to allow job to run before it is killed.
-* --queue <queue> - Name of queue to send job to.  Defaults to: tilloo.worker
-* --jobargs <args> - Ordered comma separated list of job arguments i.e. --jobargs "300,test"
-* --jobdescription <description> - Notes about job
-* --mutex <true||false> - If set to true only a single instance of job is allowed to run.  Defaults to true.
+* --jobname &lt;name&gt; - Friendly name of job.  If not specified defaults to the path.
+* --timeout &lt;seconds&gt; - Max time to allow job to run before it is killed.
+* --queue &lt;queue&gt; - Name of queue to send job to.  Defaults to: tilloo.worker
+* --jobargs &lt;args&gt; - Ordered comma separated list of job arguments i.e. --jobargs "300,test"
+* --jobdescription &lt;description&gt; - Notes about job
+* --mutex &lt;true||false&gt; - If set to true only a single instance of job is allowed to run.  Defaults to true.
 
-### tilloo-cli deletejob <jobId>
+### tilloo-cli deletejob &lt;jobId&gt;
 
 Deletes a job from the system.
 
@@ -103,7 +103,7 @@ __Arguments__
 
 * jobId - The id of the job to delete.
 
-### tilloo-cli jobdetail <jobId>
+### tilloo-cli jobdetail &lt;jobId&gt;
 
 Get a json description of the job. Includes job details not shown elsewhere. Useful for debugging.
 
@@ -111,7 +111,7 @@ __Arguments__
 
 * jobId - The id of the job to get details for.
 
-### tilloo-cli killrun <runId>
+### tilloo-cli killrun &lt;runId&gt;
 
 __Arguments__
 
@@ -125,7 +125,7 @@ __Options__
 
 Lists all jobs
 
-### tilloo-cli listruns <jobId>
+### tilloo-cli listruns &lt;jobId&gt;
 
 Lists all runs for a jobId chronological order
 
@@ -133,7 +133,7 @@ __Arguments__
 
 * jobId - The id of the job to list all runs for
 
-### tilloo-cli rundetail <runId>
+### tilloo-cli rundetail &lt;runId&gt;
 
 Get a json description of the run.  Includes run details not shown elsewhere.  Useful for debugging.
 
@@ -141,7 +141,7 @@ __Arguments__
 
 * runId - The id of the run to get details for.
 
-### tilloo-cli runoutput <runId>
+### tilloo-cli runoutput &lt;runId&gt;
 
 Gets the stdout/stderr from the run of a job.
 
