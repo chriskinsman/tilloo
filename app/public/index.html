@@ -17,8 +17,11 @@
 
 <body ng-app="tillooApp" layout="column" ng-cloak>
 
-<md-toolbar>
-    <h1>Tilloo</h1>
+<md-toolbar layout="row" layout-align="center">
+    <div id="breadcrumbs" flex>
+        <span ng-repeat="breadcrumb in breadcrumbs">{{breadcrumb}}</span>
+    </div>
+    <div id="title">Tilloo</div>
 </md-toolbar>
 
 <div flex layout="row">

@@ -1,6 +1,3 @@
-<h2>Jobs <md-button class="md-fab md-mini" aria-label="Add Job" ng-click="addJob()">
-    <md-icon md-svg-src="/bower_components/material-design-icons/content/svg/production/ic_add_24px.svg"></md-icon></md-button></h2>
-
 <div flex layout="row">
     <md-table-container>
         <table md-table>
@@ -12,7 +9,8 @@
                 <th md-column md-order-by="queueName"><span>Queue</span></th>
                 <th md-column md-order-by="lastRanAt">Last Ran</th>
                 <th md-column md-order-by="lastStatus">Last Status</th>
-                <th md-column></th>
+                <th md-column layout="row" layout-align="end center"><md-button class="md-fab md-mini" aria-label="Add Job" ng-click="addJob()">
+                    <md-icon md-svg-src="/bower_components/material-design-icons/content/svg/production/ic_add_24px.svg"></md-icon></md-button></th>
             </tr>
             </thead>
             <tbody md-body>

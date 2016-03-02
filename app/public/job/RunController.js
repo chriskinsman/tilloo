@@ -1,5 +1,5 @@
 angular.module('tillooApp.job')
-    .controller('RunController', ['jobService', '$scope', '$routeParams', '$timeout', function (jobService, $scope, $routeParams, $timeout) {
+    .controller('RunController', ['jobService', '$scope', '$routeParams', '$timeout', '$rootScope', function (jobService, $scope, $routeParams, $timeout, $rootScope) {
         'use strict';
 
         $scope.runId = $routeParams.runId;
@@ -24,6 +24,7 @@ angular.module('tillooApp.job')
             jobService.getRun($routeParams.runId).then(function(runResult) {
                 $scope.run = runResult.data;
                 $scope.stopDisabled = !(runResult.data.status === 'busy' || runResult.data.status === 'idle');
+                $rootScope.breadcrumbs.push(' > ' + $routeParams.runId);
             });
         }
 

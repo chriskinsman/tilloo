@@ -8,9 +8,23 @@
   width: 36px;
 }
 
-md-toolbar h1 {
-  margin: .25em;
+#breadcrumbs {
+  margin: auto 10px;
+  font-size: 1.1em;
+  color:white;
+}
+
+#title {
   display: block;
+  font-size: 2em;
+  font-weight: bold;
+  margin: auto 10px;
+  color: #EDEDED;
+  padding-right: 10px;
+}
+
+md-toolbar {
+  min-height: 55px !important;
 }
 
 md-toolbar h3 {
@@ -138,4 +152,18 @@ md-chips-wrap {
 
 .md-errors-spacer {
   min-height: 0px !important;
+}
+
+table.md-table th.md-column md-icon {
+  margin-right: 0px !important;
+}
+
+a, a:link {
+  color: rgb(3,169,244);
+  text-decoration: none;
+}
+
+a:visited, a:active {
+  color: #02638f;
+  text-decoration: none;
 }

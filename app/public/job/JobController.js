@@ -1,6 +1,8 @@
 angular.module('tillooApp.job')
-    .controller('JobController', ['jobService', '$scope', '$routeParams', '$timeout', function (jobService, $scope, $routeParams, $timeout) {
+    .controller('JobController', ['jobService', '$scope', '$routeParams', '$timeout', '$rootScope', function (jobService, $scope, $routeParams, $timeout, $rootScope) {
         'use strict';
+
+        //$rootScope.breadcrumbs = [$routeParams.jobId];
 
         $scope.selected = [];
 
@@ -35,6 +37,7 @@ angular.module('tillooApp.job')
                 $timeout(function() {
                     $scope.job = result.data;
                     $scope.job.displayArgs = $scope.job.args.join(' ');
+                    $rootScope.breadcrumbs = [$scope.job.name + ' - ' + $routeParams.jobId];
                 });
             });
         }

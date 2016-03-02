@@ -1,5 +1,3 @@
-<h2>{{job.name}} - {{job._id}} <md-button aria-label="Add Job" class="md-fab md-mini" ng-click="runJob(job._id)" ng-disabled="job.mutex && job.lastStatus === 'busy'"><md-icon md-svg-src="/bower_components/material-design-icons/av/svg/production/ic_play_arrow_24px.svg"></md-icon></md-button></h2>
-
 <div id="details" ng-show="showDetail">
     <div layout="column" layout-gt-xs="row">
         <md-input-container>
@@ -58,7 +56,9 @@
                 <th md-column md-order-by="startedAt"><span>Started</span></th>
                 <th md-column md-order-by="completedAt"><span>Completed</span></th>
                 <th md-column md-order-by="status"><span>Status</span></th>
-                <th md-column></th>
+                <th md-column layout="row" layout-align="end center">
+                    <md-button aria-label="Add Job" class="md-fab md-mini" ng-click="runJob(job._id)" ng-disabled="job.mutex && job.lastStatus === 'busy'"><md-icon md-svg-src="/bower_components/material-design-icons/av/svg/production/ic_play_arrow_24px.svg"></md-icon></md-button>
+                </th>
             </tr>
             </thead>
             <tbody md-body>

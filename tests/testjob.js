@@ -12,8 +12,6 @@ var sleepSeconds = parseInt(commander.args[0]);
 var iterations = 0;
 var sleepIntervalInSeconds = 5;
 
-console.info(commander.args[1]);
-
 console.info('Working %d seconds', sleepSeconds);
 async.doWhilst(function(done) {
     console.info('Doing work seconds: ' + iterations);

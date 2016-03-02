@@ -1,6 +1,8 @@
 angular.module('tillooApp.job')
-    .controller('JobsController', ['jobService', '$scope', '$timeout', '$mdDialog', function (jobService, $scope, $timeout, $mdDialog) {
+    .controller('JobsController', ['jobService', '$scope', '$timeout', '$mdDialog', '$rootScope', function (jobService, $scope, $timeout, $mdDialog, $rootScope) {
         'use strict';
+
+        $rootScope.breadcrumbs = ['Jobs'];
 
         $scope.selected = [];
 
