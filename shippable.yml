@@ -8,3 +8,5 @@ build:
     - npm install
     - bower --allow-root install
     - gulp lint
+  cache: true
+  
