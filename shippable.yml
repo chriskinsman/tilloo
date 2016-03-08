@@ -2,9 +2,9 @@ language: node_js
 node_js:
   - 4.2.2
 
-install:
-  - npm install
-  - bower --allow-root install
 
-script:
-  - gulp lint
+build:
+  ci:
+    - npm install
+    - bower --allow-root install
+    - gulp lint
