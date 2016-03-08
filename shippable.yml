@@ -5,8 +5,9 @@ node_js:
 
 build:
   ci:
+    - npm install gulp -g
     - npm install
     - bower --allow-root install
     - gulp lint
   cache: true
-  
+
