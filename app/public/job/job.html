@@ -57,7 +57,7 @@
                 <th md-column md-order-by="completedAt"><span>Completed</span></th>
                 <th md-column md-order-by="status"><span>Status</span></th>
                 <th md-column layout="row" layout-align="end center">
-                    <md-button aria-label="Add Job" class="md-fab md-mini" ng-click="runJob(job._id)" ng-disabled="job.mutex && job.lastStatus === 'busy'"><md-icon md-svg-src="/bower_components/material-design-icons/av/svg/production/ic_play_arrow_24px.svg"></md-icon></md-button>
+                    <md-button aria-label="Add Job" class="md-fab md-mini" ng-click="runJob(job._id)" ng-disabled="job.mutex && job.lastStatus === 'busy'"><md-icon md-svg-src="/public/assets/svg/ic_play_arrow_24px.svg"></md-icon></md-button>
                 </th>
             </tr>
             </thead>
@@ -70,7 +70,7 @@
                 <td md-cell>{{run.startedAt | date : 'M/d/yy h:mm a'}}</td>
                 <td md-cell>{{run.completedAt | date : 'M/d/yy h:mm a'}}</td>
                 <td md-cell>{{run.status}}</td>
-                <td md-cell><md-button ng-show="run.status ==='busy'" class="md-fab md-mini" ng-click="stopRun(run._id)" ng-disabled="stopDisabled" aria-label="Run Job"><md-icon md-svg-src="/bower_components/material-design-icons/av/svg/production/ic_stop_24px.svg"></md-icon></md-button></td>
+                <td md-cell><md-button ng-show="run.status ==='busy'" class="md-fab md-mini" ng-click="stopRun(run._id)" ng-disabled="stopDisabled" aria-label="Run Job"><md-icon md-svg-src="/public/assets/svg/ic_stop_24px.svg"></md-icon></md-button></td>
             </tr>
             </tbody>
         </table>

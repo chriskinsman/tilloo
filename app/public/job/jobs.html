@@ -10,7 +10,7 @@
                 <th md-column md-order-by="lastRanAt">Last Ran</th>
                 <th md-column md-order-by="lastStatus">Last Status</th>
                 <th md-column layout="row" layout-align="end center"><md-button class="md-fab md-mini" aria-label="Add Job" ng-click="addJob()">
-                    <md-icon md-svg-src="/bower_components/material-design-icons/content/svg/production/ic_add_24px.svg"></md-icon></md-button></th>
+                    <md-icon md-svg-src="/public/assets/svg/ic_add_24px.svg"></md-icon></md-button></th>
             </tr>
             </thead>
             <tbody md-body>
@@ -22,9 +22,9 @@
                 <td md-cell>{{job.lastRanAt | date : 'M/d/yy h:mm a'}}</td>
                 <td md-cell>{{job.lastStatus}}</td>
                 <td md-cell>
-                    <md-button aria-label="Delete Job" class="md-fab md-mini" ng-click="deleteJob(job._id)"><md-icon md-svg-src="/bower_components/material-design-icons/action/svg/production/ic_delete_24px.svg"></md-icon></md-button>
-                    <md-button aria-label="Edit Job" class="md-fab md-mini" ng-click="editJob(job._id)"><md-icon md-svg-src="/bower_components/material-design-icons/action/svg/production/ic_settings_24px.svg"></md-icon></md-button>
-                    <md-button aria-label="Run Job" class="md-fab md-mini" ng-click="runJob(job._id)" ng-disabled="job.mutex && job.lastStatus === 'busy'"><md-icon md-svg-src="/bower_components/material-design-icons/av/svg/production/ic_play_arrow_24px.svg"></md-icon></md-button>
+                    <md-button aria-label="Delete Job" class="md-fab md-mini" ng-click="deleteJob(job._id)"><md-icon md-svg-src="/public/assets/svg/ic_delete_24px.svg"></md-icon></md-button>
+                    <md-button aria-label="Edit Job" class="md-fab md-mini" ng-click="editJob(job._id)"><md-icon md-svg-src="/public/assets/svg/ic_settings_24px.svg"></md-icon></md-button>
+                    <md-button aria-label="Run Job" class="md-fab md-mini" ng-click="runJob(job._id)" ng-disabled="job.mutex && job.lastStatus === 'busy'"><md-icon md-svg-src="/public/assets/svg/ic_play_arrow_24px.svg"></md-icon></md-button>
                 </td>
             </tr>
             </tbody>
