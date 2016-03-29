@@ -171,3 +171,7 @@ a:visited, a:active {
   color: #02638f;
   text-decoration: none;
 }
+
+#app-container {
+  margin-bottom: 10px;
+}
