@@ -175,3 +175,11 @@ a:visited, a:active {
 #app-container {
   margin-bottom: 10px;
 }
+
+.busy {
+  background-color: rgba(92,184,92,0.2);
+}
+
+.fail {
+  background-color: rgba(169,68,66,0.2);
+}
