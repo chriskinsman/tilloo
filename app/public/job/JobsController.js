@@ -19,7 +19,6 @@ angular.module('tillooApp.job')
 
         function updateStatus(status) {
             if(status.jobId) {
-                console.log(status);
                 var job = _.find($scope.jobs, {_id: status.jobId});
                 if(job) {
                     $timeout(function() {
@@ -35,7 +34,6 @@ angular.module('tillooApp.job')
         function updateJob(jobMessage) {
             jobService.getJob(jobMessage.jobId).then(function(result) {
                 var jobIndex = _.findIndex($scope.jobs, function (item) { return item._id == jobMessage.jobId; });
-                console.log(result);
                 $timeout(function() {
                     if(jobIndex!==-1) {
                         if(result.data.deleted) {

@@ -45,7 +45,6 @@ angular.module('tillooApp.job')
         function updateStatus(status) {
             // A status update for this job
             if(status.jobId && status.jobId === $routeParams.jobId && status.runId) {
-                console.log(status);
                 jobService.getRun(status.runId).then(function(result) {
                     $timeout(function() {
                         var runIndex = _.findIndex($scope.runs, function(run) { return run._id == status.runId;});
