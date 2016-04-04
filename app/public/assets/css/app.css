@@ -23,6 +23,10 @@
   padding-right: 10px;
 }
 
+#title a, #title a.visited {
+  color:#EDEDED;
+}
+
 md-toolbar {
   min-height: 55px !important;
 }
@@ -166,4 +170,16 @@ a, a:link {
 a:visited, a:active {
   color: #02638f;
   text-decoration: none;
+}
+
+#app-container {
+  margin-bottom: 10px;
+}
+
+.busy {
+  background-color: rgba(92,184,92,0.2);
+}
+
+.fail {
+  background-color: rgba(169,68,66,0.2);
 }

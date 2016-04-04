@@ -1,5 +1,5 @@
 {
-  "db": "mongodb://localhost:27017/tilloo",
+  "db": "mongodb://127.0.0.1:27017/tilloo",
   "disque" : {
     "host": "127.0.0.1",
     "port": 7711
@@ -15,5 +15,19 @@
   },
   "web": {
     "port": 7770
+  },
+  "notification": {
+      "threshold":10,
+      "mandrill": {
+          "key": "PbJL3B-5pJQYUh4kSRdf7w",
+          "from_email": "stevem@pushspring.com",
+          "to": [
+                {
+                    "email": "stevem@pushspring.com",
+                    "name": "Tilloo Notification",
+                    "type": "to"
+                }
+          ]
+      }
   }
 }
