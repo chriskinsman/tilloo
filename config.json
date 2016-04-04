@@ -19,11 +19,11 @@
   "notification": {
       "threshold":10,
       "mandrill": {
-          "key": "PbJL3B-5pJQYUh4kSRdf7w",
-          "from_email": "stevem@pushspring.com",
+          "key": "<MANDRILLKEY>",
+          "from_email": "<from-email>",
           "to": [
                 {
-                    "email": "stevem@pushspring.com",
+                    "email": "<to-email>",
                     "name": "Tilloo Notification",
                     "type": "to"
                 }
