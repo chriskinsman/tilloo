@@ -35,6 +35,7 @@ app.use('/api/config', express.static(path.join(__dirname, '../config.json')));
 app.get('/api/job', job.getJobs);
 app.post('/api/job/create', job.createJob);
 app.get('/api/job/:jobId', job.getJob);
+app.get('/api/job/run/:runId', job.getJobByRunId);
 app.get('/api/job/:jobId/runs', job.getRuns);
 app.post('/api/job/:jobId/delete', job.deleteJob);
 app.post('/api/job/:jobId/run', job.triggerRun);

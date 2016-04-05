@@ -47,6 +47,26 @@ JobRoutes.getRun = function getRun(req, res) {
     });
 };
 
+JobRoutes.getJobByRunId = function getJobByRunId(req, res) {
+    var runId = req.params.runId;
+    Run.findByRunId(runId, function(err, run) {
+        if(err) {
+            res.status(500).send(err);
+        }
+        else {
+            Job.findByJobId(run.jobId, function (err, job) {
+                if(err) {
+                    res.status(500).send(err);
+                }
+                else {
+                    res.status(200).send(job);
+                }
+            });
+        }
+    });
+
+};
+
 JobRoutes.getRuns = function getJobs(req, res) {
     var jobId = req.params.jobId;
     var page = parseInt(req.query.page);
