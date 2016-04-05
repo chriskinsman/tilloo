@@ -47,12 +47,12 @@ setInterval(function() {
     debug('garbage collecting zombie runs');
     Run.find({
         $and: [{updatedAt: {$lte: moment().subtract(config.scheduler.zombieAge, 'minutes').toDate()}},
-                {$or: [{status: 'busy'}, {status: 'idle'}]}
+                {$or: [{status: constants.JOBSTATUS.BUSY}, {status: constants.JOBSTATUS.IDLE}]}
             ]},
         function(err, zombieRuns) {
             async.eachLimit(zombieRuns, 5, function(zombieRun, done) {
                 debug('settting status to fail runId: %s', zombieRun._id);
-                zombieRun.status = 'fail';
+                zombieRun.status = constants.JOBSTATUS.FAIL;
                 zombieRun.save(done);
             }, function(err) {
                 if(err) {

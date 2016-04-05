@@ -106,7 +106,7 @@ killee.on('job', function(job, done) {
         else {
             // Running job not found so send back a fail status
             debug('pid: %d not found sending fail status', message.pid);
-            disq.addJob({queue: constants.QUEUES.STATUS, job: JSON.stringify({status:'fail'}), timeout: 0}, function(err) {
+            disq.addJob({queue: constants.QUEUES.STATUS, job: JSON.stringify({status:constants.JOBSTATUS.FAIL}), timeout: 0}, function(err) {
                 if(err) {
                     console.error('Unable to queue status for jobId: %s, runId: %s, status: %s', job.jobId, message.runId, message);
                 }
