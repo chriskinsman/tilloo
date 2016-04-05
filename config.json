@@ -20,14 +20,9 @@
       "threshold":10,
       "mandrill": {
           "key": "<MANDRILLKEY>",
+          "from_name":"Tilloo Notification",
           "from_email": "<from-email>",
-          "to": [
-                {
-                    "email": "<to-email>",
-                    "name": "Tilloo Notification",
-                    "type": "to"
-                }
-          ]
+          "to_email":"<to-email>"
       }
   }
 }
