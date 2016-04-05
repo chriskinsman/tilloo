@@ -106,7 +106,7 @@ Job.methods.startCron = function() {
     this.__cron = new CronJob(this.schedule, function() {
         if(self.mutex) {
             Run.findOne({jobId: new ObjectId(self._id)}, null, {sort: {createdAt: -1}}, function(err, run) {
-                if(run && (run.status === 'busy' || run.status === 'idle')) {
+                if(run && (run.status === constants.JOBSTATUS.BUSY || run.status === constants.JOBSTATUS.IDLE)) {
                     debug('Mutex not scheduling jobId: %s, runId: %s already running', self._id, run._id);
                 }
                 else {

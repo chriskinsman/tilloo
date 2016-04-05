@@ -1,3 +1,4 @@
+var constants = require('../lib/constants');
 
 var mongoose = require('mongoose');
 
@@ -7,7 +8,7 @@ var Run = new mongoose.Schema({
     path: {type: String, required: true},
     queueName: {type: String},
     timeout: {type: Number},
-    status: {type:String, enum: ['busy', 'idle', 'fail','success'], default: 'idle'},
+    status: {type:String, enum: [constants.JOBSTATUS.BUSY, constants.JOBSTATUS.IDLE, constants.JOBSTATUS.FAIL,constants.JOBSTATUS.SUCCESS], default: constants.JOBSTATUS.IDLE},
     result: {type:Number},
     createdAt: {type: Date, default: function() { return new Date();}},
     updatedAt: {type: Date, default: function() { return new Date();}},
