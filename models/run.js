@@ -1,3 +1,4 @@
+var constants = require('../lib/constants');
 
 var mongoose = require('mongoose');
 
