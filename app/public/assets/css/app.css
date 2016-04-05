@@ -178,8 +178,10 @@ a:visited, a:active {
 
 .busy {
   background-color: rgba(92,184,92,0.2);
+  transition: background-color 1s;
 }
 
 .fail {
   background-color: rgba(169,68,66,0.2);
+  transition: background-color 1s;
 }
