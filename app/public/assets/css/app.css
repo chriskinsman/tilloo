@@ -181,7 +181,7 @@ a:visited, a:active {
   transition: background-color 1s;
 }
 
-.fail {
+.fail:not(.disabled) {
   background-color: rgba(169,68,66,0.2);
   transition: background-color 1s;
 }
