@@ -11,21 +11,21 @@
     "zombieFrequency" : 5
   },
   "worker": {
-    "parallelJobs": 10
+    "parallelJobs": 100
   },
   "web": {
     "host": "127.0.0.1",
     "port": 7770
   },
   "notification": {
-      "threshold":10,
-      "plugins":{
-        "mandrill": {
-            "key": "<MANDRILLKEY>",
-            "from_name":"Tilloo Notification",
-            "from_email": "<from email>",
-            "to_email":"<to email>"
-        }
+    "threshold":3600,
+    "plugins":{
+      "mandrill": {
+        "key": "<MANDRILLKEY>",
+        "from_name": "Tilloo Notification",
+        "from_email": "<from email>",
+        "to_email": "<to email>"
       }
+    }
   }
 }
