@@ -52,8 +52,24 @@ setInterval(function() {
         function(err, zombieRuns) {
             async.eachLimit(zombieRuns, 5, function(zombieRun, done) {
                 debug('settting status to fail runId: %s', zombieRun._id);
-                zombieRun.status = constants.JOBSTATUS.FAIL;
-                zombieRun.save(done);
+                async.parallel([
+                    function(done) {
+                        zombieRun.status = constants.JOBSTATUS.FAIL;
+                        zombieRun.save(done);
+                    },
+                    function(done) {
+                        Job.findByJobId(zombieRun.jobId, function(err, job) {
+                            if(err) {
+                                console.error('Unable to find jobId: ' + jobId);
+                                done();
+                            }
+                            else {
+                                job.lastStatus = constants.JOBSTATUS.FAIL;
+                                job.save(done);
+                            }
+                        });
+                    }
+                ], done);
             }, function(err) {
                 if(err) {
                     console.error(err);
