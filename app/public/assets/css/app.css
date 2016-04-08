@@ -147,7 +147,11 @@ table.md-table:not(.md-row-select) td.md-cell:nth-child(n+2):nth-last-child(n+2)
 }
 
 tr.disabled td.md-cell {
-  color: lightgray;
+  color: rgb(191, 191, 191);
+}
+
+tr.disabled a, a:link {
+  color: rgb(191, 191, 191);
 }
 
 md-chips-wrap {
