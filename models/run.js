@@ -1,4 +1,6 @@
+var constants = require('../lib/constants');
 
+var moment = require('moment');
 var mongoose = require('mongoose');
 
 var Run = new mongoose.Schema({
@@ -7,7 +9,7 @@ var Run = new mongoose.Schema({
     path: {type: String, required: true},
     queueName: {type: String},
     timeout: {type: Number},
-    status: {type:String, enum: ['busy', 'idle', 'fail','success'], default: 'idle'},
+    status: {type:String, enum: [constants.JOBSTATUS.BUSY, constants.JOBSTATUS.IDLE, constants.JOBSTATUS.FAIL,constants.JOBSTATUS.SUCCESS], default: constants.JOBSTATUS.IDLE},
     result: {type:Number},
     createdAt: {type: Date, default: function() { return new Date();}},
     updatedAt: {type: Date, default: function() { return new Date();}},
@@ -44,6 +46,10 @@ Run.statics.countRunsForJob = function countRunsForJob(jobId, callback) {
 
 Run.statics.findByRunId = function findByRunId(runId, callback) {
     model.findById(new mongoose.Types.ObjectId(runId), callback);
+};
+
+Run.statics.findRunsOlderThan = function findRunsOlderThan(days, callback) {
+    model.find({createdAt: {$lte: moment().subtract(days, 'days').toDate()}}, '_id', { sort: { createdAt: 1}}, callback);
 };
 
 var model = mongoose.model('run', Run);

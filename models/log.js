@@ -28,5 +28,9 @@ Log.statics.findOutputForRun = function outputForRun(runId, callback) {
     model.find({runId: new mongoose.Types.ObjectId(runId)}, 'output', {sort: {createdAt: 1}}, callback);
 };
 
+Log.statics.deleteOutputForRun = function deleteOutputForRun(runId, callback) {
+    model.remove({runId: new mongoose.Types.ObjectId(runId)}, callback);
+};
+
 var model = mongoose.model('log', Log);
 module.exports = model;

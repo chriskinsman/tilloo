@@ -68,9 +68,10 @@ Job.methods.triggerRun = function(callback) {
             }
         }
         else {
-            debug("sending start message for %s.", self.name);
+            debug("sending start message for %s :: %s.", self.name, self._id);
+
             // send message with run
-            disq.addJob({ queue: self.queueName, job: JSON.stringify({runId: run._id, path: self.path, args: self.args, timeout: self.timeout}), timeout: 0}, function(err) {
+            disq.addJob({ queue: self.queueName, job: JSON.stringify({jobId: self._id, runId: run._id, path: self.path, args: self.args, timeout: self.timeout}), timeout: 0}, function(err) {
                 if(err) {
                     console.error(err);
                     if(callback) {
@@ -105,7 +106,7 @@ Job.methods.startCron = function() {
     this.__cron = new CronJob(this.schedule, function() {
         if(self.mutex) {
             Run.findOne({jobId: new ObjectId(self._id)}, null, {sort: {createdAt: -1}}, function(err, run) {
-                if(run && (run.status === 'busy' || run.status === 'idle')) {
+                if(run && (run.status === constants.JOBSTATUS.BUSY || run.status === constants.JOBSTATUS.IDLE)) {
                     debug('Mutex not scheduling jobId: %s, runId: %s already running', self._id, run._id);
                 }
                 else {
