@@ -86,6 +86,7 @@ angular.module('tillooApp.job')
                 args: [],
                 enabled: true,
                 mutex: true,
+                failuresBeforeAlert: 1,
                 timeout: 0
             };
 
