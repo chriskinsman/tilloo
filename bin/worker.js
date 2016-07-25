@@ -24,7 +24,7 @@ var workername = os.hostname() + ':' + process.pid;
 
 commander.version('0.0.1')
     .option('-q, --queue <queue>', 'Name of queue to process. defaults to tilloo.worker')
-    .option('-p, --parallel <parllel>', 'Number of parallel jobs to support.  Overrides default', parseInt)
+    .option('-p, --parallel <parallel>', 'Number of parallel jobs to support.  Overrides default', parseInt)
     .parse(process.argv);
 
 var queue = constants.QUEUES.DEFAULT_WORKER;
