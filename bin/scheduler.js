@@ -47,13 +47,29 @@ setInterval(function() {
     debug('garbage collecting zombie runs');
     Run.find({
         $and: [{updatedAt: {$lte: moment().subtract(config.scheduler.zombieAge, 'minutes').toDate()}},
-                {$or: [{status: 'busy'}, {status: 'idle'}]}
+                {$or: [{status: constants.JOBSTATUS.BUSY}, {status: constants.JOBSTATUS.IDLE}]}
             ]},
         function(err, zombieRuns) {
             async.eachLimit(zombieRuns, 5, function(zombieRun, done) {
                 debug('settting status to fail runId: %s', zombieRun._id);
-                zombieRun.status = 'fail';
-                zombieRun.save(done);
+                async.parallel([
+                    function(done) {
+                        zombieRun.status = constants.JOBSTATUS.FAIL;
+                        zombieRun.save(done);
+                    },
+                    function(done) {
+                        Job.findByJobId(zombieRun.jobId, function(err, job) {
+                            if(err) {
+                                console.error('Unable to find jobId: ' + jobId);
+                                done();
+                            }
+                            else {
+                                job.lastStatus = constants.JOBSTATUS.FAIL;
+                                job.save(done);
+                            }
+                        });
+                    }
+                ], done);
             }, function(err) {
                 if(err) {
                     console.error(err);

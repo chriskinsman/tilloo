@@ -24,7 +24,14 @@ angular.module('tillooApp.job')
             jobService.getRun($routeParams.runId).then(function(runResult) {
                 $scope.run = runResult.data;
                 $scope.stopDisabled = !(runResult.data.status === 'busy' || runResult.data.status === 'idle');
-                $rootScope.breadcrumbs.push(' > ' + $routeParams.runId);
+                if($rootScope.breadcrumbs) {
+                    $rootScope.breadcrumbs.push(' > ' + $routeParams.runId);
+                }
+                else {
+                    jobService.getJobByRunId($routeParams.runId).then(function(jobResult) {
+                        $rootScope.breadcrumbs = [jobResult.data.name + ' - ' + jobResult.data._id, ' > ' + $routeParams.runId];
+                    });
+                }
             });
         }
 

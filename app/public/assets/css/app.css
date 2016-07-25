@@ -23,6 +23,10 @@
   padding-right: 10px;
 }
 
+#title a, #title a.visited {
+  color:#EDEDED;
+}
+
 md-toolbar {
   min-height: 55px !important;
 }
@@ -143,7 +147,11 @@ table.md-table:not(.md-row-select) td.md-cell:nth-child(n+2):nth-last-child(n+2)
 }
 
 tr.disabled td.md-cell {
-  color: lightgray;
+  color: rgb(191, 191, 191);
+}
+
+tr.disabled a, a:link {
+  color: rgb(191, 191, 191);
 }
 
 md-chips-wrap {
@@ -166,4 +174,34 @@ a, a:link {
 a:visited, a:active {
   color: #02638f;
   text-decoration: none;
+}
+
+#app-container {
+  margin-bottom: 10px;
+}
+
+#argument-chips md-chips-wrap:before{
+  content: "Arguments: press enter to lock-in.";
+  display: block;
+  order: 1;
+  padding-left: 3px;
+  padding-right: 0;
+  z-index: 1;
+  bottom: 100%;
+  left: 0;
+  right: auto;
+  color: rgba(0, 0, 0, 0.541176);
+  font-size: .75em;
+  position: relative;
+  left: -3px;
+}
+
+.busy {
+  background-color: rgba(92,184,92,0.2);
+  transition: background-color 1s;
+}
+
+.fail:not(.disabled) {
+  background-color: rgba(169,68,66,0.2);
+  transition: background-color 1s;
 }

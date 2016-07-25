@@ -104,6 +104,18 @@ __Arguments__
 
 * jobId - The id of the job to delete.
 
+### tilloo-cli expireruns &lt;days&gt;
+
+Each run represents a document in mongodb.  Each log line is also a document. If you have jobs that run
+frequently this can impact the performance of mongodb.  This command line allows you to expire runs and
+their logs from mongodb based on the created at date of the run.  The days argument represents how many
+days worth of data to keep.  If you specify 7 days any runs created more than 7 days ago will be expired.
+
+__Arguments__
+
+* jobId - The id of the job to delete.
+
+
 ### tilloo-cli jobdetail &lt;jobId&gt;
 
 Get a json description of the job. Includes job details not shown elsewhere. Useful for debugging.

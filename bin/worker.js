@@ -48,23 +48,23 @@ ee.on('job', function(job, done) {
         var message = JSON.parse(job.body);
         debug('Received job', message);
 
-        var script = new Script(job.jobId, message.runId, message.path, message.args, message.timeout);
+        var script = new Script(message.jobId, message.runId, message.path, message.args, message.timeout);
         script.on('output', function(message) {
             debug(message.output);
             message.createdAt = new Date();
             disq.addJob({queue: constants.QUEUES.LOGGER, job: JSON.stringify(message), timeout: 0}, function(err) {
                 if(err) {
-                    console.error('Unable to queue output for jobId: %s, runId: %s, output: %s', job.jobId, message.runId, message.output);
+                    console.error('Unable to queue output for jobId: %s, runId: %s, output: %s', message.jobId, message.runId, message.output);
                 }
             });
         });
 
         script.on('status', function(message) {
-            debug('Updating status for jobId: %s, runId: %s', job.jobId, message.runId, message);
+            debug('Updating status for jobId: %s, runId: %s', message.jobId, message.runId, message);
             message.workername = workername;
             disq.addJob({queue: constants.QUEUES.STATUS, job: JSON.stringify(message), timeout: 0}, function(err) {
                 if(err) {
-                    console.error('Unable to queue status for jobId: %s, runId: %s, status: %s', job.jobId, message.runId, message);
+                    console.error('Unable to queue status for jobId: %s, runId: %s, status: %s', message.jobId, message.runId, message);
                 }
             });
         });
@@ -106,7 +106,7 @@ killee.on('job', function(job, done) {
         else {
             // Running job not found so send back a fail status
             debug('pid: %d not found sending fail status', message.pid);
-            disq.addJob({queue: constants.QUEUES.STATUS, job: JSON.stringify({status:'fail'}), timeout: 0}, function(err) {
+            disq.addJob({queue: constants.QUEUES.STATUS, job: JSON.stringify({status:constants.JOBSTATUS.FAIL, type:constants.KILLTYPE.MANUAL}), timeout: 0}, function(err) {
                 if(err) {
                     console.error('Unable to queue status for jobId: %s, runId: %s, status: %s', job.jobId, message.runId, message);
                 }
