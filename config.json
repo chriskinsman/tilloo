@@ -21,10 +21,10 @@
     "threshold":3600,
     "plugins":{
       "mandrill": {
-        "key": "196cpN7f5EPY8ePHKmh1TA",
-        "from_name":"Tilloo Notification",
-        "from_email": "psops@pushspring.com",
-        "to_email":"chris@pushspring.com"
+        "key": "<MANDRILLKEY>",
+        "from_name": "Tilloo Notification",
+        "from_email": "<from email>",
+        "to_email": "<to email>"
       }
     }
   }
