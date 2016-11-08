@@ -9,7 +9,7 @@ build:
     - npm install
     - bower --allow-root install
     - gulp lint
-    - pushd ../nodeimage
+    - pushd nodeimage
     - docker build -t tilloo/nodeimage -f nodeimage.docker .
     - popd
     - docker build -t tilloo/base:$BUILD_NUMBER -f tilloo-base.docker .
@@ -24,6 +24,6 @@ build:
     - docker push tilloo/worker:$BUILD_NUMBER
     - docker push tilloo/webserver:$BUILD_NUMBER
     - docker push tilloo/cli:$BUILD_NUMBER
-    
+
   cache: true
 
