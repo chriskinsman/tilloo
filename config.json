@@ -1,11 +1,11 @@
 {
-  "db": "mongodb://batch04:27017/tilloo",
+  "db": "mongodb://localhost:27017/tilloo",
   "disque" : {
-    "host": "batch04",
+    "host": "localhost",
     "port": 7711
   },
   "scheduler" : {
-    "host": "batch04",
+    "host": "localhost",
     "port": 7700,
     "zombieAge": 5,
     "zombieFrequency" : 1
@@ -14,7 +14,7 @@
     "parallelJobs": 100
   },
   "web": {
-    "host": "batch04",
+    "host": "localhost",
     "port": 7770
   },
   "notification": {

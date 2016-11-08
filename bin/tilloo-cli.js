@@ -12,6 +12,7 @@ commander
     .command('killrun <runId>', 'Kill a running job')
     .command('listjobs', 'List jobs')
     .command('listruns <jobId>', 'List runs for job')
+    .command('restore <file>', 'Restore a json file contained backed up jobs')
     .command('rundetail <runId>', 'Show detail for a run')
     .command('runoutput <runId>', 'Show output for a run')
     .parse(process.argv);
