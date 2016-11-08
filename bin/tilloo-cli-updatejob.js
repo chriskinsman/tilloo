@@ -24,6 +24,7 @@ commander.version('0.0.1')
     .option('-d, --jobdescription <jobdescription>', 'Job description')
     .option('-m, --mutex <mutex>', 'False to run job if already running. defaults to true')
     .option('-e, --enabled <enabled>', 'true or false')
+    .option('-f, --failures <failures>', 'Number of failures before alert is sent', parseInt)
     .parse(process.argv);
 
 
@@ -77,6 +78,9 @@ if(commander.mutex !== undefined) {
     jobDef.mutex = commander.mutex;
 }
 
+if(commander.failures) {
+    jobDef.failuresBeforeAlert = commander.failures;
+}
 
 jobs.update(jobId, jobDef, function(err) {
     if(err) {

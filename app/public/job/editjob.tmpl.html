@@ -34,6 +34,9 @@
                 <md-input-container>
                     <md-checkbox ng-model="job.mutex" aria-label="Mutex">Mutex</md-checkbox>
                 </md-input-container>
+                <md-input-container>
+                    <input type="text" ng-model="job.failuresBeforeAlert" placeholder="Failures before alert">
+                </md-input-container>
                 <md-input-container class="md-block">
                     <label>Description</label>
                     <textarea ng-model="job.description"></textarea>

@@ -60,7 +60,7 @@ setInterval(function() {
                     function(done) {
                         Job.findByJobId(zombieRun.jobId, function(err, job) {
                             if(err) {
-                                console.error('Unable to find jobId: ' + jobId);
+                                console.error('Unable to find jobId: ' + zombieRun.jobId);
                                 done();
                             }
                             else {
