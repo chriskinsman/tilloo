@@ -25,13 +25,12 @@ build:
     - docker tag -f tilloo/worker:$BUILD_NUMBER tilloo/worker:latest
 
   post_ci:
-    - docker push tilloo/nodeimage
-    - docker push tilloo/base
-    - docker push tilloo/scheduler
-    - docker push tilloo/worker
-    - docker push tilloo/webserver
-    - docker push tilloo/cli
-
+    - 'if [ "$BRANCH" == "master" -a "$PULL_REQUEST" == "false" ]; then docker push tilloo/nodeimage; fi'
+    - 'if [ "$BRANCH" == "master" -a "$PULL_REQUEST" == "false" ]; then docker push tilloo/base; fi'
+    - 'if [ "$BRANCH" == "master" -a "$PULL_REQUEST" == "false" ]; then docker push tilloo/scheduler; fi'
+    - 'if [ "$BRANCH" == "master" -a "$PULL_REQUEST" == "false" ]; then docker push tilloo/worker; fi'
+    - 'if [ "$BRANCH" == "master" -a "$PULL_REQUEST" == "false" ]; then docker push tilloo/webserver; fi'
+    - 'if [ "$BRANCH" == "master" -a "$PULL_REQUEST" == "false" ]; then docker push tilloo/cli; fi'
 
 integrations:
   hub:
