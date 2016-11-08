@@ -50,8 +50,20 @@ angular.module('tillooApp.job')
             });
         }
 
-        $scope.deleteJob = function deleteJob(jobId) {
-            jobService.deleteJob(jobId);
+        $scope.deleteJob = function deleteJob(jobId,jobName, event) {
+            var confirm = $mdDialog.confirm()
+                  .title('Delete job?')
+                  .textContent('Are you sure you want to delete ' + jobName + '?')
+                  .ariaLabel('Delete job confirmation')
+                  .targetEvent(event)
+                  .ok('Delete Job')
+                  .cancel('Cancel');
+            $mdDialog.show(confirm).then(function() {                  
+              jobService.deleteJob(jobId);
+            }, function() {
+              // User canceled, do nothing
+            });
+              
         };
 
         $scope.runJob = function runJob(jobId) {
@@ -86,6 +98,7 @@ angular.module('tillooApp.job')
                 args: [],
                 enabled: true,
                 mutex: true,
+                failuresBeforeAlert: 1,
                 timeout: 0
             };
 

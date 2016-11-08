@@ -33,7 +33,8 @@ var Job = new mongoose.Schema({
     lastStatus: {type: String},
     mutex: {type: Boolean, default: true},
     timeout: {type: Number, default: 0},
-    deleted: {type: Boolean, default: false}
+    deleted: {type: Boolean, default: false},
+    failuresBeforeAlert: {type: Number, default: 1}
 });
 
 Job.pre('save', function(done) {
