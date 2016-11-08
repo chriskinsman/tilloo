@@ -17,7 +17,7 @@ npm link
 
 ## Optional / Alternate Docker Installation
 ```bash
-
+docker-compose up
 ```
 
 ## Features

@@ -9,5 +9,7 @@ build:
     - npm install
     - bower --allow-root install
     - gulp lint
+    - cd build-images
+    - build-all.sh
   cache: true
 
