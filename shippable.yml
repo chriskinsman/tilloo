@@ -19,11 +19,13 @@ build:
     - docker build -t tilloo/worker:$BUILD_NUMBER -t tilloo/worker:latest -f worker.docker .
 
   post_ci:
+    - docker push tilloo/nodeimage:$BUILD_NUMBER
     - docker push tilloo/base:$BUILD_NUMBER
     - docker push tilloo/scheduler:$BUILD_NUMBER
     - docker push tilloo/worker:$BUILD_NUMBER
     - docker push tilloo/webserver:$BUILD_NUMBER
     - docker push tilloo/cli:$BUILD_NUMBER
+    - docker push tilloo/nodeimage:latest
     - docker push tilloo/base:latest
     - docker push tilloo/scheduler:latest
     - docker push tilloo/worker:latest
