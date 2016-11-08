@@ -5,6 +5,7 @@ var commander = require('commander');
 commander
     .version('0.0.1')
     .command('addjob <schedule> <path> [options]', 'Add a new job')
+    .command('backup', 'Backup all jobs')
     .command('deletejob <jobid>', 'Delete a job')
     .command('expireruns <days>', 'Expire runs created <days> ago')
     .command('jobdetail <jobId>', 'Show detail for a job')
