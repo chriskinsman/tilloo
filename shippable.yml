@@ -10,28 +10,26 @@ build:
     - bower --allow-root install
     - gulp lint
     - pushd nodeimage
-    - docker build -t tilloo/nodeimage:$BUILD_NUMBER -t tilloo/nodeimage:latest -f nodeimage.docker .
+    - docker build -t tilloo/nodeimage:$BUILD_NUMBER -f nodeimage.docker .
     - popd
-    - docker build -t tilloo/base:$BUILD_NUMBER -t tilloo/base:latest -f tilloo-base.docker .
-    - docker build -t tilloo/cli:$BUILD_NUMBER -t tilloo/cli:latest -f cli.docker .
-    - docker build -t tilloo/scheduler:$BUILD_NUMBER -t tilloo/scheduler:latest -f scheduler.docker .
-    - docker build -t tilloo/webserver:$BUILD_NUMBER -t tilloo/webserver:latest -f webserver.docker .
-    - docker build -t tilloo/worker:$BUILD_NUMBER -t tilloo/worker:latest -f worker.docker .
+    - docker build -t tilloo/base:$BUILD_NUMBER -f tilloo-base.docker .
+    - docker tag tilloo/base:$BUILD_NUMBER tilloo/base:latest
+    - docker build -t tilloo/cli:$BUILD_NUMBER -f cli.docker .
+    - docker tag tilloo/cli:$BUILD_NUMBER tilloo/cli:latest
+    - docker build -t tilloo/scheduler:$BUILD_NUMBER -f scheduler.docker .
+    - docker tag tilloo/scheduler:$BUILD_NUMBER tilloo/scheduler:latest
+    - docker build -t tilloo/webserver:$BUILD_NUMBER -f webserver.docker .
+    - docker tag tilloo/webserver:$BUILD_NUMBER tilloo/webserver:latest
+    - docker build -t tilloo/worker:$BUILD_NUMBER -f worker.docker .
+    - docker tag tilloo/worker:$BUILD_NUMBER tilloo/worker:latest
 
   post_ci:
-    - docker push tilloo/nodeimage:$BUILD_NUMBER
-    - docker push tilloo/base:$BUILD_NUMBER
-    - docker push tilloo/scheduler:$BUILD_NUMBER
-    - docker push tilloo/worker:$BUILD_NUMBER
-    - docker push tilloo/webserver:$BUILD_NUMBER
-    - docker push tilloo/cli:$BUILD_NUMBER
-    - docker push tilloo/nodeimage:latest
-    - docker push tilloo/base:latest
-    - docker push tilloo/scheduler:latest
-    - docker push tilloo/worker:latest
-    - docker push tilloo/webserver:latest
-    - docker push tilloo/cli:latest
-
+    - docker push tilloo/nodeimage
+    - docker push tilloo/base
+    - docker push tilloo/scheduler
+    - docker push tilloo/worker
+    - docker push tilloo/webserver
+    - docker push tilloo/cli
 
 
 integrations:
