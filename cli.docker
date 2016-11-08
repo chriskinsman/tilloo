@@ -1,0 +1,9 @@
+FROM tilloo/base
+
+COPY wait-for-it.sh /tilloo
+COPY lib /tilloo/lib
+COPY models /tilloo/models
+COPY bin /tilloo/bin
+COPY config-dockercompose.json /tilloo/config.json
+
+WORKDIR /tilloo

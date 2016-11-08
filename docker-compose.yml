@@ -1,0 +1,38 @@
+version: '2'
+services:
+  tilloo-scheduler:
+    image: tilloo/scheduler
+    depends_on:
+      - mongodb
+      - disque
+    links:
+      - disque
+      - mongodb
+    ports:
+      - "7700:7700"
+  tilloo-web:
+    image: tilloo/webserver
+    ports:
+      - "7770:7770"
+    depends_on:
+      - tilloo-scheduler
+    links:
+      - disque
+      - mongodb
+      - tilloo-scheduler
+  tilloo-worker:
+    image: tilloo/worker
+    depends_on:
+      - tilloo-scheduler
+    links:
+      - disque
+      - tilloo-scheduler
+  disque:
+    image: jobflow/disque
+    ports:
+      - "7711:7711"
+  mongodb:
+    image: mongo:2.6
+    ports:
+      - "27017:27017"
+

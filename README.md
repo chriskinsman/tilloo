@@ -10,8 +10,14 @@
 ```bash
 git clone https://github.com/chriskinsman/tilloo.git
 cd tilloo
+npm install
 bower install
 npm link
+```
+
+## Optional / Alternate Docker Installation
+```bash
+docker-compose up
 ```
 
 ## Features

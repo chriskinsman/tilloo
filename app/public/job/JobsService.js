@@ -1,12 +1,23 @@
 
 angular.module('tillooApp.job')
-    .factory('jobService', ['$http', function($http) {
+    .factory('jobService', ['$http', '$location', '$q', function($http, $location, $q) {
         'use strict';
 
         var JobService = {};
 
-        JobService.getConfig = function getJobs() {
-            return $http.get("/api/config", {cache: true});
+        JobService.getConfig = function getConfig() {
+            // Tweak to make webSockets work when running docker-compose
+            // on a localhost for development
+            var deferred = $q.defer();
+            $http.get("/api/config", {cache: true}).then(function(result) {
+                if($location.host()==='localhost') {
+                    result.data.scheduler.host = 'localhost';
+                }
+
+                deferred.resolve(result);
+            });
+
+            return deferred.promise;
         };
 
         JobService.getJobs = function getJobs() {
