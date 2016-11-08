@@ -1,0 +1,5 @@
+FROM ubuntu:14.04
+
+COPY . /tilloo
+
+RUN /tilloo/baseimage/install.sh

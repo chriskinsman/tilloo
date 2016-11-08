@@ -1,0 +1,29 @@
+version: '2'
+services:
+  tilloo-scheduler:
+    image: tilloo/scheduler
+    depends_on:
+      - mongodb
+      - disque
+    links:
+      - disque
+      - mongodb
+  tilloo-web:
+    image: tilloo/webserver
+    depends_on:
+      - tilloo-scheduler
+    links:
+      - disque
+      - mongodb
+      - tilloo-scheduler
+  tilloo-worker:
+    image: tilloo/worker
+    depends_on:
+      - tilloo-scheduler
+    links:
+      - disque
+      - tilloo-scheduler
+  disque:
+    image: jobflow/disque
+  mongodb:
+    image: mongo:2.6

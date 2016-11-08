@@ -1,0 +1,5 @@
+FROM tilloo/baseimage
+ENV PORT 7770
+WORKDIR /tilloo
+EXPOSE 7770
+CMD tilloo-web

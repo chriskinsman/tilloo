@@ -1,0 +1,4 @@
+FROM tilloo/baseimage
+WORKDIR /tilloo
+EXPOSE 7700
+CMD tilloo-scheduler

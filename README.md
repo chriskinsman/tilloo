@@ -10,6 +10,7 @@
 ```bash
 git clone https://github.com/chriskinsman/tilloo.git
 cd tilloo
+npm install
 bower install
 npm link
 ```

@@ -1,0 +1,3 @@
+FROM tilloo/baseimage
+WORKDIR /tilloo
+CMD tilloo-worker
