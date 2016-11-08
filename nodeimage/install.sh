@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cd /tilloo/baseimage
+cd /tilloo/nodeimage
 
 locale-gen en_US en_US.UTF-8 && \
 dpkg-reconfigure locales
@@ -50,11 +50,5 @@ apt-get clean
 apt-get autoclean
 apt-get autoremove
 
-echo "================= Install Dependencies ==================="
-cd /tilloo
-npm install
-npm install bower -g
-bower --allow-root install
-
-echo "================= Removing /tilloo/baseimage ==============="
-rm -rf /tilloo/baseimage
+echo "================= Removing /tilloo/nodeimage ==============="
+rm -rf /tilloo/nodeimage

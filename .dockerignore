@@ -8,3 +8,11 @@ npm-debug.log*
 node_modules
 app/bower_components
 .idea
+*.docker
+tests
+build-*.sh
+shippable.yml
+README.md
+LICENSE
+.gitignore
+docker-compose.yml

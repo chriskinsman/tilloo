@@ -1,5 +1,13 @@
-FROM tilloo/baseimage
+FROM tilloo/base
+
+COPY wait-for-it.sh /tilloo
+COPY lib /tilloo/lib
+COPY models /tilloo/models
+COPY app /tilloo/app
+COPY config.json /tilloo
+
+
 ENV PORT 7770
-WORKDIR /tilloo
+WORKDIR /tilloo/app
 EXPOSE 7770
-CMD tilloo-web
+CMD /tilloo/wait-for-it.sh mongodb:27017 -t 60 -- /tilloo/app/app.js

@@ -15,6 +15,11 @@ bower install
 npm link
 ```
 
+## Optional / Alternate Docker Installation
+```bash
+
+```
+
 ## Features
 
   * Full cli

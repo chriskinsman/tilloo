@@ -7,4 +7,3 @@ COPY bin /tilloo/bin
 COPY config.json /tilloo
 
 WORKDIR /tilloo
-CMD /tilloo/wait-for-it.sh mongodb:27017 -t 60 -- /tilloo/bin/worker.js

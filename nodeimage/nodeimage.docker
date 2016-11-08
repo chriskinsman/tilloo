@@ -1,0 +1,7 @@
+FROM ubuntu:14.04
+
+COPY . /tilloo/nodeimage
+
+RUN /tilloo/nodeimage/install.sh
+
+ENV PATH /root/.nvm/versions/node/v4.2.3/bin:$PATH

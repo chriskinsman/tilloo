@@ -8,8 +8,12 @@ services:
     links:
       - disque
       - mongodb
+    ports:
+      - "7700:7700"
   tilloo-web:
     image: tilloo/webserver
+    ports:
+      - "7770:7770"
     depends_on:
       - tilloo-scheduler
     links:
@@ -25,5 +29,10 @@ services:
       - tilloo-scheduler
   disque:
     image: jobflow/disque
+    ports:
+      - "7711:7711"
   mongodb:
     image: mongo:2.6
+    ports:
+      - "27017:27017"
+

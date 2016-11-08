@@ -1,0 +1,7 @@
+FROM tilloo/nodeimage
+
+COPY package.json /tilloo
+COPY .bowerrc /tilloo
+COPY bower.json /tilloo
+
+RUN cd /tilloo && npm install && npm install bower -g && bower --allow-root install

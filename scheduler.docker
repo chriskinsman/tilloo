@@ -1,4 +1,11 @@
-FROM tilloo/baseimage
+FROM tilloo/base
+
+COPY wait-for-it.sh /tilloo
+COPY lib /tilloo/lib
+COPY models /tilloo/models
+COPY bin /tilloo/bin
+COPY config.json /tilloo
+
 WORKDIR /tilloo
 EXPOSE 7700
-CMD tilloo-scheduler
+CMD /tilloo/wait-for-it.sh mongodb:27017 -t 60 -- /tilloo/bin/scheduler.js
