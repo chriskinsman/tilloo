@@ -25,5 +25,10 @@ build:
     - docker push tilloo/webserver:$BUILD_NUMBER
     - docker push tilloo/cli:$BUILD_NUMBER
 
+integrations:
+  hub:
+    - integrationName: DockerChrisKinsman
+      type: docker
+
   cache: true
 
