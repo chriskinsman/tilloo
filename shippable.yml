@@ -10,6 +10,7 @@ build:
     - bower --allow-root install
     - gulp lint
     - cd build-images
+    - pwd
     - build-all.sh
   cache: true
 
