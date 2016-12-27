@@ -1,6 +1,6 @@
 {
   "name": "tilloo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A distributed cron with cli and web ui",
   "repository": "https://github.com/chriskinsman/tilloo.git",
   "scripts": {
@@ -15,24 +15,24 @@
     "tilloo-web": "./app/app.js"
   },
   "dependencies": {
-    "async": "^1.5.2",
+    "async": "^2.1.4",
     "body-parser": "^1.15.0",
     "commander": "^2.9.0",
-    "compression": "^1.6.1",
-    "cron": "^1.1.0",
-    "debug": "^2.2.0",
+    "compression": "^1.6.2",
+    "cron": "^1.2.1",
+    "debug": "^2.5.2",
     "disque-eventemitter": "^0.2.0",
     "disqueue-node": "^1.1.1",
     "easy-table": "^1.0.0",
-    "express": "^4.13.4",
-    "moment": "^2.11.2",
-    "mongodb": "^2.1.7",
-    "mongoose": "^4.4.3",
-    "morgan": "^1.6.1",
-    "request": "^2.69.0",
-    "serve-favicon": "^2.3.0",
-    "socket.io": "^1.4.5",
-    "socket.io-client": "^1.4.5"
+    "express": "^4.14.0",
+    "moment": "^2.17.1",
+    "mongodb": "^2.2.16",
+    "mongoose": "^4.7.5",
+    "morgan": "^1.7.0",
+    "request": "^2.79.0",
+    "serve-favicon": "^2.3.2",
+    "socket.io": "^1.7.2",
+    "socket.io-client": "^1.7.2"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
@@ -40,7 +40,7 @@
     "jshint": "^2.9.1",
     "jshint-stylish": "^2.1.0",
     "map-stream": "0.0.6",
-    "nodeunit": "^0.9.1"
+    "nodeunit": "^0.10.2"
   },
   "engines": {
     "node": ">= 4.2.0"
