@@ -186,6 +186,13 @@ __Settings__
 * web - Settings pertaining to the web interface
   * port - The port to start the web interface on  
 
+## Notifications
+
+There are plugins available to send notifications to your monitoring system of choice.  A plugin to send email via Mandrill/MailChimp is included in the project. 
+
+Plugins:
+  * [Mandrill/MailChimp](https://www.npmjs.com/package/tilloo-plugin-mandrill)
+
 ## People
 
 The author is [Chris Kinsman](https://github.com/chriskinsman)

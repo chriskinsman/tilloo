@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 
+### Changed
+
+## [1.0.3] - 2017-04-07
+### Added
+- Notification plugin model.  This allows you to create your own notification plugins to send job failure / recovery messages to your monitoring platform of choice.
 
 ### Changed
-- Refactoring notification to reduce coupling in preparation for moving notification to a plugin model in a separate npm package.
+- Mandrill notification moved to plugin model.  The Mandrill plugin is included by default and should not require any config changes.
 
 ## [1.0.0] - 2015-11-08
 ### Added
