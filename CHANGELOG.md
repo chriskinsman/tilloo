@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.0.4] - 2017-04-21
 ### Added
-- Index on runs.created_at for use when expiring old runs
+- Index on runs.createdAt for use when expiring old runs
 
 ### Changed
 
