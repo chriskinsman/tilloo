@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+## [1.0.4] - 2017-04-21
+### Added
+- Index on runs.created_at for use when expiring old runs
+
+### Changed
+
 ## [1.0.3] - 2017-04-07
 ### Added
 - Notification plugin model.  This allows you to create your own notification plugins to send job failure / recovery messages to your monitoring platform of choice.

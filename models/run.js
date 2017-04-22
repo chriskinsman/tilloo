@@ -11,7 +11,7 @@ var Run = new mongoose.Schema({
     timeout: {type: Number},
     status: {type:String, enum: [constants.JOBSTATUS.BUSY, constants.JOBSTATUS.IDLE, constants.JOBSTATUS.FAIL,constants.JOBSTATUS.SUCCESS], default: constants.JOBSTATUS.IDLE},
     result: {type:Number},
-    createdAt: {type: Date, default: function() { return new Date();}},
+    createdAt: {type: Date, default: function() { return new Date();}, index: true},
     updatedAt: {type: Date, default: function() { return new Date();}},
     startedAt:{type: Date},
     completedAt:{type: Date},
