@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Behavior of expireruns.  If a mongodb timeout is encountered it will keep trying to expire other records
+- Out deprecated mongoose mpromises library for native nodejs one
 
 ## [1.0.4] - 2017-04-21
 ### Added

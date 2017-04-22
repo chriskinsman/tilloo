@@ -16,6 +16,7 @@ var Script = require('../lib/script');
 
 var disq = new Disqueue(config.disque);
 mongoose.connect(config.db);
+mongoose.Promise = global.Promise;
 var debug = require('debug')('tilloo:worker');
 
 var _runningScripts = {};

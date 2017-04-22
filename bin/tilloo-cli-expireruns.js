@@ -8,6 +8,7 @@ var config = require('../lib/config');
 var runs = require('../lib/runs');
 
 mongoose.connect(config.db);
+mongoose.Promise = global.Promise;
 
 commander.version('0.0.1')
     .usage('<days>', 'Expire jobs created <days> ago', parseInt)
