@@ -13,7 +13,7 @@ gulp.task('lint', gulp.series(lintClient, lintServer));
 
 // Lint Task
 function lintClient() {
-    return gulp.src([srcDir + '/public/**/*.js', '!' + srcDir + '/public/assets/libs/**/*.js'])
+    return gulp.src([srcDir + '/public/**/*.js', '!' + srcDir + '/public/assets/libs/**/*.js', '!' + srcDir + '/public/node_modules/**/*.js'])
         .pipe(jshint({browser:true, globals:{angular:false}}))
         .pipe(jshint.reporter(stylish))
         .pipe(jshint.reporter('fail'));
@@ -21,7 +21,7 @@ function lintClient() {
 
 // Lint Task
 function lintServer() {
-    return gulp.src(['./**/*.js', '!' + srcDir + '/bower_components/**/*.js', '!' + srcDir + '/public/**/*.js', '!./node_modules/**', '!./ve/**/*'])
+    return gulp.src(['./**/*.js', '!' + srcDir + '/public/node_modules/**/*.js', '!' + srcDir + '/public/**/*.js', '!./node_modules/**', '!./ve/**/*'])
         .pipe(jshint({node:true, globals: {}}))
         .pipe(jshint.reporter(stylish))
         .pipe(jshint.reporter('fail'));
