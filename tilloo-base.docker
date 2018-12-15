@@ -1,6 +1,6 @@
 FROM tilloo/nodeimage
 
-COPY package.json package-lock.json /tilloo
-COPY app/public/package.json app/public/package-lock.json /tilloo/app/public
+COPY package.json package-lock.json /tilloo/
+COPY app/public/package.json app/public/package-lock.json /tilloo/app/public/
 
 RUN cd /tilloo && npm ci && cd app/public && npm ci
