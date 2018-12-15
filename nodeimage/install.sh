@@ -41,8 +41,8 @@ export NVM_DIR="/root/.nvm"
 echo "source ~/.nvm/nvm.sh" >> $HOME/.bashrc
 
 
-echo "================= Installing latest nodejs 4.2.3 ==================="
-. /root/.nvm/nvm.sh && nvm install 4.2.3 && nvm use 4.2.3 && nvm alias default 4.2.3
+echo "================= Installing latest nodejs 10.13.0 ==================="
+. /root/.nvm/nvm.sh && nvm install 10.13.0 && nvm use 10.13.0 && nvm alias default 10.13.0
 
 
 echo "================= Cleaning package lists ==================="
