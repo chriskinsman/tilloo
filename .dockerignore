@@ -6,7 +6,7 @@ npm-debug.log*
 # Dependency directory
 # https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
 node_modules
-app/bower_components
+app/node_modules
 .idea
 *.docker
 tests

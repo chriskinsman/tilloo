@@ -29,7 +29,7 @@ app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(favicon(__dirname + '/public/assets/favicon.ico'));
-app.use('/bower_components', express.static(path.join(__dirname, 'bower_components')));
+app.use('/node_modules', express.static(path.join(__dirname, 'public/node_modules')));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.use('/api/config', express.static(path.join(__dirname, '../config.json')));
@@ -56,7 +56,7 @@ app.use(function(err, req, res, next) {
     });
 });
 
-console.info('bower_components: ' + path.join(__dirname, 'bower_components'));
+console.info('node_modules: ' + path.join(__dirname, 'public/node_modules'));
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));

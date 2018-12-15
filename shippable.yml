@@ -1,14 +1,15 @@
 language: node_js
 node_js:
-  - 4.2.2
+  - 10.13.0
 
 
 build:
   ci:
-    - npm install gulp -g
-    - npm install
-    - bower --allow-root install
-    - gulp lint
+    - npm install gulp@4.0.0 -g
+    - npm ci
+    - pushd app/public
+    - npm ci
+    - popd
     - pushd nodeimage
     - docker build -t tilloo/nodeimage:$BUILD_NUMBER -f nodeimage.docker .
     - docker tag -f tilloo/nodeimage:$BUILD_NUMBER tilloo/nodeimage:latest
@@ -36,6 +37,4 @@ integrations:
   hub:
     - integrationName: DockerChrisKinsman
       type: docker
-
-  cache: true
 
