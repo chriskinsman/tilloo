@@ -20,6 +20,7 @@ var status = require('../lib/disqstatus');
 var iostatus = require('../lib/iostatus');
 
 mongoose.connect(config.db);
+mongoose.Promise = global.Promise;
 var debug = require('debug')('tilloo:scheduler');
 
 var _loadedJobs = {};

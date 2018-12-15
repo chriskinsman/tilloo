@@ -10,6 +10,7 @@ var config = require('../lib/config');
 var Run = require('../models/run');
 
 mongoose.connect(config.db);
+mongoose.Promise = global.Promise;
 
 commander.version('0.0.1')
     .usage('<jobId>', 'Id of job')

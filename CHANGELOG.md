@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+## [1.0.5] - 2017-10-13
+### Added
+- Nothing
+
+### Changed
+- Behavior of expireruns.  If a mongodb timeout is encountered it will keep trying to expire other records
+- Switched out deprecated mongoose mpromises library for native nodejs one
+
 ## [1.0.4] - 2017-04-21
 ### Added
 - Index on runs.createdAt for use when expiring old runs

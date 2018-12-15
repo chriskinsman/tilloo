@@ -8,6 +8,7 @@ var config = require('../lib/config');
 var jobs = require('../lib/jobs');
 
 mongoose.connect(config.db);
+mongoose.Promise = global.Promise;
 
 function list(val) {
     return val.split(',');

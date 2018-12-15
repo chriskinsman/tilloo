@@ -10,6 +10,7 @@ var config = require('../lib/config');
 var Job = require('../models/job');
 
 mongoose.connect(config.db);
+mongoose.Promise = global.Promise;
 
 var table = new Table();
 Job.find({deleted: false}, null, {sort: {name: 1}}, function(err, jobs) {

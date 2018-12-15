@@ -22,6 +22,10 @@ npm link
 docker-compose up
 ```
 
+## Future Direction
+
+I am getting ready to make some major changes to Tillo.  Currently 
+
 ## Features
 
   * Full cli
@@ -30,6 +34,17 @@ docker-compose up
   * No downtime deploys
   * Up and running in 15 minutes.
   
+## Upcoming Changes
+
+Tilloo has been a great tool for distributed cron at my current startup for the last two years. We are now moving to containers and want to add the ability to schedule runs in containers.  As we thought through this we decided to radically change the implementation of Tilloo.  I have created a v1.0 branch for folks who want to continue to use the older version.  Master will become the containerized implementation.  I plan on making the following changes:
+
+  * Move from MongoDb to a combination of DynamoDb and AWS Cloudwatch Logs
+  * Eliminate worker.  Scheduler will instead schedule container execution against AWS ECS
+  * Web interface will change to allow you to specify parameters to launch containers using AWS ECS Tasks.
+  * Scheduler will run in an AWS ECS Service by default
+  * Web will run in an AWS ECS Service by default
+  * Terraform will be used to provision AWS infrastructure
+
 ## Background
   
 I have been a long time user of Sooner.io <https://github.com/seven1m/sooner.io> but have hit issues around

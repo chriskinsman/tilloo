@@ -14,6 +14,7 @@ var favicon = require('serve-favicon');
 var config = require('../lib/config');
 
 mongoose.connect(config.db);
+mongoose.Promise = global.Promise;
 
 var app = express();
 
