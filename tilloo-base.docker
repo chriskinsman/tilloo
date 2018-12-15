@@ -3,4 +3,4 @@ FROM tilloo/nodeimage
 COPY package.json package-lock.json /tilloo/
 COPY app/public/package.json app/public/package-lock.json /tilloo/app/public/
 
-RUN cd /tilloo && npm ci && cd app/public && npm ci
+RUN cd /tilloo && npm ci --only=production && cd app/public && npm ci --only=production
