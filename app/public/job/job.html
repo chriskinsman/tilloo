@@ -1,57 +1,10 @@
-<div id="details" ng-show="showDetail">
-    <div layout="column" layout-gt-xs="row">
-        <md-input-container>
-            <input type="text" ng-model="job.name" placeholder="Name">
-        </md-input-container>
-        <md-input-container>
-            <input type="text" ng-model="job.schedule" disabled placeholder="Schedule">
-        </md-input-container>
-        <md-input-container>
-            <input type="text" ng-model="job.queueName" disabled placeholder="Queue">
-        </md-input-container>
-        <md-input-container>
-            <md-checkbox ng-model="job.enabled" aria-label="Enabled">Enabled</md-checkbox>
-        </md-input-container>
-    </div>
-    <div layout="column" layout-gt-xs="row">
-        <md-input-container>
-            <label>Description</label>
-            <textarea ng-model="job.description"></textarea>
-        </md-input-container>
-    </div>
-
-    <div layout="column" layout-gt-xs="row">
-        <md-input-container>
-            <input type="text" ng-model="job.path" placeholder="Path">
-        </md-input-container>
-        <md-input-container>
-            <input type="text" ng-model="job.displayArgs" disabled placeholder="Args">
-        </md-input-container>
-        <md-input-container>
-            <input type="text" ng-model="job.timeout" placeholder="Timeout">
-        </md-input-container>
-        <md-input-container>
-            <md-checkbox ng-model="job.mutex" aria-label="Mutex">Mutex</md-checkbox>
-        </md-input-container>
-    </div>
-    <div layout="column" layout-gt-xs="row">
-        <md-input-container>
-            <input type="text" ng-model="job.createdAt" disabled placeholder="createdAt">
-        </md-input-container>
-        <md-input-container>
-            <input type="text" ng-model="job.updatedAt" disabled placeholder="updatedAt">
-        </md-input-container>
-    </div>
-</div>
-
 <div flex layout="row">
     <md-table-container>
         <table md-table>
             <thead md-head md-order="query.order" md-on-reorder="onReorder" class="md-head">
             <tr md-row>
                 <th md-column md-order-by="_id"><span>Id</span></th>
-                <th md-column md-order-by="worker"><span>Worker</span></th>
-                <th md-column md-order-by="pid" md-numeric><span>PID</span></t>
+                <th md-column md-order-by="pod"><span>Pod</span></th>
                 <th md-column md-order-by="result" md-numeric><span>Result</span></th>
                 <th md-column md-order-by="startedAt"><span>Started</span></th>
                 <th md-column md-order-by="completedAt"><span>Completed</span></th>
@@ -64,8 +17,7 @@
             <tbody md-body>
             <tr md-row ng-repeat="run in runs | orderBy: query.order">
                 <td md-cell><a ng-href="/run/{{run._id}}">{{run._id}}</a></td>
-                <td md-cell>{{run.worker}}</td>
-                <td md-cell>{{run.pid}}</td>
+                <td md-cell>{{run.pod}}</td>
                 <td md-cell>{{run.result}}</td>
                 <td md-cell>{{run.startedAt | date : 'M/d/yy h:mm a'}}</td>
                 <td md-cell>{{run.completedAt | date : 'M/d/yy h:mm a'}}</td>

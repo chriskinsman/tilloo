@@ -52,16 +52,16 @@ angular.module('tillooApp.job')
 
         $scope.deleteJob = function deleteJob(jobId,jobName, event) {
             var confirm = $mdDialog.confirm()
-                  .title('Delete job?')
-                  .textContent('Are you sure you want to delete ' + jobName + '?')
-                  .ariaLabel('Delete job confirmation')
-                  .targetEvent(event)
-                  .ok('Delete Job')
-                  .cancel('Cancel');
+                .title('Delete job?')
+                .textContent('Are you sure you want to delete ' + jobName + '?')
+                .ariaLabel('Delete job confirmation')
+                .targetEvent(event)
+                .ok('Delete Job')
+                .cancel('Cancel');
             $mdDialog.show(confirm).then(function() {                  
-              jobService.deleteJob(jobId);
+                jobService.deleteJob(jobId);
             }, function() {
-              // User canceled, do nothing
+                // User canceled, do nothing
             });
               
         };
@@ -90,8 +90,8 @@ angular.module('tillooApp.job')
         };
 
         function AddController($scope, $mdDialog) {
-            $scope.title = "Add Job";
-            $scope.OkTitle = "Add";
+            $scope.title = 'Add Job';
+            $scope.OkTitle = 'Add';
             $scope.job = {
                 schedule: '0 0 */1 * * *',
                 queueName: 'tilloo.worker',
@@ -113,8 +113,8 @@ angular.module('tillooApp.job')
         }
 
         function EditController($scope, $mdDialog, jobId) {
-            $scope.title = "Edit Job";
-            $scope.OkTitle = "Update";
+            $scope.title = 'Edit Job';
+            $scope.OkTitle = 'Update';
             jobService.getJob(jobId).then(function(result) {
                 $scope.job = result.data;
             });

@@ -1,11 +1,11 @@
 #! /usr/bin/env node
 'use strict';
 
-var mongoose = require('mongoose');
-var commander = require('commander');
+const mongoose = require('mongoose');
+const commander = require('commander');
 
-var config = require('../lib/config');
-var jobs = require('../lib/jobs');
+const config = require('../lib/config');
+const jobs = require('../lib/jobs');
 
 mongoose.connect(config.db);
 mongoose.Promise = global.Promise;

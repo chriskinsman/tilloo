@@ -12,11 +12,6 @@ angular.module('tillooApp.job')
             pageSize: 20
         };
 
-        $scope.showDetail = false;
-        $scope.toggleDetails = function toggleDetails() {
-            $scope.showDetail = !$scope.showDetail;
-        };
-
         $scope.onPaginate = function(page, limit) {
             $scope.query.page = page;
             $scope.query.pageSize = limit;

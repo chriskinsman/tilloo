@@ -1,0 +1,217 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tilloo-admin
+  namespace: tilloo-services
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: tilloo-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: tilloo-admin
+  namespace: tilloo-services
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: disquetron-service
+  namespace: tilloo-services
+spec:
+  ports:
+  - port: 7711
+    targetPort: 7711
+  selector:
+    app: disquetron
+    namespace: tilloo-services
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: disquetron-deployment
+  namespace: tilloo-services
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate  
+  selector:
+    matchLabels:
+      app: disquetron
+      namespace: tilloo-services
+  template:
+    metadata:
+      labels:
+        app: disquetron
+        namespace: tilloo-services
+    spec:
+      containers:
+      - name: disquetron
+        image: jobflow/disque
+        ports:
+        - containerPort: 7711
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: scheduler-service
+  namespace: tilloo-services
+  annotations:
+    alb.ingress.kubernetes.io/healthcheck-path: /socket.io/
+    alb.ingress.kubernetes.io/success-codes: 400
+    alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=86400
+spec:
+  type: NodePort
+  ports:
+  - port: 7700
+    targetPort: 7700
+  selector:
+    app: scheduler
+    namespace: tilloo-services
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scheduler-deployment
+  namespace: tilloo-services
+spec:  
+  replicas: 1
+  strategy:
+    type: Recreate  
+  selector:
+    matchLabels:
+      app: scheduler
+      namespace: tilloo-services
+  template:
+    metadata:
+      labels:
+        app: scheduler
+        namespace: tilloo-services
+    spec:
+      serviceAccountName: tilloo-admin
+      containers:
+      - name: scheduler
+        image: tilloo/k8s:prod
+        # env:
+        # - name: DEBUG
+        #   value: tilloo:*
+        command: ['/tilloo/bin/scheduler.js']
+        ports:
+        - containerPort: 7700
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+  namespace: tilloo-services
+spec:
+  type: NodePort
+  ports:
+  - port: 7770
+    targetPort: 7770
+  selector:
+    app: web
+    namespace: tilloo-services
+---  
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-deployment
+  namespace: tilloo-services
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate  
+  selector:
+    matchLabels:
+      app: web
+      namespace: tilloo-services
+  template:
+    metadata:
+      labels:
+        app: web
+        namespace: tilloo-services
+    spec:
+      serviceAccountName: tilloo-admin
+      containers:
+      - name: web
+        image: tilloo/k8s:prod
+        # env:
+        # - name: DEBUG
+        #   value: tilloo:*
+        command: ['/tilloo/app/app.js']
+        ports:
+        - containerPort: 7770
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: logger
+  namespace: tilloo-services
+spec:
+  selector:
+    matchLabels:
+      app: logger
+      namespace: tilloo-services
+  template:
+    metadata:
+      labels:
+        app: logger
+        namespace: tilloo-services
+    spec:      
+      serviceAccountName: tilloo-admin
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+      containers:
+      - name: logger
+        image: tilloo/k8s:prod
+        # env:
+        # - name: DEBUG
+        #   value: tilloo:logforwarder
+        command: ['/tilloo/bin/k8slogger.js']
+        volumeMounts:
+        - name: varlog
+          mountPath: /var/log
+        - name: varlib
+          mountPath: /var/lib/docker/containers
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: varlog
+        hostPath:
+          path: /var/log
+          type: Directory
+      - name: varlib
+        hostPath:
+          path: /var/lib/docker/containers
+          type: Directory
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: tilloo-ingress
+  namespace: tilloo-services
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 7700}, {"HTTP": 7770}]'
+    alb.ingress.kubernetes.io/ip-address-type: ipv4
+    alb.ingress.kubernetes.io/target-type: instance
+
+spec:
+  rules:
+    - host: tilloo.example.com
+      http:
+        paths:
+          - path: /socket.io/*
+            backend:
+              serviceName: scheduler-service
+              servicePort: 7700
+          - path: /*
+            backend:
+              serviceName: web-service
+              servicePort: 7770

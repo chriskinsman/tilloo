@@ -137,8 +137,16 @@ td.md-cell, th.md-column {
   padding: 0 32px 0 0 !important;
 }
 
-table.md-table:not(.md-row-select) td.md-cell:nth-child(n+2):nth-last-child(n+2), table.md-table:not(.md-row-select) th.md-column:nth-child(n+2):nth-last-child(n+2)  {
+/* table.md-table:not(.md-row-select) td.md-cell:nth-child(n+2):nth-last-child(n+2), table.md-table:not(.md-row-select) th.md-column:nth-child(n+2):nth-last-child(n+2)  {
 
+} */
+
+md-dialog {
+  max-height: 95%;
+}
+
+md-dialog .md-dialog-content {
+  padding: 5px 24px 0 24px;
 }
 
 .output {

@@ -1,34 +1,34 @@
 #! /usr/bin/env node
 'use strict';
 
-var path = require('path');
-var http = require('http');
+const path = require('path');
+const http = require('http');
 
-var mongoose = require('mongoose');
-var express = require('express');
-var compression = require('compression');
-var morgan = require('morgan');
-var bodyParser = require('body-parser');
-var favicon = require('serve-favicon');
+const mongoose = require('mongoose');
+const express = require('express');
+const compression = require('compression');
+//const morgan = require('morgan');
+const bodyParser = require('body-parser');
+const favicon = require('serve-favicon');
 
-var config = require('../lib/config');
+const config = require('../lib/config');
 
 mongoose.connect(config.db);
 mongoose.Promise = global.Promise;
 
-var app = express();
+const app = express();
 
 // Routes
-var job = require('./routes/job');
+const job = require('./routes/job');
 
 // All environments
 app.set('port', process.env.PORT || config.web.port);
-app.use(morgan("dev"));
+//app.use(morgan('dev'));
 app.use(compression());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(favicon(__dirname + '/public/assets/favicon.ico'));
+app.use(favicon(path.join(__dirname, '/public/assets/favicon.ico')));
 app.use('/node_modules', express.static(path.join(__dirname, 'public/node_modules')));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
@@ -45,18 +45,18 @@ app.get('/api/run/:runId', job.getRun);
 app.get('/api/run/:runId/output', job.outputForRun);
 app.post('/api/run/:runId/stop', job.stopRun);
 
-app.get('*', function(req, res){ res.sendFile(__dirname + '/public/index.html');});
+app.get('*', function (req, res) {
+    res.sendFile(path.join(__dirname, '/public/index.html'));
+});
 
 app.use(function(err, req, res, next) {
     console.dir(err);
     res.status(err.status || 500);
-    res.send( {
+    res.send({
         message: err.message,
         error: err
     });
 });
-
-console.info('node_modules: ' + path.join(__dirname, 'public/node_modules'));
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));

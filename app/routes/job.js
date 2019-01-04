@@ -1,15 +1,15 @@
 'use strict';
 
-var async = require('async');
+const async = require('async');
 
-var Job = require('../../models/job');
-var Run = require('../../models/run');
-var Log = require('../../models/log');
+const Job = require('../../models/job');
+const Run = require('../../models/run');
+const Log = require('../../models/log');
 
-var runs = require('../../lib/runs');
-var jobs = require('../../lib/jobs');
+const runs = require('../../lib/runs');
+const jobs = require('../../lib/jobs');
 
-var JobRoutes = {};
+const JobRoutes = {};
 
 JobRoutes.getJobs = function getJobs(req, res) {
     Job.findAllJobs(function(err, jobs) {
@@ -24,7 +24,7 @@ JobRoutes.getJobs = function getJobs(req, res) {
 };
 
 JobRoutes.getJob = function getJob(req, res) {
-    var jobId = req.params.jobId;
+    const jobId = req.params.jobId;
     Job.findByJobId(jobId, function(err, job) {
         if(err) {
             res.status(500).send(err);
@@ -36,7 +36,7 @@ JobRoutes.getJob = function getJob(req, res) {
 };
 
 JobRoutes.getRun = function getRun(req, res) {
-    var runId = req.params.runId;
+    const runId = req.params.runId;
     Run.findByRunId(runId, function(err, run) {
         if(err) {
             res.status(500).send(err);
@@ -48,7 +48,7 @@ JobRoutes.getRun = function getRun(req, res) {
 };
 
 JobRoutes.getJobByRunId = function getJobByRunId(req, res) {
-    var runId = req.params.runId;
+    const runId = req.params.runId;
     Run.findByRunId(runId, function(err, run) {
         if(err) {
             res.status(500).send(err);
@@ -67,15 +67,15 @@ JobRoutes.getJobByRunId = function getJobByRunId(req, res) {
 
 };
 
-JobRoutes.getRuns = function getJobs(req, res) {
-    var jobId = req.params.jobId;
-    var page = parseInt(req.query.page);
-    var pageSize = parseInt(req.query.pageSize);
-    var sort = req.query.sort;
+JobRoutes.getRuns = function getRuns(req, res) {
+    const jobId = req.params.jobId;
+    const page = parseInt(req.query.page, 10);
+    const pageSize = parseInt(req.query.pageSize, 10);
+    let sort = req.query.sort;
 
     async.parallel({
         runs: function(done) {
-            sort = sort || {startedAt: -1};
+            sort = sort || { startedAt: -1 };
             if(page && pageSize) {
                 Run.findRunsForJobPaginated(jobId, page, pageSize, sort, done);
             }
@@ -97,7 +97,7 @@ JobRoutes.getRuns = function getJobs(req, res) {
 };
 
 JobRoutes.outputForRun = function outputForRun(req, res) {
-    var runId = req.params.runId;
+    const runId = req.params.runId;
 
     Log.findOutputForRun(runId, function(err, output) {
         if(err) {
@@ -111,7 +111,7 @@ JobRoutes.outputForRun = function outputForRun(req, res) {
 };
 
 JobRoutes.stopRun = function stopRun(req, res) {
-    var runId = req.params.runId;
+    const runId = req.params.runId;
 
     runs.killRun(runId, false, function(err) {
         if(err) {
@@ -124,7 +124,7 @@ JobRoutes.stopRun = function stopRun(req, res) {
 };
 
 JobRoutes.triggerRun = function triggerRun(req, res) {
-    var jobId = req.params.jobId;
+    const jobId = req.params.jobId;
 
     jobs.triggerRun(jobId, function(err) {
         if(err) {
@@ -137,7 +137,7 @@ JobRoutes.triggerRun = function triggerRun(req, res) {
 };
 
 JobRoutes.deleteJob = function deleteJob(req, res) {
-    var jobId = req.params.jobId;
+    const jobId = req.params.jobId;
 
     jobs.remove(jobId, function(err) {
         if(err) {
@@ -150,7 +150,7 @@ JobRoutes.deleteJob = function deleteJob(req, res) {
 };
 
 JobRoutes.createJob = function createJob(req, res) {
-    var jobDef = req.body.jobDef;
+    const jobDef = req.body.jobDef;
 
     jobs.add(jobDef, function(err, job) {
         if(err) {
@@ -163,15 +163,15 @@ JobRoutes.createJob = function createJob(req, res) {
 };
 
 JobRoutes.updateJob = function updateJob(req, res) {
-    var jobDef = req.body.jobDef;
-    var jobId = req.params.jobId;
+    const jobDef = req.body.jobDef;
+    const jobId = req.params.jobId;
 
     jobs.update(jobId, jobDef, function(err) {
         if(err) {
             res.status(500).send(err);
         }
         else {
-            res.status(200).send("updated");
+            res.status(200).send('updated');
         }
     });
 };

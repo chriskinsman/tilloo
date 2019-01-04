@@ -7,20 +7,18 @@
 
 ## Installation
 
-```bash
-git clone https://github.com/chriskinsman/tilloo.git
-cd tilloo
-npm ci
-pushd app/public
-npm ci
-popd
-npm link
-```
+Prerequisites:
+- a running kubernetes installation
+- kubectl on the local machine connected to the remote k8s cluster
+- ingress configured on remote cluster
+- helm configured on remote cluster
 
-## Optional / Alternate Docker Installation
-```bash
-docker-compose up
-```
+Steps:
+- change hostname in k8s/config.json and k8s/app.yaml
+- docker build -t <yourrepo>:<yourtag> .
+- docker push <yourrepo>:<yourtag>
+- update k8s/app.yaml to reference your repo and tag
+- run k8s/install.sh
 
 ## Features
 
@@ -30,9 +28,9 @@ docker-compose up
   * No downtime deploys
   * Up and running in 15 minutes.
   
-## Upcoming Changes
+## Recent Changes
 
-Tilloo has been a great tool for distributed cron at my current startup for the last two years. We are now moving to containers and want to add the ability to schedule runs in containers.  As we thought through this we decided to radically change the implementation of Tilloo.  I have created a v1.0 branch for folks who want to continue to use the older version.  Master will become the containerized implementation.  I plan on making the following changes:
+Tilloo has been a great tool for distributed cron at my current startup for the last four years. We are now moving to containers and want to add the ability to schedule runs in containers.  As we thought through this we decided to radically change the implementation of Tilloo.  I have created a v1.0 branch for folks who want to continue to use the older version.  Master will become the containerized implementation.  I plan on making the following changes:
  
   * Eliminate worker.  Scheduler will instead schedule container execution against AWS EKS / Kubernetes
   * Web interface will change to allow you to specify parameters to launch containers using Kubernetes Jobs.
@@ -51,6 +49,9 @@ complex than what we needed.  That complexity came with overhead in terms of get
 
 I wrote this to help my startup get past these issues.
 
+We evaluated the built in cron support in k8s 1.10 but found it lacking in terms of tracking what each job is doing
+and liked the realtime nature of this solution.  We liked the concept of Jobs and the ability to schedule them across the k8s cluster.  We also liked the deployment flexibility of containers.  This motivated us to update tilloo to focus on a containerized workload on k8s.
+
 ## Getting Started
 
 ### Prerequisites
@@ -60,42 +61,37 @@ We leverage:
  * disque <https://github.com/antirez/disque> for communication
  
  
-Both of these must be installed prior to using Tilloo.
+Mongodb will be installed using helm with the default install script. The app.yaml will run a disque pod.
 
 ### Configuration
 
 The default configuration is:
- * Local install of mongodb on port 27017
- * Local install of disque on port 7711
- * Scheduler starts up and listens on port 7700
- * Optional web ui starts up and listens on port 7770
+ * StatefulSet running mongodb in the tilloo-services namespace on port 27017
+ * Deployment running disque on port 7711
+ * Deployment running scheduler listening on port 7700 with an ingress configured
+ * Deployment running web listening on port 7770 with an ingress configured
+ * DaemonSet running a logger service on each node
 
-If your environment satisfies the prequisites and is good with the above ports no changes are needed to config.json. 
+If your environment satisfies the prequisites and is good with the above ports you only need to update the host name in config.json. 
 
 ### Start up services
 
 The typical Tilloo environment consists of:
  * 1 Scheduler
- * 1 or more Workers
  * 1 Web UI
+ * 1 logger on each k8s node
  
-To get started run the following commands:
-
-``tilloo-scheduler``
-
-``tilloo-worker``
-
-``tilloo-web``
-
-Open a web browser to http://localhost:7770.
+ Once everything is installed in k8s open a web browser to http://<yourhostname>:7770.
 
 Enjoy!
 
 ## CLI Documentation
 
+In a k8s environment the cli is best run from an interactive shell started on the k8s cluster inside the tilloo-services namespace.
+
 Running npm link will put symlinks to the tilloo-cli into your /usr/local/bin directory.
 
-### tilloo-cli addjob &lt;schedule&gt; &lt;path&gt; [options]
+### tilloo-cli addjob &lt;schedule&gt; &lt;imageuri&gt; [options]
 
 Adds a job to the system.  
 
@@ -107,8 +103,9 @@ __Arguments__
 __Options__
 
 * --jobname &lt;name&gt; - Friendly name of job.  If not specified defaults to the path.
+* --path &lt;path&gt; - Optional path to executable to run inside container
 * --timeout &lt;seconds&gt; - Max time to allow job to run before it is killed.
-* --queue &lt;queue&gt; - Name of queue to send job to.  Defaults to: tilloo.worker
+* --nodeselector &lt;nodeselector&gt; - Node selector expression to tie run of job to a subset of nodes
 * --jobargs &lt;args&gt; - Ordered comma separated list of job arguments i.e. --jobargs "300,test"
 * --jobdescription &lt;description&gt; - Notes about job
 * --mutex &lt;true||false&gt; - If set to true only a single instance of job is allowed to run.  Defaults to true.
@@ -192,8 +189,6 @@ __Settings__
   * port - The port the web sockets interface is exposed on.
   * zombieAge - If a job hasn't seen a heartbeat in this many minutes it is marked as failed.
   * zombieFrequency - How frequently the zombie garbage collector should start in minutes
-* worker - Settings pertaining to the worker
-  * parallelJobs - How many jobs should be allowed to run in parallel per worker
 * web - Settings pertaining to the web interface
   * port - The port to start the web interface on  
 

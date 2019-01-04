@@ -1,4 +1,4 @@
-<md-dialog aria-label="Edit Job"  ng-cloak>
+<md-dialog aria-label="{{title}}" ng-cloak>
     <form>
         <md-toolbar>
             <div class="md-toolbar-tools">
@@ -18,13 +18,16 @@
                     <input type="text" ng-model="job.schedule" placeholder="Schedule" required>
                 </md-input-container>
                 <md-input-container>
-                    <input type="text" ng-model="job.queueName" placeholder="Queue" required>
+                    <input type="text" ng-model="job.nodeSelector" placeholder="Node Selector">
                 </md-input-container>
                 <md-input-container>
                     <md-checkbox ng-model="job.enabled" aria-label="Enabled">Enabled</md-checkbox>
                 </md-input-container>
                 <md-input-container class="md-block">
-                    <input type="text" ng-model="job.path" placeholder="Path" required>
+                    <input type="text" ng-model="job.imageUri" placeholder="Container Image Uri" required>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <input type="text" ng-model="job.path" placeholder="Path">
                 </md-input-container>
                 <md-chips class="md-input-container" id='argument-chips' ng-model="job.args" placeholder="Args" secondary-placeholder="+Argument">
                 </md-chips>

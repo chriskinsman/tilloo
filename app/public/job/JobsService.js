@@ -9,7 +9,7 @@ angular.module('tillooApp.job')
             // Tweak to make webSockets work when running docker-compose
             // on a localhost for development
             var deferred = $q.defer();
-            $http.get("/api/config", {cache: true}).then(function(result) {
+            $http.get('/api/config', {cache: true}).then(function(result) {
                 if($location.host()==='localhost') {
                     result.data.scheduler.host = 'localhost';
                 }
@@ -75,9 +75,9 @@ angular.module('tillooApp.job')
 
             if (options.post === true)
             {
-                return $http.post("/api/" + path, params);
+                return $http.post('/api/' + path, params);
             } else {
-                return $http.get("/api/" + path, {params:params});
+                return $http.get('/api/' + path, {params:params});
             }
         };
 

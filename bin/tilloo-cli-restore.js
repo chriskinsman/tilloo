@@ -1,15 +1,15 @@
 #! /usr/bin/env node
 'use strict';
 
-var fs = require('fs');
-var mongoose = require('mongoose');
-var ObjectId = require('mongoose').Types.ObjectId;
-var commander = require('commander');
-var async = require('async');
+const fs = require('fs');
+const mongoose = require('mongoose');
+const ObjectId = require('mongoose').Types.ObjectId;
+const commander = require('commander');
+const async = require('async');
 
-var config = require('../lib/config');
-var jobs = require('../lib/jobs');
-var Job = require('../models/job');
+const config = require('../lib/config');
+const jobs = require('../lib/jobs');
+const Job = require('../models/job');
 
 mongoose.connect(config.db);
 mongoose.Promise = global.Promise;
@@ -35,17 +35,18 @@ fs.readFile(commander.args[0], function(err, data) {
     }
     else {
         try {
-            var restoreJobs = JSON.parse(data);
-            var errors = false;
-            var jobAdded = 0;
-            var jobUpdated = 0;
+            const restoreJobs = JSON.parse(data);
+            let errors = false;
+            let jobAdded = 0;
+            let jobUpdated = 0;
             async.eachSeries(restoreJobs, function(jobToRestore, done) {
                 Job.findById(new ObjectId(jobToRestore._id), function(err, job) {
                     if(!job) {
                         // Remove the id so we generate a new one
                         delete jobToRestore._id;
                         jobs.add(jobToRestore, function(err) {
-                            if(err) {
+                            if (err) {
+                                errors = true;
                                 console.error('Problem adding job: ');
                                 console.dir(jobToRestore);
                             }
@@ -57,7 +58,8 @@ fs.readFile(commander.args[0], function(err, data) {
                     }
                     else {
                         jobs.update(jobToRestore._id, jobToRestore, function(err) {
-                            if(err) {
+                            if (err) {
+                                errors = true;
                                 console.error('Problem updating job: ');
                                 console.dir(jobToRestore);
                             }

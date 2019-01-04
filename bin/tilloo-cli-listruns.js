@@ -1,13 +1,13 @@
 #! /usr/bin/env node
 'use strict';
 
-var mongoose = require('mongoose');
-var commander = require('commander');
-var Table = require('easy-table');
-var moment = require('moment');
+const mongoose = require('mongoose');
+const commander = require('commander');
+const Table = require('easy-table');
+const moment = require('moment');
 
-var config = require('../lib/config');
-var Run = require('../models/run');
+const config = require('../lib/config');
+const Run = require('../models/run');
 
 mongoose.connect(config.db);
 mongoose.Promise = global.Promise;
@@ -22,8 +22,8 @@ if(commander.args.length !== 1) {
 }
 
 
-var table = new Table();
-Run.findRunsForJob(commander.args[0], {startedAt: 1}, function(err, runs) {
+const table = new Table();
+Run.findRunsForJob(commander.args[0], { startedAt: 1 }, function(err, runs) {
     if(err) {
         console.error(err);
         process.exit(1);

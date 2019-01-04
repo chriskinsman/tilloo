@@ -1,29 +1,29 @@
 #! /usr/bin/env node
 'use strict';
 
-var util = require('util');
+const async = require('async');
+const mongoose = require('mongoose');
+const ObjectId = require('mongoose').Types.ObjectId;
+const moment = require('moment');
+const DisqEventEmitter = require('disque-eventemitter');
 
-var async = require('async');
-var mongoose = require('mongoose');
-var ObjectId = require('mongoose').Types.ObjectId;
-var moment = require('moment');
-var DisqEventEmitter = require('disque-eventemitter');
-
-var config = require('../lib/config');
-var constants = require('../lib/constants');
-var Job = require('../models/job');
-var Run = require('../models/run');
+const config = require('../lib/config');
+const constants = require('../lib/constants');
+const Job = require('../models/job');
+const Run = require('../models/run');
 // Don't remove.  Loading this causes logger to start
-var logger = require('../lib/logger');
+const logger = require('../lib/logwriter'); // eslint-disable-line no-unused-vars
 // Don't remove.  Loading this causes status to start
-var status = require('../lib/disqstatus');
-var iostatus = require('../lib/iostatus');
+const status = require('../lib/disqstatus'); // eslint-disable-line no-unused-vars
+// Don't remove.  Loading this causes jobstatus to start
+const jobStatus = require('../lib/k8s/jobstatus'); // eslint-disable-line no-unused-vars
+const iostatus = require('../lib/iostatus');
 
 mongoose.connect(config.db);
 mongoose.Promise = global.Promise;
-var debug = require('debug')('tilloo:scheduler');
+const debug = require('debug')('tilloo:scheduler');
 
-var _loadedJobs = {};
+const _loadedJobs = {};
 
 Job.loadAllJobs(function(err, jobs) {
     debug('loading jobs');
@@ -47,9 +47,9 @@ debug('zombie garbage collection interval: %d minutes', config.scheduler.zombieF
 setInterval(function() {
     debug('garbage collecting zombie runs');
     Run.find({
-        $and: [{updatedAt: {$lte: moment().subtract(config.scheduler.zombieAge, 'minutes').toDate()}},
-                {$or: [{status: constants.JOBSTATUS.BUSY}, {status: constants.JOBSTATUS.IDLE}]}
-            ]},
+        $and: [{ updatedAt: { $lte: moment().subtract(config.scheduler.zombieAge, 'minutes').toDate() } },
+                { $or: [{ status: constants.JOBSTATUS.BUSY }, { status: constants.JOBSTATUS.IDLE }] }
+            ] },
         function(err, zombieRuns) {
             async.eachLimit(zombieRuns, 5, function(zombieRun, done) {
                 debug('settting status to fail runId: %s', zombieRun._id);
@@ -82,7 +82,7 @@ setInterval(function() {
 
 // Used so scheduler is notified of changes and can add/remove/change jobs
 console.info('Listening to %s:%d queue: %s', config.disque.host, config.disque.port, constants.QUEUES.SCHEDULER);
-var ee = new DisqEventEmitter(config.disque, constants.QUEUES.SCHEDULER);
+const ee = new DisqEventEmitter(config.disque, constants.QUEUES.SCHEDULER);
 ee.on('job', function(job, done) {
     // Immediately ack job to remove from queue.  If we have a failure
     // we don't want to deal with job again, best to just restart the scheduler
@@ -112,7 +112,7 @@ ee.on('job', function(job, done) {
         function deleteJob(jobId, partOfUpdate, callback) {
             if(_loadedJobs[jobId]) {
                 // Get it
-                var loadedJob = _loadedJobs[jobId];
+                const loadedJob = _loadedJobs[jobId];
                 // Remove it from list
                 delete _loadedJobs[jobId];
                 // Stop it
@@ -126,7 +126,7 @@ ee.on('job', function(job, done) {
             callback();
         }
 
-        var message = JSON.parse(job.body);
+        const message = JSON.parse(job.body);
         switch(message.action) {
             case constants.SCHEDULERACTION.NEW:
                 // New job has been added.  Make sure to handle case where

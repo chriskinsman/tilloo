@@ -9,6 +9,26 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+## [2.0.0] - 2019-01-04
+### Added
+- Support for running the entire project in Kubernetes.
+
+### Changed
+- Dropped support for running outside Kubernetes.  Use v1.0.6 and the v1.0 branch for running outside Kubernetes
+- Dropped builds of individual containers for each role
+- Moves from Ubuntu based containers to Alpine based
+- Changed to a multi stage docker build to minimize image size
+
+## [1.0.6] - 2019-01-04
+### Added
+- package-lock.json to lock packages to specific versions
+
+### Changed
+- Eliminated bower and moved to using npm for client side libraries
+- Moved to node 10.13.0
+- npm install only production packages in build
+- Moved from jshint to eslint
+
 ## [1.0.5] - 2017-10-13
 ### Added
 - Nothing

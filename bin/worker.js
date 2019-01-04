@@ -1,59 +1,57 @@
 #! /usr/bin/env node
 'use strict';
 
-var util = require('util');
-var os = require('os');
+const os = require('os');
 
+const DisqEventEmitter = require('disque-eventemitter');
+const mongoose = require('mongoose');
+const Disqueue = require('disqueue-node');
+const commander = require('commander');
 
-var DisqEventEmitter = require('disque-eventemitter');
-var mongoose = require('mongoose');
-var Disqueue = require('disqueue-node');
-var commander = require('commander');
+const config = require('../lib/config');
+const constants = require('../lib/constants');
+const Script = require('../lib/script');
 
-var config = require('../lib/config');
-var constants = require('../lib/constants');
-var Script = require('../lib/script');
-
-var disq = new Disqueue(config.disque);
+const disq = new Disqueue(config.disque);
 mongoose.connect(config.db);
 mongoose.Promise = global.Promise;
-var debug = require('debug')('tilloo:worker');
+const debug = require('debug')('tilloo:worker');
 
-var _runningScripts = {};
+const _runningScripts = {};
 
-var workername = os.hostname() + ':' + process.pid;
+const workername = os.hostname() + ':' + process.pid;
 
 commander.version('0.0.1')
     .option('-q, --queue <queue>', 'Name of queue to process. defaults to tilloo.worker')
     .option('-p, --parallel <parallel>', 'Number of parallel jobs to support.  Overrides default', parseInt)
     .parse(process.argv);
 
-var queue = constants.QUEUES.DEFAULT_WORKER;
+let queue = constants.QUEUES.DEFAULT_WORKER;
 if(commander.queue) {
     queue = commander.queue;
 }
 
-var parallelJobs = config.worker.parallelJobs;
+let parallelJobs = config.worker.parallelJobs;
 if(commander.parallel) {
     parallelJobs = commander.parallel;
 }
 
 console.info('Listening to %s:%d queue: %s parallel: %d', config.disque.host, config.disque.port, queue, parallelJobs);
 
-var ee = new DisqEventEmitter(config.disque, queue, {concurrency: parallelJobs});
+const ee = new DisqEventEmitter(config.disque, queue, { concurrency: parallelJobs });
 ee.on('job', function(job, done) {
     ee.ack(job, function(err) {
         if(err) {
             console.error(err);
         }
-        var message = JSON.parse(job.body);
+        const message = JSON.parse(job.body);
         debug('Received job', message);
 
-        var script = new Script(message.jobId, message.runId, message.path, message.args, message.timeout);
+        const script = new Script(message.jobId, message.runId, message.path, message.args, message.timeout);
         script.on('output', function(message) {
             debug(message.output);
             message.createdAt = new Date();
-            disq.addJob({queue: constants.QUEUES.LOGGER, job: JSON.stringify(message), timeout: 0}, function(err) {
+            disq.addJob({ queue: constants.QUEUES.LOGGER, job: JSON.stringify(message), timeout: 0 }, function(err) {
                 if(err) {
                     console.error('Unable to queue output for jobId: %s, runId: %s, output: %s', message.jobId, message.runId, message.output);
                 }
@@ -63,14 +61,14 @@ ee.on('job', function(job, done) {
         script.on('status', function(message) {
             debug('Updating status for jobId: %s, runId: %s', message.jobId, message.runId, message);
             message.workername = workername;
-            disq.addJob({queue: constants.QUEUES.STATUS, job: JSON.stringify(message), timeout: 0}, function(err) {
+            disq.addJob({ queue: constants.QUEUES.STATUS, job: JSON.stringify(message), timeout: 0 }, function(err) {
                 if(err) {
                     console.error('Unable to queue status for jobId: %s, runId: %s, status: %s', message.jobId, message.runId, message);
                 }
             });
         });
 
-        var runningPid;
+        let runningPid;
         script.on('pid', function(pid) {
             runningPid = pid;
             _runningScripts[runningPid] = script;
@@ -87,16 +85,16 @@ ee.on('job', function(job, done) {
 
 
 // Listen on our worker name for kill messages
-var killQueue = constants.QUEUES.KILL_PREFIX + workername;
+const killQueue = constants.QUEUES.KILL_PREFIX + workername;
 console.info('Listening to %s:%d queue: %s', config.disque.host, config.disque.port, killQueue);
-var killee = new DisqEventEmitter(config.disque, killQueue);
+const killee = new DisqEventEmitter(config.disque, killQueue);
 killee.on('job', function(job, done) {
     killee.ack(job, function (err) {
         if (err) {
             console.error(err);
         }
 
-        var message = JSON.parse(job.body);
+        const message = JSON.parse(job.body);
         debug('Received kill', message);
 
         if(_runningScripts[message.pid]) {
@@ -107,7 +105,7 @@ killee.on('job', function(job, done) {
         else {
             // Running job not found so send back a fail status
             debug('pid: %d not found sending fail status', message.pid);
-            disq.addJob({queue: constants.QUEUES.STATUS, job: JSON.stringify({status:constants.JOBSTATUS.FAIL, type:constants.KILLTYPE.MANUAL}), timeout: 0}, function(err) {
+            disq.addJob({ queue: constants.QUEUES.STATUS, job: JSON.stringify({ status:constants.JOBSTATUS.FAIL, type:constants.KILLTYPE.MANUAL }), timeout: 0 }, function(err) {
                 if(err) {
                     console.error('Unable to queue status for jobId: %s, runId: %s, status: %s', job.jobId, message.runId, message);
                 }

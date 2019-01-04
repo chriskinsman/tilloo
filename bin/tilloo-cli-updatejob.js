@@ -1,11 +1,11 @@
 #! /usr/bin/env node
 'use strict';
 
-var mongoose = require('mongoose');
-var commander = require('commander');
+const mongoose = require('mongoose');
+const commander = require('commander');
 
-var config = require('../lib/config');
-var jobs = require('../lib/jobs');
+const config = require('../lib/config');
+const jobs = require('../lib/jobs');
 
 mongoose.connect(config.db);
 mongoose.Promise = global.Promise;
@@ -17,6 +17,8 @@ function list(val) {
 commander.version('0.0.1')
     .usage('<jobid> [options]')
     .option('-s, --schedule <schedule>', 'Schedule in cron form')
+    .option('-i, --imageuri <imageuri>')
+    .option('--nodeselector <nodeselector>')
     .option('-p, --path <path>')
     .option('-n, --jobname <jobname>', 'Name of job')
     .option('-t, --timeout <timeout>', 'Maximum time job should be allowed to run', parseInt)
@@ -34,14 +36,14 @@ function showHelpAndExit() {
     process.exit(1);
 }
 
-var jobId = commander.args[0];
+const jobId = commander.args[0];
 
 if(!jobId) {
     console.error('Must specify jobId');
     showHelpAndExit();
 }
 
-var jobDef = {};
+const jobDef = {};
 
 if(commander.enabled) {
     jobDef.enabled = commander.enabled.toLowerCase() === 'true';
@@ -53,6 +55,14 @@ if(commander.schedule) {
 
 if(commander.path) {
     jobDef.path = commander.path;
+}
+
+if (commander.imageuri) {
+    jobDef.imageUri = commander.imageuri;
+}
+
+if (commander.nodeselector) {
+    jobDef.nodeSelector = commander.nodeselector;
 }
 
 if(commander.jobname) {

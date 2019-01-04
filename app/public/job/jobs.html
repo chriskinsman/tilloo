@@ -6,7 +6,7 @@
                 <th md-column md-order-by="_id"><span>Id</span></th>
                 <th md-column md-order-by="name"><span>Name</span></th>
                 <th md-column><span>Schedule</span></th>
-                <th md-column md-order-by="queueName"><span>Queue</span></th>
+                <th md-column md-order-by="nodeSelector"><span>Node Selector</span></th>
                 <th md-column md-order-by="lastRanAt">Last Ran</th>
                 <th md-column md-order-by="lastStatus">Last Status</th>
                 <th md-column layout="row" layout-align="end center"><md-button class="md-fab md-mini" aria-label="Add Job" ng-click="addJob()">
@@ -18,7 +18,7 @@
                 <td md-cell><a ng-href="/job/{{job._id}}">{{job._id}}</a></td>
                 <td md-cell>{{job.name}}</td>
                 <td md-cell>{{job.schedule}}</td>
-                <td md-cell>{{job.queueName}}</td>
+                <td md-cell>{{job.nodeSelector}}</td>
                 <td md-cell>{{job.lastRanAt | date : 'M/d/yy h:mm a'}}</td>
                 <td md-cell>{{job.lastStatus}}</td>
                 <td md-cell>
