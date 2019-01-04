@@ -5,15 +5,10 @@ const path = require('path');
 
 const chokidar = require('chokidar');
 const debug = require('debug')('tilloo:k8slogger');
-const Disqueue = require('disqueue-node');
-const Tail = require('tail').Tail;
 
-const config = require('../lib/config');
 const constants = require('../lib/constants');
 const k8sClient = require('../lib/k8s/clientFactory');
 const LogForwarder = require('../lib/logforwarder');
-
-const disq = new Disqueue(config.disque);
 
 const _logRoot = '/var/log/containers/';
 const _processStartTime = new Date();
@@ -65,7 +60,7 @@ async function main() {
             _runningCheck = true;
             for (const runId in _runningLoggers) { // eslint-disable-line guard-for-in
                 debug(`Checking runId: ${runId}`);
-                const jobs = await k8sClient.apis.batch.v1.namespaces(constants.NAMESPACE).jobs.get({ body: { labelSelector: `runId=${runId}` } }); // eslint-disable-line no-await-in-loop                
+                const jobs = await k8sClient.apis.batch.v1.namespaces(constants.NAMESPACE).jobs.get({ body: { labelSelector: `runId=${runId}` } }); // eslint-disable-line no-await-in-loop
                 debug('checking job', jobs);
                 if (jobs.body.items.length > 0) {
                     const job = jobs.body.items[0];

@@ -24,7 +24,7 @@ function initializeStream() {
     jsonJobStream.on('data', (jobData) => {
         debug('jobData', jobData);
 
-        if (jobData.metadata && jobData.metadata.resourceVersion) {            
+        if (jobData.metadata && jobData.metadata.resourceVersion) {
             lastResourceVersion = jobData.metadata.resourceVersion;
             debug('Updating lastResourceVersion', lastResourceVersion);
         }
@@ -36,6 +36,6 @@ function initializeStream() {
 k8sClient.loadSpec().then(function () {
     k8sClient.api.v1.namespaces.get().then(function () {
         initializeStream();
-        setInterval(initializeStream, 1000 * 60 * 5);        
+        setInterval(initializeStream, 1000 * 60 * 5);
     });
 });
