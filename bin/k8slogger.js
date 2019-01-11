@@ -60,7 +60,7 @@ async function main() {
             _runningCheck = true;
             for (const runId in _runningLoggers) { // eslint-disable-line guard-for-in
                 debug(`Checking runId: ${runId}`);
-                const jobs = await k8sClient.apis.batch.v1.namespaces(constants.NAMESPACE).jobs.get({ body: { labelSelector: `runId=${runId}` } }); // eslint-disable-line no-await-in-loop
+                const jobs = await k8sClient.apis.batch.v1.namespaces(constants.NAMESPACE).jobs.get({ qs: { labelSelector: `runId=${runId}` } }); // eslint-disable-line no-await-in-loop
                 debug('checking job', jobs);
                 if (jobs.body.items.length > 0) {
                     const job = jobs.body.items[0];
@@ -70,6 +70,11 @@ async function main() {
                         _runningLoggers[runId].stop();
                         delete _runningLoggers[runId];
                     }
+                }
+                else {
+                    debug(`Job not found stopping tail on runId: ${runId}`);
+                    _runningLoggers[runId].stop();
+                    delete _runningLoggers[runId];
                 }
             }
             debug('Finished liveness check');

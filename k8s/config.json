@@ -17,5 +17,8 @@
     "notification": {
         "threshold": 3600,
         "plugins": {}
+    },
+    "jobEnvironmentVariables": {
+
     }
 }

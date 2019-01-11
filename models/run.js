@@ -15,7 +15,7 @@ const Run = new mongoose.Schema({
     updatedAt: { type: Date, default: function () { return new Date(); } }, // eslint-disable-line brace-style
     startedAt:{ type: Date },
     completedAt:{ type: Date },
-    pid: { type:String },
+    pod: { type:String },
     worker: { type:String }
 });
 

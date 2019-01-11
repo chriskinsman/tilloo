@@ -32,7 +32,7 @@ Run.findRunsForJob(commander.args[0], { startedAt: 1 }, function(err, runs) {
         runs.forEach(function(run) {
             table.cell('Id', run._id);
             table.cell('Worker', run.worker);
-            table.cell('PID', run.pid);
+            table.cell('Pod', run.pod);
             table.cell('Result', run.result);
             table.cell('Started', moment(run.startedAt).format('l LTS'));
             table.cell('Completed', moment(run.completedAt).format('l LTS'));

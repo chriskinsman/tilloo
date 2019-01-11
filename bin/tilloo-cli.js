@@ -6,6 +6,7 @@ commander
     .version('0.0.2')
     .command('addjob <schedule> <imageuri> [options]', 'Add a new job')
     .command('backup', 'Backup all jobs')
+    .command('clearcheckpoints', 'Clears all k8s stream checkpoints')
     .command('deletejob <jobid>', 'Delete a job')
     .command('expireruns <days>', 'Expire runs created <days> ago')
     .command('jobdetail <jobId>', 'Show detail for a job')

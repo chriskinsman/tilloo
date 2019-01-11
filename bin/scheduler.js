@@ -1,22 +1,24 @@
 #! /usr/bin/env node
 'use strict';
 
-const async = require('async');
 const mongoose = require('mongoose');
 const ObjectId = require('mongoose').Types.ObjectId;
-const moment = require('moment');
 const DisqEventEmitter = require('disque-eventemitter');
 
 const config = require('../lib/config');
 const constants = require('../lib/constants');
 const Job = require('../models/job');
-const Run = require('../models/run');
 // Don't remove.  Loading this causes logger to start
 const logger = require('../lib/logwriter'); // eslint-disable-line no-unused-vars
 // Don't remove.  Loading this causes status to start
 const status = require('../lib/disqstatus'); // eslint-disable-line no-unused-vars
-// Don't remove.  Loading this causes jobstatus to start
-const jobStatus = require('../lib/k8s/jobstatus'); // eslint-disable-line no-unused-vars
+// Don't remove.  Loading this causes jobStream to start
+const jobStream = require('../lib/k8s/jobstream'); // eslint-disable-line no-unused-vars
+// Don't remove.  Loading this causes eventStream to start
+const eventStream = require('../lib/k8s/eventstream'); // eslint-disable-line no-unused-vars
+// Don't remove.  Loading this causes the zombieRuns to start
+const zombieRuns = require('../lib/k8s/zombieruns'); // eslint-disable-line no-unused-vars
+
 const iostatus = require('../lib/iostatus');
 
 mongoose.connect(config.db);
@@ -38,47 +40,6 @@ Job.loadAllJobs(function(err, jobs) {
     console.info('Scheduler started connected to %s', config.db);
 });
 
-
-// Garbage collector to clean up orphaned jobs
-// Looks any run in a idle or busy state with an
-// updatedAt that is more than 5 minutes old and
-// marks it as failed
-debug('zombie garbage collection interval: %d minutes', config.scheduler.zombieFrequency);
-setInterval(function() {
-    debug('garbage collecting zombie runs');
-    Run.find({
-        $and: [{ updatedAt: { $lte: moment().subtract(config.scheduler.zombieAge, 'minutes').toDate() } },
-                { $or: [{ status: constants.JOBSTATUS.BUSY }, { status: constants.JOBSTATUS.IDLE }] }
-            ] },
-        function(err, zombieRuns) {
-            async.eachLimit(zombieRuns, 5, function(zombieRun, done) {
-                debug('settting status to fail runId: %s', zombieRun._id);
-                async.parallel([
-                    function(done) {
-                        zombieRun.status = constants.JOBSTATUS.FAIL;
-                        zombieRun.save(done);
-                    },
-                    function(done) {
-                        Job.findByJobId(zombieRun.jobId, function(err, job) {
-                            if(err) {
-                                console.error('Unable to find jobId: ' + zombieRun.jobId);
-                                done();
-                            }
-                            else {
-                                job.lastStatus = constants.JOBSTATUS.FAIL;
-                                job.save(done);
-                            }
-                        });
-                    }
-                ], done);
-            }, function(err) {
-                if(err) {
-                    console.error(err);
-                }
-            });
-        }
-    );
-}, config.scheduler.zombieFrequency * 60000);
 
 // Used so scheduler is notified of changes and can add/remove/change jobs
 console.info('Listening to %s:%d queue: %s', config.disque.host, config.disque.port, constants.QUEUES.SCHEDULER);

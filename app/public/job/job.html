@@ -4,8 +4,6 @@
             <thead md-head md-order="query.order" md-on-reorder="onReorder" class="md-head">
             <tr md-row>
                 <th md-column md-order-by="_id"><span>Id</span></th>
-                <th md-column md-order-by="pod"><span>Pod</span></th>
-                <th md-column md-order-by="result" md-numeric><span>Result</span></th>
                 <th md-column md-order-by="startedAt"><span>Started</span></th>
                 <th md-column md-order-by="completedAt"><span>Completed</span></th>
                 <th md-column md-order-by="status"><span>Status</span></th>
@@ -17,8 +15,6 @@
             <tbody md-body>
             <tr md-row ng-repeat="run in runs | orderBy: query.order">
                 <td md-cell><a ng-href="/run/{{run._id}}">{{run._id}}</a></td>
-                <td md-cell>{{run.pod}}</td>
-                <td md-cell>{{run.result}}</td>
                 <td md-cell>{{run.startedAt | date : 'M/d/yy h:mm a'}}</td>
                 <td md-cell>{{run.completedAt | date : 'M/d/yy h:mm a'}}</td>
                 <td md-cell>{{run.status}}</td>
