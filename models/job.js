@@ -96,7 +96,7 @@ Job.methods.startCron = function () {
     const self = this;
 
     this.__cron = new CronJob(this.schedule, function () {
-        debug('Cron trigger: %O', self);
+        debug('Cron trigger', self);
         if (self.mutex) {
             Run.findOne({ jobId: new ObjectId(self._id) }, null, { sort: { createdAt: -1 } }, function (err, run) {
                 if (err) {
