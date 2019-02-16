@@ -21,6 +21,11 @@
     <div id="breadcrumbs" flex>
         <span ng-repeat="breadcrumb in breadcrumbs">{{breadcrumb}}</span>
     </div>
+    <div id="search" ng-if="showSearch">
+        <md-input-container class="md-block">
+            <input md-autofocus type="text" ng-model="$root.filter" placeholder="Filter">
+        </md-input-container>
+    </div>
     <div id="title"><a href="/">Tilloo</a></div>
 </md-toolbar>
 

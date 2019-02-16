@@ -1,19 +1,40 @@
 angular.module('tillooApp.job')
-    .controller('JobsController', ['jobService', '$scope', '$timeout', '$mdDialog', '$rootScope', function (jobService, $scope, $timeout, $mdDialog, $rootScope) {
+    .controller('JobsController', ['jobService', '$scope', '$timeout', '$mdDialog', '$rootScope', 'filterFilter', function (jobService, $scope, $timeout, $mdDialog, $rootScope, filterFilter) {
         'use strict';
 
         $rootScope.breadcrumbs = ['Jobs'];
-
+        $rootScope.showSearch = true;
         $scope.selected = [];
+        $rootScope.filter = null;
 
         $scope.query = {
             order: 'name'
         };
 
+        function _filterJobs() {
+            var filteredJobs = $scope.jobs;
+
+            if ($rootScope.filter) {
+                filteredJobs = filterFilter(filteredJobs, $rootScope.filter);
+            }
+
+            $scope.filteredJobs = filteredJobs;                
+        }
+
+        // filter watch
+        $scope.$watch('$root.filter', function (newValue, oldValue) {
+            if (!_.isEqual(newValue, oldValue)) {
+                _filterJobs();
+            }
+        }, true);
+
+
         function getJobs() {
             $scope.promise = jobService.getJobs();
             $scope.promise.then(function(jobs) {
                 $scope.jobs = jobs.data;
+
+                _filterJobs();                
             });
         }
 

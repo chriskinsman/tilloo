@@ -33,5 +33,6 @@ app/node_modules
 .idea
 .vscode
 config.batch04
+config.json
 
 

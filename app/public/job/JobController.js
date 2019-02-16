@@ -3,7 +3,7 @@ angular.module('tillooApp.job')
         'use strict';
 
         //$rootScope.breadcrumbs = [$routeParams.jobId];
-
+        $rootScope.showSearch = false;
         $scope.selected = [];
 
         $scope.query = {
@@ -32,7 +32,7 @@ angular.module('tillooApp.job')
                 $timeout(function() {
                     $scope.job = result.data;
                     $scope.job.displayArgs = $scope.job.args.join(' ');
-                    $rootScope.breadcrumbs = [$scope.job.name + ' - ' + $routeParams.jobId];
+                    $rootScope.breadcrumbs = [$scope.job.name];
                 });
             });
         }

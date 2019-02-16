@@ -36,6 +36,8 @@ Tilloo has been a great tool for distributed cron at my current startup for the 
   * Web interface will change to allow you to specify parameters to launch containers using Kubernetes Jobs.
   * Scheduler will run in a Kubernetes deployment
   * Web will run in a Kubernetes deployment
+  * Simplify jobs interface to remove JobId and add a tooltip with jobId and description.
+  * Allow filtering of jobs
 
 ## Background
   
