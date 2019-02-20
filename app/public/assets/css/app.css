@@ -216,7 +216,8 @@ a:active {
 
 md-tooltip .md-content {
     height: auto;
-    max-width:250px;
+    font-size: 12px;
+    max-width:350px;
     white-space: normal;
     line-height: 16px;
     padding-top: 5px;

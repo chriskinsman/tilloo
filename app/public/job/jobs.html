@@ -16,7 +16,15 @@
             <tbody md-body>
             <tr md-row ng-repeat="job in filteredJobs | orderBy: query.order" ng-class="{'disabled' : !job.enabled}" class="{{job.lastStatus}}">
                 <!-- <td md-cell><a ng-href="/job/{{job._id}}">{{job._id}}</a></td> -->
-                <td md-cell><md-tooltip><span ng-show="{{job.description}}">{{job.description}}<br /></span>JobId: {{job._id}}</md-tooltip><a ng-href="/job/{{job._id}}">{{job.name}}</a></td>
+                <td md-cell>
+                    <md-tooltip>
+                        <span ng-show="{{job.description}}">{{job.description}}<br /></span>
+                        <b>Container:</b> {{job.imageUri}}<br />
+                        <b>Path:</b> {{job.path}}<br />
+                        <b>JobId:</b> {{job._id}}
+                    </md-tooltip>
+                    <a ng-href="/job/{{job._id}}">{{job.name}}</a>
+                </td>
                 <td md-cell>{{job.schedule}}</td>
                 <td md-cell>{{job.nodeSelector}}</td>
                 <td md-cell>{{job.lastRanAt | date : 'M/d/yy h:mm a'}}</td>
