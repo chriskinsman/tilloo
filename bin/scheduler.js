@@ -37,7 +37,8 @@ Job.loadAllJobs(function(err, jobs) {
             job.startCron();
         }
     });
-    console.info('Scheduler started connected to %s', config.db);
+    console.info('Scheduler started');
+    debug('Scheduler started connected to %s', config.db);
 });
 
 
