@@ -201,6 +201,8 @@ metadata:
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 7700}, {"HTTP": 7770}]'
     alb.ingress.kubernetes.io/ip-address-type: ipv4
     alb.ingress.kubernetes.io/target-type: instance
+    # Status code = 404 for socket.io, code = 200 for web front end
+    alb.ingress.kubernetes.io/success-codes: 200,404
 
 spec:
   rules:
