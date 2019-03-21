@@ -18,6 +18,8 @@ const jobStream = require('../lib/k8s/jobstream'); // eslint-disable-line no-unu
 const eventStream = require('../lib/k8s/eventstream'); // eslint-disable-line no-unused-vars
 // Don't remove.  Loading this causes the zombieRuns to start
 const zombieRuns = require('../lib/k8s/zombieruns'); // eslint-disable-line no-unused-vars
+// Don't remove.  Loading this causes the cleanupJobs to start
+const jobCleanup = require('../lib/k8s/jobcleanup'); // eslint-disable-line no-unused-vars
 
 const iostatus = require('../lib/iostatus');
 

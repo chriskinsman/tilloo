@@ -8,7 +8,8 @@
         "host": "tilloo.example.com",
         "port": 7700,
         "zombieAge": 5,
-        "zombieFrequency": 5
+        "zombieFrequency": 5,
+        "jobCleanupFrequency": 60
     },
     "web": {
         "host": "tilloo.example.com",
