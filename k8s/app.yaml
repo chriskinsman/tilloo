@@ -67,8 +67,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - port: 7700
-    targetPort: 7700
+  - port: 80
+    targetPort: 80
   selector:
     app: scheduler
     namespace: tilloo-services
@@ -101,7 +101,7 @@ spec:
         #   value: tilloo:*
         command: ['/tilloo/bin/scheduler.js']
         ports:
-        - containerPort: 7700
+        - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
@@ -111,8 +111,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - port: 7770
-    targetPort: 7770
+  - port: 80
+    targetPort: 80
   selector:
     app: web
     namespace: tilloo-services
@@ -145,7 +145,7 @@ spec:
         #   value: tilloo:*
         command: ['/tilloo/app/app.js']
         ports:
-        - containerPort: 7770
+        - containerPort: 80
 ---
 apiVersion: apps/v1
 kind: DaemonSet
@@ -212,8 +212,8 @@ spec:
           - path: /socket.io/*
             backend:
               serviceName: scheduler-service
-              servicePort: 7700
+              servicePort: 80
           - path: /*
             backend:
               serviceName: web-service
-              servicePort: 7770
+              servicePort: 80

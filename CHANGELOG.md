@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+## [2.0.4] - 2019-05-08
+### Changed
+- Simplified port configuration for services and how they are exposed externally.  Now default to port 80 across the board and client side socket.io connections will connect back to source host.  This should enable simple SSL decode in load balancer.
+
 ## [2.0.0] - 2019-01-04
 ### Added
 - Support for running the entire project in Kubernetes.

@@ -70,11 +70,11 @@ Mongodb will be installed using helm with the default install script. The app.ya
 The default configuration is:
  * StatefulSet running mongodb in the tilloo-services namespace on port 27017
  * Deployment running disque on port 7711
- * Deployment running scheduler listening on port 7700 with an ingress configured
- * Deployment running web listening on port 7770 with an ingress configured
+ * Deployment running scheduler listening on port 80 with an ingress configured
+ * Deployment running web listening on port 80 with an ingress configured
  * DaemonSet running a logger service on each node
 
-If your environment satisfies the prequisites and is good with the above ports you only need to update the host name in config.json. 
+If your environment satisfies the prequisites and is good with the above ports you are good to go. 
 
 ### Start up services
 

@@ -22,7 +22,7 @@ const app = express();
 const job = require('./routes/job');
 
 // All environments
-app.set('port', process.env.PORT || config.web.port);
+app.set('port', process.env.PORT || 80);
 //app.use(morgan('dev'));
 app.use(compression());
 

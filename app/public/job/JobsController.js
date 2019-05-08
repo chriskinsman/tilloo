@@ -151,7 +151,7 @@ angular.module('tillooApp.job')
         }
 
         jobService.getConfig().then(function(result) {
-            var socket = io('http://' + result.data.scheduler.host + ':' + result.data.scheduler.port);
+            var socket = io();
             socket.on('status', updateStatus);
             socket.on('jobchange', updateJob);
 
