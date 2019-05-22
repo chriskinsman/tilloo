@@ -7,8 +7,8 @@ build:
     - npm install gulp@4.0.0 -g
     - npm ci
     - gulp lint
-    - docker build -t tilloo/k8s:$BUILD_NUMBER .
-    - docker tag tilloo/k8s:$BUILD_NUMBER tilloo/k8s:latest
+    - docker build -t tilloo/k8s:$BUILD_NUMBER-amd64 .
+    - docker tag tilloo/k8s:$BUILD_NUMBER-amd64 tilloo/k8s:amd64-latest
 
   post_ci:
     - 'if [ "$BRANCH" == "master" -a "$PULL_REQUEST" == "false" ]; then docker push tilloo/k8s; fi'
