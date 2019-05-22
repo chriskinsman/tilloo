@@ -8,7 +8,7 @@ build:
     - npm ci
     - gulp lint
     - docker build -t tilloo/k8s:$BUILD_NUMBER-amd64 .
-    - docker tag tilloo/k8s:$BUILD_NUMBER-amd64 tilloo/k8s:amd64-latest
+    - docker tag tilloo/k8s:$BUILD_NUMBER-amd64 tilloo/k8s:latest-amd64
 
   post_ci:
     - 'if [ "$BRANCH" == "master" -a "$PULL_REQUEST" == "false" ]; then docker push tilloo/k8s; fi'
