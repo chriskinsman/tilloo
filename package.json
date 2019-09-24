@@ -1,6 +1,6 @@
 {
   "name": "tilloo",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "A distributed cron with cli and web ui",
   "repository": "https://github.com/chriskinsman/tilloo.git",
   "scripts": {
