@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+## [2.0.6] - 2019-09-24
+### Changed
+- Added a+x privileges to bin/*
+
+## [2.0.5] - 2019-09-23
+### Changed
+- You can now override key config settings using environment variables. Supported overrides include db (MONGODB), scheduler.host (SCHEDULER_HOST), and web.host (WEB_HOST).
+
 ## [2.0.4] - 2019-05-08
 ### Changed
 - Simplified port configuration for services and how they are exposed externally.  Now default to port 80 across the board and client side socket.io connections will connect back to source host.  This should enable simple SSL decode in load balancer.
