@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const config = require('../lib/config');
 const Job = require('../models/job');
 
-mongoose.connect(config.db);
+mongoose.connect(config.db, { useMongoClient: true });
 mongoose.Promise = global.Promise;
 
 Job.find({ deleted: false }, null, { sort: { name: 1 } }, function(err, jobs) {

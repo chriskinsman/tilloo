@@ -23,7 +23,7 @@ const jobCleanup = require('../lib/k8s/jobcleanup'); // eslint-disable-line no-u
 
 const iostatus = require('../lib/iostatus');
 
-mongoose.connect(config.db);
+mongoose.connect(config.db, { useMongoClient: true });
 mongoose.Promise = global.Promise;
 const debug = require('debug')('tilloo:scheduler');
 

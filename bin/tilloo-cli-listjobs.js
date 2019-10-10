@@ -8,7 +8,7 @@ const moment = require('moment');
 const config = require('../lib/config');
 const Job = require('../models/job');
 
-mongoose.connect(config.db);
+mongoose.connect(config.db, { useMongoClient: true });
 mongoose.Promise = global.Promise;
 
 const table = new Table();

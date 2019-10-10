@@ -136,6 +136,7 @@ Job.statics.loadAllJobs = function (callback) {
 };
 
 Job.statics.findAllJobs = function findAllJobs(callback) {
+    console.info('findAllJobs');
     Model.find({ deleted: false }, null, { sort: { name: 1 } }, callback);
 };
 

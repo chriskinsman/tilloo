@@ -1,5 +1,5 @@
 {
-    "db": "mongodb://root:kFGJgJEdrE@mongodb.tilloo-services/tilloo?authSource=admin",
+    "db": "mongodb://root:pAssw0rd1@mongodb.tilloo-services.svc.cluster.local:27017/tilloo?authSource=admin",
     "disque": {
         "host": "disquetron-service.tilloo-services",
         "port": 7711
@@ -14,6 +14,6 @@
         "plugins": {}
     },
     "jobEnvironmentVariables": {
-
+        "NODE_ENV": "production"
     }
 }
