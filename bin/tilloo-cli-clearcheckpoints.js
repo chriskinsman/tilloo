@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const config = require('../lib/config');
 const Checkpoint = require('../models/checkpoint');
 
-mongoose.connect(config.db);
+mongoose.connect(config.db, { useMongoClient: true });
 mongoose.Promise = global.Promise;
 
 Checkpoint.deleteMany({}, function (err) {

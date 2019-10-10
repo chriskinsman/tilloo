@@ -9,7 +9,7 @@ const moment = require('moment');
 const config = require('../lib/config');
 const Run = require('../models/run');
 
-mongoose.connect(config.db);
+mongoose.connect(config.db, { useMongoClient: true });
 mongoose.Promise = global.Promise;
 
 commander.version('0.0.1')
