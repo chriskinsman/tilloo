@@ -3,25 +3,22 @@
 const constants = require('../lib/constants');
 
 const debug = require('debug')('tilloo:tests/k8sjobstream');
-const JSONStream = require('json-stream');
 
 const k8sClient = require('../lib/k8s/clientFactory');
 
 let k8sStream;
-let jsonStream;
 let lastResourceVersion = null;
 
-function initializeStream() {
+async function initializeStream() {
     debug(`Initializing jobStream with resourceVersion: ${lastResourceVersion}`);
     const streamArgs = {};
     if (lastResourceVersion) {
         streamArgs.resourceVersion = lastResourceVersion;
     }
 
-    k8sStream = k8sClient.apis.batch.v1.watch.namespaces(constants.NAMESPACE).jobs.getStream({ qs: streamArgs });
-    jsonStream = new JSONStream();
-    k8sStream.pipe(jsonStream);
-    jsonStream.on('data', (streamData) => {
+    k8sStream = await k8sClient.apis.batch.v1.watch.namespaces(constants.NAMESPACE).jobs.getObjectStream({ qs: streamArgs });
+    k8sStream.on('data', (streamData) => {
+        console.dir(streamData);
         debug('streamData', streamData);
 
         if (streamData.metadata && streamData.metadata.resourceVersion) {

@@ -28,7 +28,6 @@
     "eslint-plugin-angular": "^4.0.1",
     "express": "^4.17.1",
     "gulp-eslint": "^5.0.0",
-    "json-stream": "^1.0.0",
     "kubernetes-client": "^8.3.4",
     "moment": "^2.24.0",
     "mongodb": "^2.2.36",
