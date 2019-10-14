@@ -12,8 +12,9 @@ const config = require('../lib/config');
 const constants = require('../lib/constants');
 const Script = require('../lib/script');
 
+console.info('Worker connecting to %s:%d', config.disque.host, config.disque.port);
 const disq = new Disqueue(config.disque);
-mongoose.connect(config.db);
+mongoose.connect(config.db, { useMongoClient: true });
 mongoose.Promise = global.Promise;
 const debug = require('debug')('tilloo:worker');
 

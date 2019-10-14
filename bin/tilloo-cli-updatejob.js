@@ -7,7 +7,7 @@ const commander = require('commander');
 const config = require('../lib/config');
 const jobs = require('../lib/jobs');
 
-mongoose.connect(config.db);
+mongoose.connect(config.db, { useMongoClient: true });
 mongoose.Promise = global.Promise;
 
 function list(val) {
