@@ -18,7 +18,7 @@ async function initializeStream() {
 
     k8sStream = await k8sClient.apis.batch.v1.watch.namespaces(constants.NAMESPACE).jobs.getObjectStream({ qs: streamArgs });
     k8sStream.on('data', (streamData) => {
-        console.dir(streamData);
+        console.dir(streamData, { depth: 4 });
         debug('streamData', streamData);
 
         if (streamData.metadata && streamData.metadata.resourceVersion) {
