@@ -12,7 +12,7 @@ angular.module('tillooApp.job')
             pageSize: 20
         };
 
-        $scope.onPaginate = function(page, limit) {
+        $scope.onPaginate = function (page, limit) {
             $scope.query.page = page;
             $scope.query.pageSize = limit;
 
@@ -20,7 +20,7 @@ angular.module('tillooApp.job')
         };
 
         function getRuns(query) {
-            jobService.getRuns($routeParams.jobId, query.page, query.pageSize).then(function(result) {
+            jobService.getRuns($routeParams.jobId, query.page, query.pageSize).then(function (result) {
                 $scope.runs = result.data.runs;
                 $scope.query.runCount = result.data.count;
             });
@@ -28,8 +28,8 @@ angular.module('tillooApp.job')
         }
 
         function getJob() {
-            jobService.getJob($routeParams.jobId).then(function(result) {
-                $timeout(function() {
+            jobService.getJob($routeParams.jobId).then(function (result) {
+                $timeout(function () {
                     $scope.job = result.data;
                     $scope.job.displayArgs = $scope.job.args.join(' ');
                     $rootScope.breadcrumbs = [$scope.job.name];
@@ -39,11 +39,14 @@ angular.module('tillooApp.job')
 
         function updateStatus(status) {
             // A status update for this job
-            if(status.jobId && status.jobId === $routeParams.jobId && status.runId) {
-                jobService.getRun(status.runId).then(function(result) {
-                    $timeout(function() {
-                        var runIndex = _.findIndex($scope.runs, function(run) { return run._id == status.runId;});
-                        if(runIndex!==-1) {
+            if (status.jobId && status.jobId === $routeParams.jobId && status.runId) {
+                jobService.getRun(status.runId).then(function (result) {
+                    $timeout(function () {
+                        var runIndex = _.findIndex($scope.runs, function (run) {
+                            return run._id == status.runId; // eslint-disable-line eqeqeq
+                        });
+
+                        if (runIndex !== -1) {
                             $scope.runs[runIndex] = result.data;
                         }
                         else {
@@ -57,7 +60,7 @@ angular.module('tillooApp.job')
 
         function updateJob(jobMessage) {
             // Only update the job if for the job we are displaying
-            if(jobMessage.jobId === $routeParams.jobId) {
+            if (jobMessage.jobId === $routeParams.jobId) {
                 getJob();
             }
         }
@@ -70,13 +73,13 @@ angular.module('tillooApp.job')
             jobService.stopRun(runId);
         };
 
-        jobService.getConfig().then(function(result) {
+        jobService.getConfig().then(function (result) {
             var socket = io();
             socket.on('status', updateStatus);
             socket.on('jobchange', updateJob);
 
             // Clear event handler when leaving
-            $scope.$on('$destroy', function() {
+            $scope.$on('$destroy', function () {
                 socket.removeListener('status', updateStatus);
                 socket.removeListener('jobchange', updateJob);
             });

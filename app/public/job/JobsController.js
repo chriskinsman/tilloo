@@ -18,7 +18,7 @@ angular.module('tillooApp.job')
                 filteredJobs = filterFilter(filteredJobs, $rootScope.filter);
             }
 
-            $scope.filteredJobs = filteredJobs;                
+            $scope.filteredJobs = filteredJobs;
         }
 
         // filter watch
@@ -31,20 +31,20 @@ angular.module('tillooApp.job')
 
         function getJobs() {
             $scope.promise = jobService.getJobs();
-            $scope.promise.then(function(jobs) {
+            $scope.promise.then(function (jobs) {
                 $scope.jobs = jobs.data;
 
-                _filterJobs();                
+                _filterJobs();
             });
         }
 
         function updateStatus(status) {
-            if(status.jobId) {
-                var job = _.find($scope.jobs, {_id: status.jobId});
-                if(job) {
-                    $timeout(function() {
+            if (status.jobId) {
+                var job = _.find($scope.jobs, { _id: status.jobId });
+                if (job) {
+                    $timeout(function () {
                         job.lastStatus = status.status;
-                        if(status.status==='busy') {
+                        if (status.status === 'busy') {
                             job.lastRanAt = new Date();
                         }
                     });
@@ -53,11 +53,14 @@ angular.module('tillooApp.job')
         }
 
         function updateJob(jobMessage) {
-            jobService.getJob(jobMessage.jobId).then(function(result) {
-                var jobIndex = _.findIndex($scope.jobs, function (item) { return item._id == jobMessage.jobId; });
-                $timeout(function() {
-                    if(jobIndex!==-1) {
-                        if(result.data.deleted) {
+            jobService.getJob(jobMessage.jobId).then(function (result) {
+                var jobIndex = _.findIndex($scope.jobs, function (item) {
+                    return item._id == jobMessage.jobId; // eslint-disable-line eqeqeq
+                });
+
+                $timeout(function () {
+                    if (jobIndex !== -1) {
+                        if (result.data.deleted) {
                             $scope.jobs.splice(jobIndex, 1);
                         }
                         else {
@@ -71,7 +74,7 @@ angular.module('tillooApp.job')
             });
         }
 
-        $scope.deleteJob = function deleteJob(jobId,jobName, event) {
+        $scope.deleteJob = function deleteJob(jobId, jobName, event) {
             var confirm = $mdDialog.confirm()
                 .title('Delete job?')
                 .textContent('Are you sure you want to delete ' + jobName + '?')
@@ -79,12 +82,12 @@ angular.module('tillooApp.job')
                 .targetEvent(event)
                 .ok('Delete Job')
                 .cancel('Cancel');
-            $mdDialog.show(confirm).then(function() {                  
+            $mdDialog.show(confirm).then(function () {
                 jobService.deleteJob(jobId);
-            }, function() {
+            }, function () {
                 // User canceled, do nothing
             });
-              
+
         };
 
         $scope.runJob = function runJob(jobId) {
@@ -136,7 +139,7 @@ angular.module('tillooApp.job')
         function EditController($scope, $mdDialog, jobId) {
             $scope.title = 'Edit Job';
             $scope.OkTitle = 'Update';
-            jobService.getJob(jobId).then(function(result) {
+            jobService.getJob(jobId).then(function (result) {
                 $scope.job = result.data;
             });
 
@@ -150,7 +153,7 @@ angular.module('tillooApp.job')
             };
         }
 
-        jobService.getConfig().then(function(result) {
+        jobService.getConfig().then(function (result) {
             var socket = io();
             socket.on('status', updateStatus);
             socket.on('jobchange', updateJob);
