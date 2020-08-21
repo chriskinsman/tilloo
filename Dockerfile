@@ -25,4 +25,3 @@ COPY app /tilloo/app
 COPY bin /tilloo/bin
 COPY models /tilloo/models
 COPY lib /tilloo/lib
-COPY k8s/config.json /tilloo/config.json
