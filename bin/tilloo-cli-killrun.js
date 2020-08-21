@@ -7,7 +7,7 @@ const commander = require('commander');
 const config = require('../lib/config');
 const runs = require('../lib/runs');
 
-mongoose.connect(config.db, { useMongoClient: true });
+mongoose.connect(config.db);
 mongoose.Promise = global.Promise;
 
 commander.version('0.0.1')
@@ -15,12 +15,12 @@ commander.version('0.0.1')
     .option('-f, --force', 'Force kill a job.  Immediately sets status in mongodb to fail')
     .parse(process.argv);
 
-if(commander.args.length !== 1) {
+if (commander.args.length !== 1) {
     commander.outputHelp();
     process.exit(1);
 }
 
-runs.killRun(commander.args[0], commander.force, function(err) {
+runs.killRun(commander.args[0], commander.force, function (err) {
     if (err) {
         console.error('Unable to kill run');
         process.exit(1);

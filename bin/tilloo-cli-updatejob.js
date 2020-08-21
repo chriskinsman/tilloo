@@ -7,7 +7,7 @@ const commander = require('commander');
 const config = require('../lib/config');
 const jobs = require('../lib/jobs');
 
-mongoose.connect(config.db, { useMongoClient: true });
+mongoose.connect(config.db);
 mongoose.Promise = global.Promise;
 
 function list(val) {
@@ -38,22 +38,22 @@ function showHelpAndExit() {
 
 const jobId = commander.args[0];
 
-if(!jobId) {
+if (!jobId) {
     console.error('Must specify jobId');
     showHelpAndExit();
 }
 
 const jobDef = {};
 
-if(commander.enabled) {
+if (commander.enabled) {
     jobDef.enabled = commander.enabled.toLowerCase() === 'true';
 }
 
-if(commander.schedule) {
+if (commander.schedule) {
     jobDef.schedule = commander.schedule;
 }
 
-if(commander.path) {
+if (commander.path) {
     jobDef.path = commander.path;
 }
 
@@ -65,36 +65,36 @@ if (commander.nodeselector) {
     jobDef.nodeSelector = commander.nodeselector;
 }
 
-if(commander.jobname) {
+if (commander.jobname) {
     jobDef.name = commander.jobname;
 }
 
-if(commander.timeout) {
+if (commander.timeout) {
     jobDef.timeout = commander.timeout;
 }
 
-if(commander.queue) {
+if (commander.queue) {
     jobDef.queueName = commander.queue;
 }
 
-if(commander.jobargs) {
+if (commander.jobargs) {
     jobDef.args = commander.jobargs;
 }
 
-if(commander.jobdescription) {
+if (commander.jobdescription) {
     jobDef.description = commander.jobdescription;
 }
 
-if(commander.mutex !== undefined) {
+if (commander.mutex !== undefined) {
     jobDef.mutex = commander.mutex;
 }
 
-if(commander.failures) {
+if (commander.failures) {
     jobDef.failuresBeforeAlert = commander.failures;
 }
 
-jobs.update(jobId, jobDef, function(err) {
-    if(err) {
+jobs.update(jobId, jobDef, function (err) {
+    if (err) {
         console.error('Error updating job err:', err);
         process.exit(1);
     }

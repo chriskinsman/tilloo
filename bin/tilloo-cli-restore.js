@@ -11,7 +11,7 @@ const config = require('../lib/config');
 const jobs = require('../lib/jobs');
 const Job = require('../models/job');
 
-mongoose.connect(config.db, { useMongoClient: true });
+mongoose.connect(config.db);
 mongoose.Promise = global.Promise;
 
 commander.version('0.0.1')
@@ -23,13 +23,13 @@ function showHelpAndExit() {
     process.exit(1);
 }
 
-if(commander.args.length !== 1) {
+if (commander.args.length !== 1) {
     showHelpAndExit();
 }
 
 // Attempt to open file
-fs.readFile(commander.args[0], function(err, data) {
-    if(err) {
+fs.readFile(commander.args[0], function (err, data) {
+    if (err) {
         console.error('Unable to open: ' + commander.args[0]);
         process.exit(1);
     }
@@ -39,12 +39,12 @@ fs.readFile(commander.args[0], function(err, data) {
             let errors = false;
             let jobAdded = 0;
             let jobUpdated = 0;
-            async.eachSeries(restoreJobs, function(jobToRestore, done) {
-                Job.findById(new ObjectId(jobToRestore._id), function(err, job) {
-                    if(!job) {
+            async.eachSeries(restoreJobs, function (jobToRestore, done) {
+                Job.findById(new ObjectId(jobToRestore._id), function (err, job) {
+                    if (!job) {
                         // Remove the id so we generate a new one
                         delete jobToRestore._id;
-                        jobs.add(jobToRestore, function(err) {
+                        jobs.add(jobToRestore, function (err) {
                             if (err) {
                                 errors = true;
                                 console.error('Problem adding job: ');
@@ -57,7 +57,7 @@ fs.readFile(commander.args[0], function(err, data) {
                         });
                     }
                     else {
-                        jobs.update(jobToRestore._id, jobToRestore, function(err) {
+                        jobs.update(jobToRestore._id, jobToRestore, function (err) {
                             if (err) {
                                 errors = true;
                                 console.error('Problem updating job: ');
@@ -70,8 +70,8 @@ fs.readFile(commander.args[0], function(err, data) {
                         });
                     }
                 });
-            }, function(err) {
-                if(errors) {
+            }, function (err) {
+                if (errors) {
                     console.error('Jobs restored with errors');
                     process.exit(1);
                 }
@@ -81,7 +81,7 @@ fs.readFile(commander.args[0], function(err, data) {
                 }
             });
         }
-        catch(e) {
+        catch (e) {
             console.error(e);
             console.error('Unable to parse job data for file: ' + commander.args[0]);
             process.exit(1);
