@@ -38,6 +38,7 @@ Tilloo has been a great tool for distributed cron at my current startup for the 
   * Web will run in a Kubernetes deployment
   * Simplify jobs interface to remove JobId and add a tooltip with jobId and description.
   * Allow filtering of jobs
+  * Moved config.json into a configMap.  This removes the requirement to build your own containers
 
 ## Background
   
