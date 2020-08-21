@@ -32,7 +32,7 @@ app.use(favicon(path.join(__dirname, '/public/assets/favicon.ico')));
 app.use('/node_modules', express.static(path.join(__dirname, 'public/node_modules')));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
-app.use('/api/config', express.static(path.join(__dirname, '../config.json')));
+app.use('/api/config', express.static(path.join(__dirname, '../config/config.json')));
 app.get('/api/job', job.getJobs);
 app.post('/api/job/create', job.createJob);
 app.get('/api/job/:jobId', job.getJob);
@@ -49,7 +49,7 @@ app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname, '/public/index.html'));
 });
 
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
     console.dir(err);
     res.status(err.status || 500);
     res.send({
@@ -58,6 +58,6 @@ app.use(function(err, req, res, next) {
     });
 });
 
-http.createServer(app).listen(app.get('port'), function() {
+http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
 });
