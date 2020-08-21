@@ -8,12 +8,12 @@ const moment = require('moment');
 const config = require('../lib/config');
 const Job = require('../models/job');
 
-mongoose.connect(config.db, { useMongoClient: true });
+mongoose.connect(config.db);
 mongoose.Promise = global.Promise;
 
 const table = new Table();
-Job.find({ deleted: false }, null, { sort: { name: 1 } }, function(err, jobs) {
-    if(err) {
+Job.find({ deleted: false }, null, { sort: { name: 1 } }, function (err, jobs) {
+    if (err) {
         console.error(err);
         process.exit(1);
     }

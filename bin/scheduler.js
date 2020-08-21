@@ -23,17 +23,17 @@ const jobCleanup = require('../lib/k8s/jobcleanup'); // eslint-disable-line no-u
 
 const iostatus = require('../lib/iostatus');
 
-mongoose.connect(config.db, { useMongoClient: true });
+mongoose.connect(config.db);
 mongoose.Promise = global.Promise;
 const debug = require('debug')('tilloo:scheduler');
 
 const _loadedJobs = {};
 
-Job.loadAllJobs(function(err, jobs) {
+Job.loadAllJobs(function (err, jobs) {
     debug('loading jobs');
-    jobs.forEach(function(job) {
+    jobs.forEach(function (job) {
         debug('found job %s', job.name);
-        if(job.schedule && job.schedule.trim()!=='') {
+        if (job.schedule && job.schedule.trim() !== '') {
             debug('setting up cron %s for %s', job.schedule, job.name);
             _loadedJobs[job._id] = job;
             job.startCron();
@@ -47,18 +47,18 @@ Job.loadAllJobs(function(err, jobs) {
 // Used so scheduler is notified of changes and can add/remove/change jobs
 console.info('Listening to %s:%d queue: %s', config.disque.host, config.disque.port, constants.QUEUES.SCHEDULER);
 const ee = new DisqEventEmitter(config.disque, constants.QUEUES.SCHEDULER);
-ee.on('job', function(job, done) {
+ee.on('job', function (job, done) {
     // Immediately ack job to remove from queue.  If we have a failure
     // we don't want to deal with job again, best to just restart the scheduler
-    ee.ack(job, function(err) {
-        if(err) {
+    ee.ack(job, function (err) {
+        if (err) {
             console.error(err);
         }
 
         function updateJob(jobId, callback) {
-            deleteJob(jobId, true, function() {
-                Job.findById(new ObjectId(jobId), function(err, dbJob) {
-                    if(err) {
+            deleteJob(jobId, true, function () {
+                Job.findById(new ObjectId(jobId), function (err, dbJob) {
+                    if (err) {
                         console.error(err);
                         callback(err);
                     }
@@ -74,7 +74,7 @@ ee.on('job', function(job, done) {
         }
 
         function deleteJob(jobId, partOfUpdate, callback) {
-            if(_loadedJobs[jobId]) {
+            if (_loadedJobs[jobId]) {
                 // Get it
                 const loadedJob = _loadedJobs[jobId];
                 // Remove it from list
@@ -84,14 +84,14 @@ ee.on('job', function(job, done) {
                 debug('removed jobId: %s', jobId);
             }
 
-            if(!partOfUpdate) {
+            if (!partOfUpdate) {
                 iostatus.sendJobChange(jobId);
             }
             callback();
         }
 
         const message = JSON.parse(job.body);
-        switch(message.action) {
+        switch (message.action) {
             case constants.SCHEDULERACTION.NEW:
                 // New job has been added.  Make sure to handle case where
                 // message is old and job has already been loaded in scheduler

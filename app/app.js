@@ -13,7 +13,7 @@ const favicon = require('serve-favicon');
 
 const config = require('../lib/config');
 
-mongoose.connect(config.db, { useMongoClient: true });
+mongoose.connect(config.db);
 mongoose.Promise = global.Promise;
 
 const app = express();

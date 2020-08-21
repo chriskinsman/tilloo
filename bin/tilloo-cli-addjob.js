@@ -7,7 +7,7 @@ const commander = require('commander');
 const config = require('../lib/config');
 const jobs = require('../lib/jobs');
 
-mongoose.connect(config.db, { useMongoClient: true });
+mongoose.connect(config.db);
 mongoose.Promise = global.Promise;
 
 function list(val) {
@@ -37,7 +37,7 @@ function showHelpAndExit() {
 const schedule = commander.args[0];
 const imageUri = commander.args[1];
 
-if(!schedule) {
+if (!schedule) {
     console.error('Must specify schedule');
     showHelpAndExit();
 }
@@ -57,39 +57,39 @@ if (commander.nodeselector) {
     jobDef.nodeSelector = commander.nodeselector;
 }
 
-if(commander.jobname) {
+if (commander.jobname) {
     jobDef.name = commander.jobname;
 }
 else {
     jobDef.name = imageUri;
 }
 
-if(commander.timeout) {
+if (commander.timeout) {
     jobDef.timeout = commander.timeout;
 }
 
-if(commander.queue) {
+if (commander.queue) {
     jobDef.queueName = commander.queue;
 }
 
-if(commander.jobargs) {
+if (commander.jobargs) {
     jobDef.args = commander.jobargs;
 }
 
-if(commander.jobdescription) {
+if (commander.jobdescription) {
     jobDef.description = commander.jobdescription;
 }
 
-if(commander.mutex !== undefined) {
+if (commander.mutex !== undefined) {
     jobDef.mutex = commander.mutex;
 }
 
-if(commander.failures) {
+if (commander.failures) {
     jobDef.failuresBeforeAlert = commander.failures;
 }
 
-jobs.add(jobDef, function(err) {
-    if(err) {
+jobs.add(jobDef, function (err) {
+    if (err) {
         console.error('Error adding job err: ', err);
         process.exit(1);
     }
