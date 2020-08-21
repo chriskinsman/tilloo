@@ -4,6 +4,7 @@
   "description": "A distributed cron with cli and web ui",
   "repository": "https://github.com/chriskinsman/tilloo.git",
   "scripts": {
+    "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Chris Kinsman",
@@ -17,7 +18,7 @@
   "dependencies": {
     "async": "^3.1.0",
     "body-parser": "^1.19.0",
-    "chokidar": "^2.1.8",
+    "chokidar": "^3.4.2",
     "commander": "^3.0.2",
     "compression": "^1.7.4",
     "cron": "^1.7.2",
@@ -25,13 +26,11 @@
     "disque-eventemitter": "^0.3.1",
     "disqueue-node": "^2.0.2",
     "easy-table": "^1.1.1",
-    "eslint-plugin-angular": "^4.0.1",
     "express": "^4.17.1",
-    "gulp-eslint": "^5.0.0",
     "kubernetes-client": "^8.3.4",
     "moment": "^2.24.0",
     "mongodb": "^2.2.36",
-    "mongoose": "^4.13.19",
+    "mongoose": "^4.13.21",
     "morgan": "^1.9.1",
     "request": "^2.88.0",
     "serve-favicon": "^2.5.0",
@@ -41,7 +40,7 @@
     "tilloo-plugin-sns": "^1.0.0"
   },
   "devDependencies": {
-    "gulp": "^4.0.2"
+    "eslint": "^6.0.0"
   },
   "engines": {
     "node": ">= 10.13.0"
