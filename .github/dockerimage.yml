@@ -1,0 +1,29 @@
+name: tilloo
+on:
+  push:
+  pull_request:
+
+jobs:
+  buildx:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Docker buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          buildx-version: latest
+          qemu-version: latest
+      - name: Available platforms
+        run: echo ${{ steps.buildx.outputs.platforms }}
+      - name: Docker login
+        run: docker login --username ${{ secrets.DOCKER_HUB_REGISTRY_USERNAME }} --password ${{ secrets.DOCKER_HUB_REGISTRY_SECRET }}
+      - name: Run Buildx
+        run: docker buildx build --platform linux/arm/v6,linux/arm/v7,linux/arm64,linux/amd64 --file Dockerfile --tag chriskinsman/tilloo:${GITHUB_REF##*/}-3.0.$GITHUB_RUN_NUMBER --tag chriskinsman/tilloo:${GITHUB_REF##*/}-latest --output "type=image,push=true" .
+      - name: Update latest tag
+        if: startsWith(github.ref, 'refs/heads/master')
+        run: |
+          docker pull chriskinsman/tilloo:${GITHUB_REF##*/}-3.0.$GITHUB_RUN_NUMBER
+          docker tag chriskinsman/tilloo:${GITHUB_REF##*/}-3.0.$GITHUB_RUN_NUMBER chriskinsman/tilloo:latest
+          docker push chriskinsman/tilloo:latest
