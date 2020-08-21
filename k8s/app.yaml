@@ -95,13 +95,20 @@ spec:
       serviceAccountName: tilloo-admin
       containers:
       - name: scheduler
-        image: tilloo/k8s:prod
+        image: tilloo/master-latest
         # env:
         # - name: DEBUG
         #   value: tilloo:*
         command: ['/tilloo/bin/scheduler.js']
         ports:
         - containerPort: 80
+        volumeMounts:
+        - mountPath: /tilloo/config
+          name: config-volume
+      volumes:
+      - name: config-volume
+        configMap:
+          name: tilloo-config
 ---
 apiVersion: v1
 kind: Service
@@ -139,13 +146,20 @@ spec:
       serviceAccountName: tilloo-admin
       containers:
       - name: web
-        image: tilloo/k8s:prod
+        image: tilloo/master-latest
         # env:
         # - name: DEBUG
         #   value: tilloo:*
         command: ['/tilloo/app/app.js']
         ports:
         - containerPort: 80
+        volumeMounts:
+        - mountPath: /tilloo/config
+          name: config-volume
+      volumes:
+      - name: config-volume
+        configMap:
+          name: tilloo-config
 ---
 apiVersion: apps/v1
 kind: DaemonSet
@@ -169,7 +183,7 @@ spec:
         effect: NoSchedule
       containers:
       - name: logger
-        image: tilloo/k8s:prod
+        image: tilloo/master-latest
         # env:
         # - name: DEBUG
         #   value: tilloo:logforwarder
@@ -177,12 +191,17 @@ spec:
         volumeMounts:
         - name: varlog
           mountPath: /var/log
+        - mountPath: /tilloo/config
+          name: config-volume
       terminationGracePeriodSeconds: 30
       volumes:
       - name: varlog
         hostPath:
           path: /var/log
           type: Directory
+      - name: config-volume
+        configMap:
+          name: tilloo-config
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -211,3 +230,33 @@ spec:
             backend:
               serviceName: web-service
               servicePort: 80
+---
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tilloo-config
+  namespace: tilloo-services
+  labels:
+    app: config
+data:
+  config.json: |-
+    {
+        "db": "mongodb://root:pAssw0rd1@mongodb.tilloo-services.svc.cluster.local:27017/tilloo?authSource=admin",
+        "disque": {
+            "host": "disquetron-service.tilloo-services",
+            "port": 7711
+        },
+        "scheduler": {
+            "zombieAge": 5,
+            "zombieFrequency": 5,
+            "jobCleanupFrequency": 60
+        },
+        "notification": {
+            "threshold": 3600,
+            "plugins": {}
+        },
+        "jobEnvironmentVariables": {
+            "NODE_ENV": "production"
+        }
+    }
