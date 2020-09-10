@@ -11,7 +11,6 @@ Prerequisites:
 - a running kubernetes installation
 - kubectl on the local machine connected to the remote k8s cluster
 - ingress configured on remote cluster
-- helm configured on remote cluster
 
 Steps:
 - change hostname in k8s/config.json and k8s/app.yaml
@@ -24,7 +23,8 @@ Steps:
 
   * Full cli
   * Web based UI with real time status udpates
-  * Multiple workers in multiple targetable groups
+  * Runs k8s jobs
+  * Supports nodeSelector
   * No downtime deploys
   * Up and running in 15 minutes.
   
@@ -39,6 +39,7 @@ Tilloo has been a great tool for distributed cron at my current startup for the 
   * Simplify jobs interface to remove JobId and add a tooltip with jobId and description.
   * Allow filtering of jobs
   * Moved config.json into a configMap.  This removes the requirement to build your own containers
+  * Removed disqueue and replaced with rabbitmq
 
 ## Background
   
