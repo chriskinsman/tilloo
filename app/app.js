@@ -13,12 +13,12 @@ const favicon = require('serve-favicon');
 
 const config = require('../lib/config');
 
-mongoose.connect(config.db);
-mongoose.Promise = global.Promise;
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
+mongoose.connect(config.db);
+mongoose.Promise = global.Promise;
 
 const app = express();
 
