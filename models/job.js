@@ -22,7 +22,6 @@ const Job = new mongoose.Schema({
             }
         }
     },
-    //queueName: { type: String, default: constants.QUEUES.DEFAULT_WORKER },
     imageUri: { type: String, required: true },
     nodeSelector: { type: String },
     enabled: { type: Boolean, default: 'true' },

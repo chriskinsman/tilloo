@@ -61,16 +61,16 @@ and liked the realtime nature of this solution.  We liked the concept of Jobs an
 
 We leverage:
  * mongodb <https://www.mongodb.com/> for storage
- * disque <https://github.com/antirez/disque> for communication
+ * rabbitmq <https://www.rabbitmq.com/> for communication
  
  
-Mongodb will be installed using helm with the default install script. The app.yaml will run a disque pod.
+Mongodb will be installed using helm with the default install script. The app.yaml will run a rabbitmq pod.
 
 ### Configuration
 
 The default configuration is:
  * StatefulSet running mongodb in the tilloo-services namespace on port 27017
- * Deployment running disque on port 7711
+ * Deployment running rabbitmq on port 5672
  * Deployment running scheduler listening on port 80 with an ingress configured
  * Deployment running web listening on port 80 with an ingress configured
  * DaemonSet running a logger service on each node
@@ -186,7 +186,7 @@ The config file has sensible defaults filled in.  All keys present in the shippe
 __Settings__
 
 * db - Mongodb database connection string.  This is passed directly to mongoose under the covers and supports any mongodb options.
-* disque - Settings for disque. This whole block is passed to <https://www.npmjs.com/package/disqueue-node>. Any valid options for disqueue-node will work here.
+* rabbitmq - Settings for rabbitmq. Specify the host and the port.
 * scheduler - Settings pertaining to the scheduler
   * host - The host the scheduler resides on. This is used by tilloo-web to connect to the web sockets interface the scheduler exposes.
   * port - The port the web sockets interface is exposed on.
