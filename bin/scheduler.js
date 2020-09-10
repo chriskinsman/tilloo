@@ -50,7 +50,7 @@ Job.loadAllJobs(function (err, jobs) {
     debug('Scheduler started connected to %s', config.db);
 });
 
-const jobFindById = util.promisify(Job.findById);
+const jobFindById = util.promisify(Job.findById).bind(Job);
 
 // Used so scheduler is notified of changes and can add/remove/change jobs
 console.info(`Listening to ${config.rabbitmq.host}:${config.rabbitmq.port} queue: ${constants.QUEUES.SCHEDULER}`);
