@@ -12,6 +12,11 @@ const jobs = require('../lib/jobs');
 const Job = require('../models/job');
 
 mongoose.connect(config.db);
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+mongoose.set('useUnifiedTopology', true);
+
 mongoose.Promise = global.Promise;
 
 commander.version('0.0.1')

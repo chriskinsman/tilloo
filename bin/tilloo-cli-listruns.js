@@ -10,6 +10,11 @@ const config = require('../lib/config');
 const Run = require('../models/run');
 
 mongoose.connect(config.db);
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+mongoose.set('useUnifiedTopology', true);
+
 mongoose.Promise = global.Promise;
 
 commander.version('0.0.1')

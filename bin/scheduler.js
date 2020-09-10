@@ -27,6 +27,11 @@ const iostatus = require('../lib/iostatus');
 
 mongoose.connect(config.db);
 mongoose.Promise = global.Promise;
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+mongoose.set('useUnifiedTopology', true);
+
 const debug = require('debug')('tilloo:scheduler');
 
 const _loadedJobs = {};
