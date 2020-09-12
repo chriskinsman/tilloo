@@ -7,7 +7,6 @@ const ObjectId = mongoose.Types.ObjectId;
 const commander = require('commander');
 const async = require('async');
 
-const config = require('../lib/config');
 const jobs = require('../lib/jobs');
 const Job = require('../models/job');
 
