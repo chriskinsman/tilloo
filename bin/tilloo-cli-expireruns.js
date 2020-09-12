@@ -1,18 +1,9 @@
 #! /usr/bin/env node
 'use strict';
 
-const mongoose = require('mongoose');
 const commander = require('commander');
 
-const config = require('../lib/config');
 const runs = require('../lib/runs');
-
-mongoose.set('useNewUrlParser', true);
-mongoose.set('useFindAndModify', false);
-mongoose.set('useCreateIndex', true);
-mongoose.set('useUnifiedTopology', true);
-mongoose.Promise = global.Promise;
-mongoose.connect(config.db);
 
 commander.version('0.0.1')
     .usage('<days>', 'Expire jobs created <days> ago', parseInt)

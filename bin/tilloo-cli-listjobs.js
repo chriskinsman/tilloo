@@ -1,19 +1,10 @@
 #! /usr/bin/env node
 'use strict';
 
-const mongoose = require('mongoose');
 const Table = require('easy-table');
 const moment = require('moment');
 
-const config = require('../lib/config');
 const Job = require('../models/job');
-
-mongoose.set('useNewUrlParser', true);
-mongoose.set('useFindAndModify', false);
-mongoose.set('useCreateIndex', true);
-mongoose.set('useUnifiedTopology', true);
-mongoose.Promise = global.Promise;
-mongoose.connect(config.db);
 
 const table = new Table();
 Job.find({ deleted: false }, null, { sort: { name: 1 } }, function (err, jobs) {

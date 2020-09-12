@@ -4,21 +4,12 @@
 const path = require('path');
 const http = require('http');
 
-const mongoose = require('mongoose');
 const express = require('express');
 const compression = require('compression');
-//const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const favicon = require('serve-favicon');
 
-const config = require('../lib/config');
-
-mongoose.set('useNewUrlParser', true);
-mongoose.set('useFindAndModify', false);
-mongoose.set('useCreateIndex', true);
-mongoose.set('useUnifiedTopology', true);
-mongoose.connect(config.db);
-mongoose.Promise = global.Promise;
+const mongoose = require('../lib/mongooseinit');
 
 const app = express();
 

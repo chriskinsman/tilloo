@@ -1,10 +1,10 @@
 #! /usr/bin/env node
 'use strict';
 
-const mongoose = require('mongoose');
-const ObjectId = require('mongoose').Types.ObjectId;
+const mongoose = require('../lib/mongooseinit');
+const ObjectId = mongoose.Types.ObjectId;
 
-const rabbit = require('../lib/rabbitFactory');
+const rabbit = require('../lib/rabbitfactory');
 
 const config = require('../lib/config');
 const constants = require('../lib/constants');
@@ -24,13 +24,6 @@ const zombieRuns = require('../lib/k8s/zombieruns'); // eslint-disable-line no-u
 const jobCleanup = require('../lib/k8s/jobcleanup'); // eslint-disable-line no-unused-vars
 
 const iostatus = require('../lib/iostatus');
-
-mongoose.set('useNewUrlParser', true);
-mongoose.set('useFindAndModify', false);
-mongoose.set('useCreateIndex', true);
-mongoose.set('useUnifiedTopology', true);
-mongoose.connect(config.db);
-mongoose.Promise = global.Promise;
 
 const debug = require('debug')('tilloo:scheduler');
 
@@ -53,7 +46,6 @@ Job.loadAllJobs(function (err, jobs) {
 const jobFindById = util.promisify(Job.findById).bind(Job);
 
 // Used so scheduler is notified of changes and can add/remove/change jobs
-console.info(`Listening to ${config.rabbitmq.host}:${config.rabbitmq.port} queue: ${constants.QUEUES.SCHEDULER}`);
 rabbit.subscribe(constants.QUEUES.SCHEDULER, async (message) => {
     async function updateJob(jobId) {
         deleteJob(jobId, true);

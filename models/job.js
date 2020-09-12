@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const ObjectId = require('mongoose').Types.ObjectId;
+const mongoose = require('../lib/mongooseinit');
+const ObjectId = mongoose.Types.ObjectId;
 const CronJob = require('cron').CronJob;
 const debug = require('debug')('tilloo:job');
 
