@@ -95,7 +95,7 @@ spec:
       serviceAccountName: tilloo-admin
       containers:
       - name: scheduler
-        image: tilloo/master-latest
+        image: ghcr.io/chriskinsman/tilloo/master-latest
         # env:
         # - name: DEBUG
         #   value: tilloo:*
@@ -146,7 +146,7 @@ spec:
       serviceAccountName: tilloo-admin
       containers:
       - name: web
-        image: tilloo/master-latest
+        image: ghcr.io/chriskinsman/tilloo/master-latest
         # env:
         # - name: DEBUG
         #   value: tilloo:*
@@ -183,7 +183,7 @@ spec:
         effect: NoSchedule
       containers:
       - name: logger
-        image: tilloo/master-latest
+        image: ghcr.io/chriskinsman/tilloo/master-latest
         # env:
         # - name: DEBUG
         #   value: tilloo:logforwarder
