@@ -1,9 +1,7 @@
 
   A distributed cron with cli and web ui
 
-  [![NPM Version][npm-image]][npm-url]
-  [![NPM Downloads][downloads-image]][downloads-url]
-  [![Build Status][shippable-image]][shippable-url]
+  [![Build Status][github-build-image]][github-build-url]
 
 ## Installation
 
@@ -13,10 +11,7 @@ Prerequisites:
 - ingress configured on remote cluster
 
 Steps:
-- change hostname in k8s/config.json and k8s/app.yaml
-- docker build -t <yourrepo>:<yourtag> .
-- docker push <yourrepo>:<yourtag>
-- update k8s/app.yaml to reference your repo and tag
+- edit configuration at end of k8s/app.yaml
 - run k8s/install.sh
 
 ## Features
@@ -30,7 +25,7 @@ Steps:
   
 ## Recent Changes
 
-Tilloo has been a great tool for distributed cron at my current startup for the last four years. We are now moving to containers and want to add the ability to schedule runs in containers.  As we thought through this we decided to radically change the implementation of Tilloo.  I have created a v1.0 branch for folks who want to continue to use the older version.  Master will become the containerized implementation.  I plan on making the following changes:
+Tilloo has been a great tool for distributed cron at my current startup for the last five years. We are now moving to containers and want to add the ability to schedule runs in containers.  As we thought through this we decided to radically change the implementation of Tilloo.  I have created a v1.0 branch for folks who want to continue to use the older version.  Master will become the containerized implementation.  I plan on making the following changes:
  
   * Eliminate worker.  Scheduler will instead schedule container execution against AWS EKS / Kubernetes
   * Web interface will change to allow you to specify parameters to launch containers using Kubernetes Jobs.
@@ -215,5 +210,5 @@ The author is [Chris Kinsman](https://github.com/chriskinsman)
 [npm-url]: https://npmjs.org/package/tilloo
 [downloads-image]: https://img.shields.io/npm/dm/tilloo.svg?style=flat
 [downloads-url]: https://npmjs.org/package/tilloo
-[shippable-image]: https://img.shields.io/shippable/56c277ad1895ca4474741676.svg?style=flat
-[shippable-url]: https://app.shippable.com/projects/56c277ad1895ca4474741676
+[github-build-image]: https://img.shields.io/github/workflow/status/chriskinsman/tilloo/tilloo
+[github-build-url]: https://github.com/chriskinsman/tilloo/actions?query=workflow%3Atilloo
