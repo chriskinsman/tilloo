@@ -20,7 +20,11 @@ jobs:
       - name: Docker login
         run: docker login ghcr.io --username ${{ secrets.GH_CR_USERNAME }} --password ${{ secrets.GH_CR_PAT }}
       - name: Run Buildx
-        run: docker buildx build --platform linux/arm/v6,linux/arm/v7,linux/arm64,linux/amd64 --file Dockerfile --tag ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-3.1.$GITHUB_RUN_NUMBER --tag ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-latest --output "type=image,push=true" .
+        run: docker buildx build --platform linux/arm/v6,linux/arm/v7,linux/arm64,linux/amd64 --file Dockerfile --tag ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-3.1.$GITHUB_RUN_NUMBER --tag ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-latest --output "type=image" .
+      - name: Push images
+        run: |
+          docker push ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-3.1.$GITHUB_RUN_NUMBER
+          docker push ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-latest
       - name: Update latest tag
         if: startsWith(github.ref, 'refs/heads/master')
         run: |
