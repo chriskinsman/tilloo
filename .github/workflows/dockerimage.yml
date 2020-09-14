@@ -21,12 +21,12 @@ jobs:
       - name: Run Buildx
         run: |
           docker buildx build --platform linux/arm/v6,linux/arm/v7,linux/arm64,linux/amd64 --file Dockerfile --tag ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-3.1.$GITHUB_RUN_NUMBER --output "type=image,push=true" .
-          docker pull ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-3.1.$GITHUB_RUN_NUMBER
-          docker tag ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-3.1.$GITHUB_RUN_NUMBER ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-latest
-          docker push ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-latest
-      - name: Update master latest tag
-        if: startsWith(github.ref, 'refs/heads/master')
-        run: |
-          docker pull ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-3.1.$GITHUB_RUN_NUMBER
-          docker tag ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-3.1.$GITHUB_RUN_NUMBER ghcr.io/chriskinsman/tilloo:latest
-          docker push ghcr.io/chriskinsman/tilloo:latest
+#          docker pull ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-3.1.$GITHUB_RUN_NUMBER
+#          docker tag ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-3.1.$GITHUB_RUN_NUMBER ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-latest
+#          docker push ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-latest
+#      - name: Update master latest tag
+#        if: startsWith(github.ref, 'refs/heads/master')
+#        run: |
+#          docker pull ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-3.1.$GITHUB_RUN_NUMBER
+#          docker tag ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-3.1.$GITHUB_RUN_NUMBER ghcr.io/chriskinsman/tilloo:latest
+#          docker push ghcr.io/chriskinsman/tilloo:latest
