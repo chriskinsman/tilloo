@@ -1,8 +1,7 @@
-name: tilloo
+name: ci
 on:
   push:
   pull_request:
-
 jobs:
   buildx:
     runs-on: ubuntu-latest
@@ -25,7 +24,7 @@ jobs:
           docker pull ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-3.1.$GITHUB_RUN_NUMBER
           docker tag ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-3.1.$GITHUB_RUN_NUMBER ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-latest
           docker push ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-latest
-      - name: Update latest tag
+      - name: Update master latest tag
         if: startsWith(github.ref, 'refs/heads/master')
         run: |
           docker pull ghcr.io/chriskinsman/tilloo:${GITHUB_REF##*/}-3.1.$GITHUB_RUN_NUMBER
