@@ -1,14 +1,9 @@
 #! /usr/bin/env node
 'use strict';
 
-const mongoose = require('mongoose');
 const commander = require('commander');
 
-const config = require('../lib/config');
 const Job = require('../models/job');
-
-mongoose.connect(config.db);
-mongoose.Promise = global.Promise;
 
 commander.version('0.0.1')
     .usage('<jobId>', 'Id of job')

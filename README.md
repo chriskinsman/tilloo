@@ -1,9 +1,7 @@
 
   A distributed cron with cli and web ui
 
-  [![NPM Version][npm-image]][npm-url]
-  [![NPM Downloads][downloads-image]][downloads-url]
-  [![Build Status][shippable-image]][shippable-url]
+  [![Build Status][github-build-image]][github-build-url]
 
 ## Installation
 
@@ -11,26 +9,24 @@ Prerequisites:
 - a running kubernetes installation
 - kubectl on the local machine connected to the remote k8s cluster
 - ingress configured on remote cluster
-- helm configured on remote cluster
 
 Steps:
-- change hostname in k8s/config.json and k8s/app.yaml
-- docker build -t <yourrepo>:<yourtag> .
-- docker push <yourrepo>:<yourtag>
-- update k8s/app.yaml to reference your repo and tag
+- edit configuration at end of k8s/app.yaml
 - run k8s/install.sh
+
 
 ## Features
 
   * Full cli
   * Web based UI with real time status udpates
-  * Multiple workers in multiple targetable groups
+  * Runs k8s jobs
+  * Supports nodeSelector
   * No downtime deploys
   * Up and running in 15 minutes.
   
 ## Recent Changes
 
-Tilloo has been a great tool for distributed cron at my current startup for the last four years. We are now moving to containers and want to add the ability to schedule runs in containers.  As we thought through this we decided to radically change the implementation of Tilloo.  I have created a v1.0 branch for folks who want to continue to use the older version.  Master will become the containerized implementation.  I plan on making the following changes:
+Tilloo has been a great tool for distributed cron at my current startup for the last five years. We are now moving to containers and want to add the ability to schedule runs in containers.  As we thought through this we decided to radically change the implementation of Tilloo.  I have created a v1.0 branch for folks who want to continue to use the older version.  Master will become the containerized implementation.  I plan on making the following changes:
  
   * Eliminate worker.  Scheduler will instead schedule container execution against AWS EKS / Kubernetes
   * Web interface will change to allow you to specify parameters to launch containers using Kubernetes Jobs.
@@ -39,6 +35,7 @@ Tilloo has been a great tool for distributed cron at my current startup for the 
   * Simplify jobs interface to remove JobId and add a tooltip with jobId and description.
   * Allow filtering of jobs
   * Moved config.json into a configMap.  This removes the requirement to build your own containers
+  * Removed disqueue and replaced with rabbitmq
 
 ## Background
   
@@ -61,16 +58,16 @@ and liked the realtime nature of this solution.  We liked the concept of Jobs an
 
 We leverage:
  * mongodb <https://www.mongodb.com/> for storage
- * disque <https://github.com/antirez/disque> for communication
+ * rabbitmq <https://www.rabbitmq.com/> for communication
  
  
-Mongodb will be installed using helm with the default install script. The app.yaml will run a disque pod.
+Mongodb will be installed using helm with the default install script. The app.yaml will run a rabbitmq pod.
 
 ### Configuration
 
 The default configuration is:
  * StatefulSet running mongodb in the tilloo-services namespace on port 27017
- * Deployment running disque on port 7711
+ * Deployment running rabbitmq on port 5672
  * Deployment running scheduler listening on port 80 with an ingress configured
  * Deployment running web listening on port 80 with an ingress configured
  * DaemonSet running a logger service on each node
@@ -186,7 +183,7 @@ The config file has sensible defaults filled in.  All keys present in the shippe
 __Settings__
 
 * db - Mongodb database connection string.  This is passed directly to mongoose under the covers and supports any mongodb options.
-* disque - Settings for disque. This whole block is passed to <https://www.npmjs.com/package/disqueue-node>. Any valid options for disqueue-node will work here.
+* rabbitmq - Settings for rabbitmq. Specify the host and the port.
 * scheduler - Settings pertaining to the scheduler
   * host - The host the scheduler resides on. This is used by tilloo-web to connect to the web sockets interface the scheduler exposes.
   * port - The port the web sockets interface is exposed on.
@@ -214,5 +211,5 @@ The author is [Chris Kinsman](https://github.com/chriskinsman)
 [npm-url]: https://npmjs.org/package/tilloo
 [downloads-image]: https://img.shields.io/npm/dm/tilloo.svg?style=flat
 [downloads-url]: https://npmjs.org/package/tilloo
-[shippable-image]: https://img.shields.io/shippable/56c277ad1895ca4474741676.svg?style=flat
-[shippable-url]: https://app.shippable.com/projects/56c277ad1895ca4474741676
+[github-build-image]: https://img.shields.io/github/workflow/status/chriskinsman/tilloo/tilloo
+[github-build-url]: https://github.com/chriskinsman/tilloo/actions?query=workflow%3Atilloo

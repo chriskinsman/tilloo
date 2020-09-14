@@ -1,15 +1,10 @@
 #! /usr/bin/env node
 'use strict';
 
-const mongoose = require('mongoose');
 const Table = require('easy-table');
 const moment = require('moment');
 
-const config = require('../lib/config');
 const Job = require('../models/job');
-
-mongoose.connect(config.db);
-mongoose.Promise = global.Promise;
 
 const table = new Table();
 Job.find({ deleted: false }, null, { sort: { name: 1 } }, function (err, jobs) {

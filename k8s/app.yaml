@@ -20,20 +20,20 @@ subjects:
 apiVersion: v1
 kind: Service
 metadata:
-  name: disquetron-service
+  name: rabbitmq-service
   namespace: tilloo-services
 spec:
   ports:
-  - port: 7711
-    targetPort: 7711
+  - port: 5672
+    targetPort: 5672
   selector:
-    app: disquetron
+    app: rabbitmq
     namespace: tilloo-services
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: disquetron-deployment
+  name: rabbitmq-deployment
   namespace: tilloo-services
 spec:
   replicas: 1
@@ -41,19 +41,19 @@ spec:
     type: Recreate  
   selector:
     matchLabels:
-      app: disquetron
+      app: rabbitmq
       namespace: tilloo-services
   template:
     metadata:
       labels:
-        app: disquetron
+        app: rabbitmq
         namespace: tilloo-services
     spec:
       containers:
-      - name: disquetron
-        image: jobflow/disque
+      - name: rabbitmq
+        image: rabbitmq:3-alpine
         ports:
-        - containerPort: 7711
+        - containerPort: 5672
 ---
 apiVersion: v1
 kind: Service
@@ -95,7 +95,7 @@ spec:
       serviceAccountName: tilloo-admin
       containers:
       - name: scheduler
-        image: tilloo/master-latest
+        image: ghcr.io/chriskinsman/tilloo/master-latest
         # env:
         # - name: DEBUG
         #   value: tilloo:*
@@ -146,7 +146,7 @@ spec:
       serviceAccountName: tilloo-admin
       containers:
       - name: web
-        image: tilloo/master-latest
+        image: ghcr.io/chriskinsman/tilloo/master-latest
         # env:
         # - name: DEBUG
         #   value: tilloo:*
@@ -183,7 +183,7 @@ spec:
         effect: NoSchedule
       containers:
       - name: logger
-        image: tilloo/master-latest
+        image: ghcr.io/chriskinsman/tilloo/master-latest
         # env:
         # - name: DEBUG
         #   value: tilloo:logforwarder
@@ -243,9 +243,9 @@ data:
   config.json: |-
     {
         "db": "mongodb://root:pAssw0rd1@mongodb.tilloo-services.svc.cluster.local:27017/tilloo?authSource=admin",
-        "disque": {
-            "host": "disquetron-service.tilloo-services",
-            "port": 7711
+        "rabbitmq": {
+            "host": "rabbitmq-service.tilloo-services",
+            "port": 5672
         },
         "scheduler": {
             "zombieAge": 5,

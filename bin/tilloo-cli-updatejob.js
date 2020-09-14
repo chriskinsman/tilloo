@@ -1,14 +1,9 @@
 #! /usr/bin/env node
 'use strict';
 
-const mongoose = require('mongoose');
 const commander = require('commander');
 
-const config = require('../lib/config');
 const jobs = require('../lib/jobs');
-
-mongoose.connect(config.db);
-mongoose.Promise = global.Promise;
 
 function list(val) {
     return val.split(',');

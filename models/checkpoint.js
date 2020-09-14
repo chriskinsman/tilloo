@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('../lib/mongooseinit');
 
 const Checkpoint = new mongoose.Schema({
     stream: { type: String, required: true, index: true, unique: true },

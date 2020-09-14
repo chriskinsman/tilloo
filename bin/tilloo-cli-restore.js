@@ -2,17 +2,13 @@
 'use strict';
 
 const fs = require('fs');
-const mongoose = require('mongoose');
-const ObjectId = require('mongoose').Types.ObjectId;
+const mongoose = require('../lib/mongooseinit');
+const ObjectId = mongoose.Types.ObjectId;
 const commander = require('commander');
 const async = require('async');
 
-const config = require('../lib/config');
 const jobs = require('../lib/jobs');
 const Job = require('../models/job');
-
-mongoose.connect(config.db);
-mongoose.Promise = global.Promise;
 
 commander.version('0.0.1')
     .usage('<file>')

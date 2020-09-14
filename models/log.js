@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('../lib/mongooseinit');
 
 const Log = new mongoose.Schema({
     runId: { type: mongoose.Schema.ObjectId, required: true, index: true },
@@ -6,8 +6,8 @@ const Log = new mongoose.Schema({
     createdAt: { type: Date, default: function () { return new Date(); } } // eslint-disable-line brace-style
 });
 
-Log.pre('save', function(done) {
-    if(!this.createdAt) {
+Log.pre('save', function (done) {
+    if (!this.createdAt) {
         this.createdAt = new Date();
     }
 
@@ -15,8 +15,8 @@ Log.pre('save', function(done) {
 });
 
 Log.statics.append = function append(runId, output, createdAt, callback) {
-    new Model({ runId: runId, output: output, createdAt: createdAt }).save(function(err) {
-        if(err) {
+    new Model({ runId: runId, output: output, createdAt: createdAt }).save(function (err) {
+        if (err) {
             console.error(err);
         }
 

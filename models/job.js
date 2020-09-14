@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const ObjectId = require('mongoose').Types.ObjectId;
+const mongoose = require('../lib/mongooseinit');
+const ObjectId = mongoose.Types.ObjectId;
 const CronJob = require('cron').CronJob;
 const debug = require('debug')('tilloo:job');
 
@@ -22,7 +22,6 @@ const Job = new mongoose.Schema({
             }
         }
     },
-    //queueName: { type: String, default: constants.QUEUES.DEFAULT_WORKER },
     imageUri: { type: String, required: true },
     nodeSelector: { type: String },
     enabled: { type: Boolean, default: 'true' },
