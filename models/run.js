@@ -28,28 +28,60 @@ Run.pre('save', function (done) {
     return done();
 });
 
-Run.statics.findRunsForJob = function findRunsForJob(jobId, sort, callback) {
-    Model.find({ jobId: new mongoose.Types.ObjectId(jobId) }, null, { sort: sort }, callback);
+Run.statics.findRunsForJob = async function findRunsForJob(jobId, sort) {
+    try {
+        return await Model.find({ jobId: new mongoose.Types.ObjectId(jobId) }, null, { sort: sort }).exec();
+    }
+    catch (err) {
+        console.error('Error finding runs for job', err);
+        throw err;
+    }
 };
 
-Run.statics.findRunsForJobPaginated = function findRunsForJobPaginated(jobId, page, pageSize, sort, callback) {
-    Model.find({ jobId: new mongoose.Types.ObjectId(jobId) }, null, { sort: sort })
-        .skip((page - 1) * pageSize)
-        .limit(pageSize)
-        .exec(callback);
+Run.statics.findRunsForJobPaginated = async function findRunsForJobPaginated(jobId, page, pageSize, sort) {
+    try {
+        return await Model.find({ jobId: new mongoose.Types.ObjectId(jobId) }, null, { sort: sort })
+            .skip((page - 1) * pageSize)
+            .limit(pageSize)
+            .exec();
+    }
+    catch (err) {
+        console.error('Error finding runs for job paginated', err);
+        throw err;
+    }
 };
 
 
-Run.statics.countRunsForJob = function countRunsForJob(jobId, callback) {
-    Model.count({ jobId: new mongoose.Types.ObjectId(jobId) }, callback);
+Run.statics.countRunsForJob = async function countRunsForJob(jobId) {
+    try {
+        return await Model.count({ jobId: new mongoose.Types.ObjectId(jobId) }).exec();
+    }
+    catch (err) {
+        console.error('Error counting runs for job', err);
+        throw err;
+    }
+
 };
 
-Run.statics.findByRunId = function findByRunId(runId, callback) {
-    Model.findById(new mongoose.Types.ObjectId(runId), callback);
+Run.statics.findByRunId = async function findByRunId(runId) {
+    try {
+        return await Model.findById(new mongoose.Types.ObjectId(runId)).exec();
+    }
+    catch (err) {
+        console.error('Error finding run by id', err);
+        throw err;
+    }
 };
 
-Run.statics.findRunsOlderThan = function findRunsOlderThan(days, callback) {
-    Model.find({ createdAt: { $lte: moment().subtract(days, 'days').toDate() } }, '_id', { sort: { createdAt: 1 } }, callback);
+Run.statics.findRunsOlderThan = async function findRunsOlderThan(days) {
+    try {
+        return await Model.find({ createdAt: { $lte: moment().subtract(days, 'days').toDate() } }, '_id', { sort: { createdAt: 1 } }).exec();
+    }
+    catch (err) {
+        console.error('Error finding runs older than', err);
+        throw err;
+    }
+
 };
 
 const Model = mongoose.model('run', Run);

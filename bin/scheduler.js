@@ -8,7 +8,6 @@ const rabbit = require('../lib/rabbitfactory');
 
 const config = require('../lib/config');
 const constants = require('../lib/constants');
-const util = require('util');
 const Job = require('../models/job');
 // Don't remove.  Loading this causes logger to start
 const logger = require('../lib/logwriter'); // eslint-disable-line no-unused-vars
@@ -29,28 +28,35 @@ const debug = require('debug')('tilloo:scheduler');
 
 const _loadedJobs = {};
 
-Job.loadAllJobs(function (err, jobs) {
-    debug('loading jobs');
-    jobs.forEach(function (job) {
-        debug('found job %s', job.name);
-        if (job.schedule && job.schedule.trim() !== '') {
-            debug('setting up cron %s for %s', job.schedule, job.name);
-            _loadedJobs[job._id] = job;
-            job.startCron();
-        }
-    });
-    console.info('Scheduler started');
-    debug('Scheduler started connected to %s', config.db);
-});
+(async () => {
+    try {
+        const jobs = await Job.loadAllJobs();
+        debug('loading jobs');
+        jobs.forEach((job) => {
+            debug('found job %s', job.name);
+            if (job.schedule && job.schedule.trim() !== '') {
+                debug('setting up cron %s for %s', job.schedule, job.name);
+                _loadedJobs[job._id] = job;
+                job.startCron();
+            }
+        });
 
-const jobFindById = util.promisify(Job.findById).bind(Job);
+        console.info('Scheduler started');
+        debug('Scheduler started connected to %s', config.db);
+    }
+    catch (err) {
+        console.error('Error loading jobs', err);
+        process.exit(1);
+    }
+})();
+
 
 // Used so scheduler is notified of changes and can add/remove/change jobs
 rabbit.subscribe(constants.QUEUES.SCHEDULER, async (message) => {
     async function updateJob(jobId) {
         deleteJob(jobId, true);
 
-        const dbJob = await jobFindById(new ObjectId(jobId));
+        const dbJob = await Job.findById(new ObjectId(jobId));
         _loadedJobs[jobId] = dbJob;
         dbJob.startCron();
         debug('updated jobId: %s', jobId);

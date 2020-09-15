@@ -35,7 +35,7 @@ const Job = new mongoose.Schema({
     failuresBeforeAlert: { type: Number, default: 1 }
 });
 
-Job.pre('save', function (done) {
+Job.pre('save', function save(done) {
     if (!this.createdAt) {
         this.createdAt = new Date();
     }
@@ -44,7 +44,7 @@ Job.pre('save', function (done) {
     return done();
 });
 
-Job.methods.newRun = function () {
+Job.methods.newRun = function newRun() {
     return new Run({
         jobId: this._id,
         name: this.name,
@@ -57,61 +57,49 @@ Job.methods.newRun = function () {
     });
 };
 
-Job.methods.triggerRun = function (callback) {
+Job.methods.triggerRun = async function triggerRun() {
     const self = this;
     const run = self.newRun();
-    run.save(function (err, run) {
-        if (err) {
-            debug('unable to save run for %s.', self.name);
-            console.error(err);
-            if (callback) {
-                callback(err);
-            }
-        }
-        else {
-            debug('sending start message for %s :: %s.', self.name, self._id);
+    try {
+        await run.save();
+        debug('sending start message for %s :: %s.', self.name, self._id);
 
-            const k8sJob = new K8sJob(self._id, run._id, self.name, self.imageUri, self.path, self.args, self.nodeSelector, self.timeout);
+        const k8sJob = new K8sJob(self._id, run._id, self.name, self.imageUri, self.path, self.args, self.nodeSelector, self.timeout);
 
-            k8sJob.start();
+        k8sJob.start();
 
-            self.lastRanAt = new Date();
-            self.save(function (err) {
-                if (err) {
-                    console.error(err);
-                    if (callback) {
-                        callback(err);
-                    }
-                }
-                else if (callback) {
-                    callback();
-                }
-            });
-        }
-    });
+        self.lastRanAt = new Date();
+        await self.save();
+    }
+    catch (err) {
+        debug('unable to save run for %s.', self.name);
+        console.error(err);
+        throw err;
+    }
 };
 
-Job.methods.startCron = function () {
+Job.methods.startCron = function startCron() {
     const self = this;
 
-    this.__cron = new CronJob(this.schedule, function () {
+    this.__cron = new CronJob(this.schedule, async function () {
         debug('Cron trigger', self);
         if (self.mutex) {
-            Run.findOne({ jobId: new ObjectId(self._id) }, null, { sort: { createdAt: -1 } }, function (err, run) {
-                if (err) {
-                    console.error(err);
-                    debug('Unable to check for running job not scheduling jobId: %s', self._id);
-                }
-                else if (run && (run.status === constants.JOBSTATUS.BUSY || run.status === constants.JOBSTATUS.IDLE)) {
+            try {
+                const run = await Run.findOne({ jobId: new ObjectId(self._id) }, null, { sort: { createdAt: -1 } }).exec();
+                if (run && (run.status === constants.JOBSTATUS.BUSY || run.status === constants.JOBSTATUS.IDLE)) {
                     debug('Mutex not scheduling jobId: %s, runId: %s already running', self._id, run._id);
                 }
                 else {
-                    self.triggerRun();
+                    await self.triggerRun();
                 }
-            });
+            }
+            catch (err) {
+                console.error(err);
+                debug('Unable to check for running job not scheduling jobId: %s', self._id);
+            }
         }
         else {
-            self.triggerRun();
+            await self.triggerRun();
         }
     });
 
@@ -119,7 +107,7 @@ Job.methods.startCron = function () {
     this.__cron.start();
 };
 
-Job.methods.stopCron = function () {
+Job.methods.stopCron = function stopCron() {
     if (this.__cron) {
         debug('stopping cron %s for %s.', this.schedule, this.name);
         this.__cron.stop();
@@ -127,20 +115,37 @@ Job.methods.stopCron = function () {
     }
 };
 
-Job.statics.loadAllJobs = function (callback) {
+Job.statics.loadAllJobs = async function loadAllJobs() {
     debug('loading all jobs');
-    Model.find({ deleted: false, enabled: true }, function (err, jobs) {
-        return callback(err, jobs);
-    });
+    try {
+        return await Model.find({ deleted: false, enabled: true });
+    }
+    catch (err) {
+        console.error('Error loading alljobs', err);
+        throw err;
+    }
 };
 
-Job.statics.findAllJobs = function findAllJobs(callback) {
+Job.statics.findAllJobs = async function findAllJobs() {
     console.info('findAllJobs');
-    Model.find({ deleted: false }, null, { sort: { name: 1 } }, callback);
+    try {
+        return await Model.find({ deleted: false }, null, { sort: { name: 1 } });
+    }
+    catch (err) {
+        console.error('Error finding all jobs', err);
+        throw err;
+    }
+
 };
 
-Job.statics.findByJobId = function findByJobId(jobId, callback) {
-    Model.findById(new ObjectId(jobId), callback);
+Job.statics.findByJobId = async function findByJobId(jobId) {
+    try {
+        return await Model.findById(new ObjectId(jobId));
+    }
+    catch (err) {
+        console.error('Error finding job', err);
+        throw err;
+    }
 };
 
 const Model = mongoose.model('job', Job);

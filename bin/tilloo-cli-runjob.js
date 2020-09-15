@@ -14,13 +14,16 @@ if (commander.args.length !== 1) {
     process.exit(1);
 }
 
-jobs.triggerRun(commander.args[0], function (err) {
-    if (err) {
-        console.error('Unable to trigger run err: ' + err);
-        process.exit(1);
-    }
-    else {
+
+(async () => {
+    try {
+        await jobs.triggerRun(commander.args[0]);
         console.info('Run triggered');
         process.exit(0);
     }
-});
+    catch (err) {
+        console.error('Unable to trigger run err: ' + err);
+        process.exit(1);
+    }
+})();
+

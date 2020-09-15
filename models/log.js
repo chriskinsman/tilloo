@@ -14,26 +14,44 @@ Log.pre('save', function (done) {
     return done();
 });
 
-Log.statics.append = function append(runId, output, createdAt, callback) {
-    new Model({ runId: runId, output: output, createdAt: createdAt }).save(function (err) {
-        if (err) {
-            console.error(err);
-        }
-
-        callback(err);
-    });
+Log.statics.append = async function append(runId, output, createdAt) {
+    try {
+        return await new Model({ runId: runId, output: output, createdAt: createdAt }).save();
+    }
+    catch (err) {
+        console.error('Error appending to log', err);
+        throw err;
+    }
 };
 
-Log.statics.findOutputForRun = function findOutputForRun(runId, callback) {
-    Model.find({ runId: new mongoose.Types.ObjectId(runId) }, 'output', { sort: { createdAt: 1 } }, callback);
+Log.statics.findOutputForRun = async function findOutputForRun(runId) {
+    try {
+        return await Model.find({ runId: new mongoose.Types.ObjectId(runId) }, 'output', { sort: { createdAt: 1 } }).exec();
+    }
+    catch (err) {
+        console.error('Error finding output for run', err);
+        throw err;
+    }
 };
 
-Log.statics.deleteOutputForRun = function deleteOutputForRun(runId, callback) {
-    Model.remove({ runId: new mongoose.Types.ObjectId(runId) }, callback);
+Log.statics.deleteOutputForRun = async function deleteOutputForRun(runId) {
+    try {
+        return await Model.remove({ runId: new mongoose.Types.ObjectId(runId) });
+    }
+    catch (err) {
+        console.error('Error deleting output for run', err);
+        throw err;
+    }
 };
 
-Log.statics.getMaxCreatedAtForRun = function getMaxCreatedAtForRun(runId, callback) {
-    Model.findOne({ runId: new mongoose.Types.ObjectId(runId) }, null, { sort: { createdAt: -1 } }, callback);
+Log.statics.getMaxCreatedAtForRun = async function getMaxCreatedAtForRun(runId) {
+    try {
+        return await Model.findOne({ runId: new mongoose.Types.ObjectId(runId) }, null, { sort: { createdAt: -1 } }).exec();
+    }
+    catch (err) {
+        console.error('Error getting maxCreatedAt for run', err);
+        throw err;
+    }
 };
 
 const Model = mongoose.model('log', Log);

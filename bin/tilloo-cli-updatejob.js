@@ -38,63 +38,64 @@ if (!jobId) {
     showHelpAndExit();
 }
 
-const jobDef = {};
+(async () => {
+    try {
+        const jobDef = {};
 
-if (commander.enabled) {
-    jobDef.enabled = commander.enabled.toLowerCase() === 'true';
-}
+        if (commander.enabled) {
+            jobDef.enabled = commander.enabled.toLowerCase() === 'true';
+        }
 
-if (commander.schedule) {
-    jobDef.schedule = commander.schedule;
-}
+        if (commander.schedule) {
+            jobDef.schedule = commander.schedule;
+        }
 
-if (commander.path) {
-    jobDef.path = commander.path;
-}
+        if (commander.path) {
+            jobDef.path = commander.path;
+        }
 
-if (commander.imageuri) {
-    jobDef.imageUri = commander.imageuri;
-}
+        if (commander.imageuri) {
+            jobDef.imageUri = commander.imageuri;
+        }
 
-if (commander.nodeselector) {
-    jobDef.nodeSelector = commander.nodeselector;
-}
+        if (commander.nodeselector) {
+            jobDef.nodeSelector = commander.nodeselector;
+        }
 
-if (commander.jobname) {
-    jobDef.name = commander.jobname;
-}
+        if (commander.jobname) {
+            jobDef.name = commander.jobname;
+        }
 
-if (commander.timeout) {
-    jobDef.timeout = commander.timeout;
-}
+        if (commander.timeout) {
+            jobDef.timeout = commander.timeout;
+        }
 
-if (commander.queue) {
-    jobDef.queueName = commander.queue;
-}
+        if (commander.queue) {
+            jobDef.queueName = commander.queue;
+        }
 
-if (commander.jobargs) {
-    jobDef.args = commander.jobargs;
-}
+        if (commander.jobargs) {
+            jobDef.args = commander.jobargs;
+        }
 
-if (commander.jobdescription) {
-    jobDef.description = commander.jobdescription;
-}
+        if (commander.jobdescription) {
+            jobDef.description = commander.jobdescription;
+        }
 
-if (commander.mutex !== undefined) {
-    jobDef.mutex = commander.mutex;
-}
+        if (commander.mutex !== undefined) {
+            jobDef.mutex = commander.mutex;
+        }
 
-if (commander.failures) {
-    jobDef.failuresBeforeAlert = commander.failures;
-}
+        if (commander.failures) {
+            jobDef.failuresBeforeAlert = commander.failures;
+        }
 
-jobs.update(jobId, jobDef, function (err) {
-    if (err) {
-        console.error('Error updating job err:', err);
-        process.exit(1);
-    }
-    else {
+        await jobs.update(jobId, jobDef);
         console.info('Job updated');
         process.exit(0);
     }
-});
+    catch (err) {
+        console.error('Error updating job err:', err);
+        process.exit(1);
+    }
+})();

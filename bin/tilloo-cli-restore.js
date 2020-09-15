@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 'use strict';
 
-const fs = require('fs');
+const fs = require('fs').promises;
 const mongoose = require('../lib/mongooseinit');
 const ObjectId = mongoose.Types.ObjectId;
 const commander = require('commander');
@@ -23,65 +23,48 @@ if (commander.args.length !== 1) {
     showHelpAndExit();
 }
 
-// Attempt to open file
-fs.readFile(commander.args[0], function (err, data) {
-    if (err) {
-        console.error('Unable to open: ' + commander.args[0]);
-        process.exit(1);
-    }
-    else {
-        try {
-            const restoreJobs = JSON.parse(data);
-            let errors = false;
-            let jobAdded = 0;
-            let jobUpdated = 0;
-            async.eachSeries(restoreJobs, function (jobToRestore, done) {
-                Job.findById(new ObjectId(jobToRestore._id), function (err, job) {
-                    if (!job) {
-                        // Remove the id so we generate a new one
-                        delete jobToRestore._id;
-                        jobs.add(jobToRestore, function (err) {
-                            if (err) {
-                                errors = true;
-                                console.error('Problem adding job: ');
-                                console.dir(jobToRestore);
-                            }
-                            else {
-                                jobAdded++;
-                            }
-                            done();
-                        });
-                    }
-                    else {
-                        jobs.update(jobToRestore._id, jobToRestore, function (err) {
-                            if (err) {
-                                errors = true;
-                                console.error('Problem updating job: ');
-                                console.dir(jobToRestore);
-                            }
-                            else {
-                                jobUpdated++;
-                            }
-                            done();
-                        });
-                    }
-                });
-            }, function (err) {
-                if (errors) {
-                    console.error('Jobs restored with errors');
-                    process.exit(1);
+(async () => {
+    try {
+        // Attempt to open file
+        const data = await fs.readFile(commander.args[0]);
+
+        const restoreJobs = JSON.parse(data);
+        let errors = false;
+        let jobAdded = 0;
+        let jobUpdated = 0;
+        async.eachSeries(restoreJobs, async function (jobToRestore) {
+            try {
+                const job = await Job.findById(new ObjectId(jobToRestore._id));
+                if (!job) {
+                    // Remove the id so we generate a new one
+                    delete jobToRestore._id;
+                    await jobs.add(jobToRestore);
+                    jobAdded++;
                 }
                 else {
-                    console.info('Jobs added: ' + jobAdded + ', updated: ' + jobUpdated);
-                    process.exit(0);
+                    await jobs.update(jobToRestore._id, jobToRestore);
+                    jobUpdated++;
                 }
-            });
-        }
-        catch (e) {
-            console.error(e);
-            console.error('Unable to parse job data for file: ' + commander.args[0]);
-            process.exit(1);
-        }
-
+            }
+            catch (err) {
+                errors = true;
+                console.error(`Problem adding job: ${JSON.stringify(jobToRestore)}`, err);
+                // Don't rethrow so we continue to try to load jobs
+            }
+        }, function (err) {
+            if (errors) {
+                console.error('Jobs restored with errors');
+                process.exit(1);
+            }
+            else {
+                console.info('Jobs added: ' + jobAdded + ', updated: ' + jobUpdated);
+                process.exit(0);
+            }
+        });
     }
-});
+    catch (err) {
+        console.error('Problems restoring jobs', err);
+        process.exit(1);
+    }
+})();
+

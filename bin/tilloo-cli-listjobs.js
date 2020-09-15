@@ -6,13 +6,10 @@ const moment = require('moment');
 
 const Job = require('../models/job');
 
-const table = new Table();
-Job.find({ deleted: false }, null, { sort: { name: 1 } }, function (err, jobs) {
-    if (err) {
-        console.error(err);
-        process.exit(1);
-    }
-    else {
+(async () => {
+    try {
+        const table = new Table();
+        const jobs = await Job.find({ deleted: false }, null, { sort: { name: 1 } });
         jobs.forEach(function (job) {
             table.cell('Id', job._id);
             table.cell('Name', job.name);
@@ -27,4 +24,10 @@ Job.find({ deleted: false }, null, { sort: { name: 1 } }, function (err, jobs) {
         console.log(table.toString());
         process.exit(0);
     }
-});
+    catch (err) {
+        console.error('Error listing jobs', err);
+        process.exit(1);
+    }
+})();
+
+

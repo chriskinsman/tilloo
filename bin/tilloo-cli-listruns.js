@@ -16,13 +16,10 @@ if (commander.args.length !== 1) {
     process.exit(1);
 }
 
-const table = new Table();
-Run.findRunsForJob(commander.args[0], { startedAt: 1 }, function (err, runs) {
-    if (err) {
-        console.error(err);
-        process.exit(1);
-    }
-    else {
+(async () => {
+    try {
+        const table = new Table();
+        const runs = await Run.findRunsForJob(commander.args[0], { startedAt: 1 });
         runs.forEach(function (run) {
             table.cell('Id', run._id);
             table.cell('Worker', run.worker);
@@ -37,4 +34,10 @@ Run.findRunsForJob(commander.args[0], { startedAt: 1 }, function (err, runs) {
         console.log(table.toString());
         process.exit(0);
     }
-});
+    catch (err) {
+        console.error('Error listing runs for job', err);
+        process.exit(1);
+    }
+})();
+
+

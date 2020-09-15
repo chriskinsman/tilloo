@@ -14,14 +14,15 @@ if (commander.args.length !== 1) {
     process.exit(1);
 }
 
-runs.killRun(commander.args[0], commander.force, function (err) {
-    if (err) {
-        console.error('Unable to kill run');
-        process.exit(1);
-    }
-    else {
+(async () => {
+    try {
+        await runs.killRun(commander.args[0], commander.force);
         console.info('Kill message sent');
         process.exit(0);
     }
+    catch (err) {
+        console.error('Unable to kill run', err);
+        process.exit(1);
+    }
+})();
 
-});
