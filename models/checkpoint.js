@@ -21,5 +21,14 @@ Checkpoint.statics.findByStream = async function findByStream(stream) {
     }
 };
 
+Checkpoint.statics.findAndUpdateByStream = async function findAndUpdateByStream(stream, resourceVersion) {
+    try {
+        await Model.findOneAndUpdate({ stream: stream }, { "$set": { resourceVersion: resourceVersion } }).exec();
+    }
+    catch (err) {
+        console.error(`Error finding and updating stream: ${stream} with resourceVersion: ${resourceVersion}`, err);
+    }
+}
+
 const Model = mongoose.model('checkpoint', Checkpoint);
 module.exports = Model;
