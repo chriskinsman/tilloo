@@ -47,9 +47,13 @@ jobs:
           driver-opts: image=moby/buildkit:master
       - name: Available platforms
         run: echo ${{ steps.buildx.outputs.platforms }}
-      - name: Docker login
+      - name: Login to GitHub Container Registry
         if: github.event_name != 'pull_request'
-        run: docker login ghcr.io --username ${{ secrets.GH_CR_USERNAME }} --password ${{ secrets.GH_CR_PAT }}
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GH_CR_PAT }}        
       - name: Cache Docker layers
         uses: actions/cache@v2
         with:
