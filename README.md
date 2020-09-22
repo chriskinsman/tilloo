@@ -199,6 +199,12 @@ There are plugins available to send notifications to your monitoring system of c
 Plugins:
   * [Mandrill/MailChimp](https://www.npmjs.com/package/tilloo-plugin-mandrill)
 
+## Resources
+* Running tilloo on Raspberry PI/k3s - [tilloo-k3s] (https://github.com/chriskinsman/tilloo-k3s)
+* Running tilloo on Raspberry PI/k8s - [tilloo-pi] (https://github.com/chriskinsman/tilloo-pi)
+* Running tilloo on AWS AKS - [tilloo-aws] (https://github.com/chriskinsman/tilloo-aws)
+* Running tilloo on Azure AKS - [tilloo-azure] (https://github.com/chriskinsman/tilloo-azure)
+
 ## People
 
 The author is [Chris Kinsman](https://github.com/chriskinsman)
