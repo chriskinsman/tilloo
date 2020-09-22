@@ -14,13 +14,16 @@ if (commander.args.length !== 1) {
     process.exit(1);
 }
 
-jobs.remove(commander.args[0], function (err) {
-    if (err) {
-        console.error('Problems deleting job err: ' + err);
-        process.exit(1);
-    }
-    else {
+(async () => {
+    try {
+        await jobs.remove(commander.args[0]);
         console.info('Deleted');
         process.exit(0);
     }
-});
+    catch (err) {
+        console.error('Problems deleting job err: ' + err);
+        process.exit(1);
+    }
+})();
+
+

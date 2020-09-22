@@ -14,14 +14,16 @@ if (commander.args.length !== 1) {
     process.exit(1);
 }
 
-Run.findByRunId(commander.args[0], function (err, run) {
-    if (err) {
-        console.error('Error getting job detail err: ' + err);
-        process.exit(1);
-    }
-    else {
+(async () => {
+    try {
+        const run = await Run.findByRunId(commander.args[0]);
         console.info(JSON.stringify(run, null, 4));
         process.exit(0);
     }
+    catch (err) {
+        console.error('Error getting job detail err: ' + err);
+        process.exit(1);
+    }
+})();
 
-});
+

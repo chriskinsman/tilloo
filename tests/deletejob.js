@@ -2,7 +2,7 @@
 const k8sClient = require('../lib/k8s/clientFactory');
 
 
-async function main() {
+(async () => {
     try {
         await k8sClient.loadSpec();
         const jobs = await k8sClient.apis.batch.v1.namespaces('tilloo-jobs').job.get({ qs: { labelSelector: `runId=5c3650e07020ab0001c25cde` } });
@@ -14,6 +14,4 @@ async function main() {
     catch (e) {
         console.error(e);
     }
-}
-
-main();
+})();

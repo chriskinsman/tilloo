@@ -14,16 +14,17 @@ if (commander.args.length !== 1) {
     process.exit(1);
 }
 
-Log.findOutputForRun(commander.args[0], function (err, runOutputs) {
-    if (err) {
-        console.error('Error getting job detail err: ' + err);
-        process.exit(1);
-    }
-    else {
-        runOutputs.forEach(function (runOutput) {
+(async () => {
+    try {
+        const runOutputs = await Log.findOutputForRun(commander.args[0]);
+        runOutputs.forEach((runOutput) => {
             console.info(runOutput.output);
         });
         process.exit(0);
     }
+    catch (err) {
+        console.error('Error getting run output err: ' + err);
+        process.exit(1);
+    }
+})();
 
-});

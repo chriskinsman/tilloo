@@ -14,7 +14,7 @@ const _logRoot = '/var/log/containers/';
 const _processStartTime = new Date();
 const _runningLoggers = {};
 
-async function main() {
+(async () => {
     await k8sClient.loadSpec();
 
     debug(`Starting watch for namespace: ${constants.NAMESPACE} on dir: ${_logRoot}`);
@@ -81,6 +81,4 @@ async function main() {
             _runningCheck = false;
         }
     }, 1000 * 60 * 5);
-}
-
-main();
+})();

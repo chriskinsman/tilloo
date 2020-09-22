@@ -14,13 +14,16 @@ if (commander.args.length !== 1) {
     process.exit(1);
 }
 
-runs.deleteRunsOlderThan(commander.args[0], function (err) {
-    if (err) {
-        console.error('Problems expiring runs err: ' + err);
-        process.exit(1);
-    }
-    else {
+(async () => {
+    try {
+        await runs.deleteRunsOlderThan(commander.args[0]);
         console.info('Expired');
         process.exit(0);
     }
-});
+    catch (err) {
+        console.error('Problems expiring runs err: ' + err);
+        process.exit(1);
+    }
+})();
+
+

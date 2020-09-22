@@ -17,6 +17,8 @@ RUN cd /tilloo && npm ci --only=production && cd app/public && npm ci --only=pro
 #
 # ---- Release ----
 FROM base AS release
+# repo URL
+LABEL org.opencontainers.image.source = "https://github.com/chriskinsman/tilloo"
 # copy production node_modules
 COPY --from=dependencies /tilloo/node_modules ./node_modules
 COPY --from=dependencies /tilloo/app/public/node_modules ./app/public/node_modules

@@ -41,54 +41,55 @@ if (!imageUri) {
     showHelpAndExit();
 }
 
-const jobDef = { schedule: schedule, imageUri: imageUri };
+(async () => {
+    try {
+        const jobDef = { schedule: schedule, imageUri: imageUri };
 
-if (commander.path) {
-    jobDef.path = commander.path;
-}
+        if (commander.path) {
+            jobDef.path = commander.path;
+        }
 
-if (commander.nodeselector) {
-    jobDef.nodeSelector = commander.nodeselector;
-}
+        if (commander.nodeselector) {
+            jobDef.nodeSelector = commander.nodeselector;
+        }
 
-if (commander.jobname) {
-    jobDef.name = commander.jobname;
-}
-else {
-    jobDef.name = imageUri;
-}
+        if (commander.jobname) {
+            jobDef.name = commander.jobname;
+        }
+        else {
+            jobDef.name = imageUri;
+        }
 
-if (commander.timeout) {
-    jobDef.timeout = commander.timeout;
-}
+        if (commander.timeout) {
+            jobDef.timeout = commander.timeout;
+        }
 
-if (commander.queue) {
-    jobDef.queueName = commander.queue;
-}
+        if (commander.queue) {
+            jobDef.queueName = commander.queue;
+        }
 
-if (commander.jobargs) {
-    jobDef.args = commander.jobargs;
-}
+        if (commander.jobargs) {
+            jobDef.args = commander.jobargs;
+        }
 
-if (commander.jobdescription) {
-    jobDef.description = commander.jobdescription;
-}
+        if (commander.jobdescription) {
+            jobDef.description = commander.jobdescription;
+        }
 
-if (commander.mutex !== undefined) {
-    jobDef.mutex = commander.mutex;
-}
+        if (commander.mutex !== undefined) {
+            jobDef.mutex = commander.mutex;
+        }
 
-if (commander.failures) {
-    jobDef.failuresBeforeAlert = commander.failures;
-}
+        if (commander.failures) {
+            jobDef.failuresBeforeAlert = commander.failures;
+        }
 
-jobs.add(jobDef, function (err) {
-    if (err) {
-        console.error('Error adding job err: ', err);
-        process.exit(1);
-    }
-    else {
+        await jobs.add(jobDef);
         console.info('Job added');
         process.exit(0);
     }
-});
+    catch (err) {
+        console.error('Error adding job err: ', err);
+        process.exit(1);
+    }
+})();

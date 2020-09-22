@@ -14,14 +14,15 @@ if (commander.args.length !== 1) {
     process.exit(1);
 }
 
-Job.findByJobId(commander.args[0], function (err, job) {
-    if (err) {
-        console.error('Error getting job detail err: ' + err);
-        process.exit(1);
-    }
-    else {
+(async () => {
+    try {
+        const job = await Job.findByJobId(commander.args[0]);
         console.info(JSON.stringify(job, null, 4));
         process.exit(0);
     }
+    catch (err) {
+        console.error('Error getting job detail err: ' + err);
+        process.exit(1);
+    }
+})();
 
-});
