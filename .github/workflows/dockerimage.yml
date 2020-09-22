@@ -2,6 +2,7 @@ name: ci
 on:
   push:
   pull_request:
+    branches: master
 jobs:
   buildx:
     runs-on: ubuntu-latest
@@ -11,7 +12,7 @@ jobs:
       - name: Prepare
         id: prep
         run: |
-          DOCKER_IMAGE=ghcr.io/chriskinsman/tilloo
+          DOCKER_IMAGE=ghcr.io/${{ github.repository_owner }}/tilloo
           VERSION=noop
           if [ "${{ github.event_name }}" = "schedule" ]; then
             VERSION=nightly
@@ -44,7 +45,6 @@ jobs:
         with:
           # hack for https://github.com/docker/build-push-action/issues/126
           driver-opts: image=moby/buildkit:master
-          version: latest
       - name: Available platforms
         run: echo ${{ steps.buildx.outputs.platforms }}
       - name: Docker login
