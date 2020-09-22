@@ -81,7 +81,7 @@ The typical Tilloo environment consists of:
  * 1 Web UI
  * 1 logger on each k8s node
  
- Once everything is installed in k8s open a web browser to http://<yourhostname>:7770.
+ Once everything is installed in k8s open a web browser to http://<yourhostname>.
 
 Enjoy!
 
