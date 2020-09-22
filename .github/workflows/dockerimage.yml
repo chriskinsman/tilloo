@@ -50,6 +50,13 @@ jobs:
       - name: Docker login
         if: github.event_name != 'pull_request'
         run: docker login ghcr.io --username ${{ secrets.GH_CR_USERNAME }} --password ${{ secrets.GH_CR_PAT }}
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-        
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
