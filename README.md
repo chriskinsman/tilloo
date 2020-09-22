@@ -213,9 +213,5 @@ The author is [Chris Kinsman](https://github.com/chriskinsman)
 
   [MIT](LICENSE)
 
-[npm-image]: https://img.shields.io/npm/v/tilloo.svg?style=flat
-[npm-url]: https://npmjs.org/package/tilloo
-[downloads-image]: https://img.shields.io/npm/dm/tilloo.svg?style=flat
-[downloads-url]: https://npmjs.org/package/tilloo
 [github-build-image]: https://img.shields.io/github/workflow/status/chriskinsman/tilloo/tilloo
 [github-build-url]: https://github.com/chriskinsman/tilloo/actions?query=workflow%3Atilloo
