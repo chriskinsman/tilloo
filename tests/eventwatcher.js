@@ -2,7 +2,7 @@
 
 const constants = require('../lib/constants');
 
-const debug = require('debug')('tilloo:tests/k8sjobstream');
+const debug = require('debug')('tilloo:tests/eventwatcher');
 
 const k8sClient = require('../lib/k8s/clientFactory');
 
@@ -16,13 +16,14 @@ async function initializeStream() {
     }
 
     try {
-        await k8sClient.watch.watch(`/apis/batch/v1/namespaces/${constants.NAMESPACE}/jobs`, watchArgs,
+        await k8sClient.watch.watch(`/api/v1/namespaces/${constants.NAMESPACE}/events`, watchArgs,
             (type, apiObj, watchObj) => {
                 if (apiObj.metadata && apiObj.metadata.resourceVersion) {
                     lastResourceVersion = apiObj.metadata.resourceVersion;
                     debug('Updating lastResourceVersion', lastResourceVersion);
                 }
-
+                debug(`Type: ${type}`);
+                debug(apiObj);
                 switch (type) {
                     case 'ADDED':
                         debug('Job added');
@@ -53,16 +54,6 @@ async function initializeStream() {
         console.error(e);
         process.exit(1);
     }
-    // k8sStream = await k8sClient.apis.batch.v1.watch.namespaces(constants.NAMESPACE).jobs.getObjectStream({ qs: streamArgs });
-    // k8sStream.on('data', (streamData) => {
-    //     console.dir(streamData, { depth: 4 });
-    //     debug('streamData', streamData);
-
-    //     if (streamData.metadata && streamData.metadata.resourceVersion) {
-    //         lastResourceVersion = streamData.metadata.resourceVersion;
-    //         debug('Updating lastResourceVersion', lastResourceVersion);
-    //     }
-    // });
 }
 
 initializeStream();
