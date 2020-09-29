@@ -2,8 +2,6 @@
 
 const constants = require('../lib/constants');
 
-const debug = require('debug')('tilloo:tests/jobstatus');
-
 const k8sClient = require('../lib/k8s/clientFactory');
 
 async function main() {

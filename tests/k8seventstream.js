@@ -16,7 +16,7 @@ async function initializeStream() {
     }
 
     try {
-        const req = await k8sClient.watch.watch(`/api/v1/namespaces/${constants.NAMESPACE}/events`, watchArgs,
+        await k8sClient.watch.watch(`/api/v1/namespaces/${constants.NAMESPACE}/events`, watchArgs,
             (type, apiObj, watchObj) => {
                 if (apiObj.metadata && apiObj.metadata.resourceVersion) {
                     lastResourceVersion = apiObj.metadata.resourceVersion;
