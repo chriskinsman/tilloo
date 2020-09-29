@@ -13,10 +13,10 @@ const Job = require('../models/job');
 const logger = require('../lib/logwriter'); // eslint-disable-line no-unused-vars
 // Don't remove.  Loading this causes status to start
 const status = require('../lib/mqstatus'); // eslint-disable-line no-unused-vars
-// Don't remove.  Loading this causes jobStream to start
-const jobStream = require('../lib/k8s/jobstream'); // eslint-disable-line no-unused-vars
-// Don't remove.  Loading this causes eventStream to start
-const eventStream = require('../lib/k8s/eventstream'); // eslint-disable-line no-unused-vars
+// Don't remove.  Loading this causes jobwatcher to start
+const jobWatcher = require('../lib/k8s/jobwatcher'); // eslint-disable-line no-unused-vars
+// Don't remove.  Loading this causes eventwatcher to start
+const eventWatcher = require('../lib/k8s/eventwatcher'); // eslint-disable-line no-unused-vars
 // Don't remove.  Loading this causes the zombieRuns to start
 const zombieRuns = require('../lib/k8s/zombieruns'); // eslint-disable-line no-unused-vars
 // Don't remove.  Loading this causes the cleanupJobs to start

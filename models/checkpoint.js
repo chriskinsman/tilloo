@@ -5,30 +5,33 @@ const Checkpoint = new mongoose.Schema({
     resourceVersion: { type: Number, required: true }
 });
 
-Checkpoint.statics.initialize = async function initialize(stream) {
-    const checkpoint = new Model({ stream: stream, resourceVersion: 0 });
+const checkpointName = 'checkpoint';
+
+Checkpoint.statics.initializeResourceVersion = async function initializeResourceVersion(stream) {
+    const checkpoint = new Model({ stream: checkpointName, resourceVersion: 0 });
     await checkpoint.save();
 };
 
-Checkpoint.statics.findByStream = async function findByStream(stream) {
+
+Checkpoint.statics.getInitialResourceVersion = async function getInitialResourceVersion() {
     try {
-        return await Model.findOne({ stream: stream }).exec();
+        return await Model.findOne({ stream: checkpointName }).exec();
     }
     catch (err) {
-        console.error('Error finding stream', err);
+        console.error('Error finding initialResourceVersion', err);
 
         return null;
     }
 };
 
-Checkpoint.statics.findAndUpdateByStream = async function findAndUpdateByStream(stream, resourceVersion) {
+Checkpoint.statics.saveResourceVersion = async function saveResourceVersion(resourceVersion) {
     try {
-        await Model.findOneAndUpdate({ stream: stream }, { "$set": { resourceVersion: resourceVersion } }).exec();
+        await Model.findOneAndUpdate({ stream: checkpointName }, { '$set': { resourceVersion: resourceVersion } }).exec();
     }
     catch (err) {
-        console.error(`Error finding and updating stream: ${stream} with resourceVersion: ${resourceVersion}`, err);
+        console.error(`Error saveResourceVersion with resourceVersion: ${resourceVersion}`, err);
     }
-}
+};
 
 const Model = mongoose.model('checkpoint', Checkpoint);
 module.exports = Model;
