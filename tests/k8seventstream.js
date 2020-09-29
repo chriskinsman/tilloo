@@ -6,31 +6,54 @@ const debug = require('debug')('tilloo:tests/k8seventstream');
 
 const k8sClient = require('../lib/k8s/clientFactory');
 
-let k8sStream;
 let lastResourceVersion = null;
 
 async function initializeStream() {
-    debug(`Initializing with resourceVersion: ${lastResourceVersion}`);
-    const streamArgs = {};
+    console.log(new Date());
+    const watchArgs = { allowWatchBookmarks: true };
     if (lastResourceVersion) {
-        streamArgs.resourceVersion = lastResourceVersion;
+        watchArgs.resourceVersion = lastResourceVersion;
     }
 
-    k8sStream = await k8sClient.api.v1.watch.namespaces(constants.NAMESPACE).events.getObjectStream({ qs: streamArgs });
-    k8sStream.on('data', (streamData) => {
-        console.dir(streamData);
-        debug('streamData', streamData);
+    try {
+        const req = await k8sClient.watch.watch(`/api/v1/namespaces/${constants.NAMESPACE}/events`, watchArgs,
+            (type, apiObj, watchObj) => {
+                if (apiObj.metadata && apiObj.metadata.resourceVersion) {
+                    lastResourceVersion = apiObj.metadata.resourceVersion;
+                    debug('Updating lastResourceVersion', lastResourceVersion);
+                }
+                debug(`Type: ${type}`);
+                debug(apiObj);
+                switch (type) {
+                    case 'ADDED':
+                        debug('Job added');
+                        break;
 
-        if (streamData.metadata && streamData.metadata.resourceVersion) {
-            lastResourceVersion = streamData.metadata.resourceVersion;
-            debug('Updating lastResourceVersion', lastResourceVersion);
-        }
-    });
+                    case 'MODIFIED':
+                        debug('Job modified');
+                        break;
+
+                    case 'DELETED':
+                        debug('Job deleted');
+                        break;
+
+                    case 'BOOKMARK':
+                        debug('Bookmark received');
+                }
+            },
+            (err) => {
+                console.log(new Date());
+                console.log('Restarting');
+                initializeStream();
+                if (err) {
+                    console.error(err);
+                }
+            });
+    }
+    catch (e) {
+        console.error(e);
+        process.exit(1);
+    }
 }
 
-k8sClient.loadSpec().then(function () {
-    k8sClient.api.v1.namespaces.get().then(function () {
-        initializeStream();
-        setInterval(initializeStream, 1000 * 60 * 5);
-    });
-});
+initializeStream();

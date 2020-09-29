@@ -15,8 +15,6 @@ const _processStartTime = new Date();
 const _runningLoggers = {};
 
 (async () => {
-    await k8sClient.loadSpec();
-
     debug(`Starting watch for namespace: ${constants.NAMESPACE} on dir: ${_logRoot}`);
     const logWatcher = chokidar.watch(_logRoot, { persistent: true, usePolling: true, followSymlinks: true });
 
@@ -60,7 +58,7 @@ const _runningLoggers = {};
             _runningCheck = true;
             for (const runId in _runningLoggers) { // eslint-disable-line guard-for-in
                 debug(`Checking runId: ${runId}`);
-                const jobs = await k8sClient.apis.batch.v1.namespaces(constants.NAMESPACE).jobs.get({ qs: { labelSelector: `runId=${runId}` } }); // eslint-disable-line no-await-in-loop
+                const jobs = await k8sClient.api.batch.listNamespacedJob(constants.NAMESPACE, undefined, undefined, undefined, undefined, `runId={runId}`, 1, undefined, undefined, false, undefined);
                 debug('checking job', jobs);
                 if (jobs.body.items.length > 0) {
                     const job = jobs.body.items[0];
