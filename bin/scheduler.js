@@ -9,18 +9,13 @@ const rabbit = require('../lib/rabbitfactory');
 const config = require('../lib/config');
 const constants = require('../lib/constants');
 const Job = require('../models/job');
-// Don't remove.  Loading this causes logger to start
-const logger = require('../lib/logwriter'); // eslint-disable-line no-unused-vars
-// Don't remove.  Loading this causes status to start
-const status = require('../lib/mqstatus'); // eslint-disable-line no-unused-vars
-// Don't remove.  Loading this causes jobwatcher to start
-const jobWatcher = require('../lib/k8s/jobwatcher'); // eslint-disable-line no-unused-vars
-// Don't remove.  Loading this causes eventwatcher to start
-const eventWatcher = require('../lib/k8s/eventwatcher'); // eslint-disable-line no-unused-vars
-// Don't remove.  Loading this causes the zombieRuns to start
-const zombieRuns = require('../lib/k8s/zombieruns'); // eslint-disable-line no-unused-vars
-// Don't remove.  Loading this causes the cleanupJobs to start
-const jobCleanup = require('../lib/k8s/jobcleanup'); // eslint-disable-line no-unused-vars
+
+const logwriter = require('../lib/logwriter');
+const status = require('../lib/mqstatus');
+const jobWatcher = require('../lib/k8s/jobwatcher');
+const eventWatcher = require('../lib/k8s/eventwatcher');
+const zombieRuns = require('../lib/k8s/zombieruns');
+const jobCleanup = require('../lib/k8s/jobcleanup');
 
 const iostatus = require('../lib/iostatus');
 
@@ -30,6 +25,13 @@ const _loadedJobs = {};
 
 (async () => {
     try {
+        await rabbit.initialize();
+        status.start();
+        logwriter.start();
+        eventWatcher.start();
+        jobWatcher.start();
+        zombieRuns.start();
+        jobCleanup.start();
         const jobs = await Job.loadAllJobs();
         debug('loading jobs');
         jobs.forEach((job) => {
