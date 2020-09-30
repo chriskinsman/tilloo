@@ -46,6 +46,56 @@ const _loadedJobs = {};
 
         console.info('Scheduler started');
         debug('Scheduler started connected to %s', config.db);
+
+        // Used so scheduler is notified of changes and can add/remove/change jobs
+        rabbit.subscribe(constants.QUEUES.SCHEDULER, async (message) => {
+            async function updateJob(jobId) {
+                deleteJob(jobId, true);
+
+                const dbJob = await Job.findById(new ObjectId(jobId));
+                _loadedJobs[jobId] = dbJob;
+                dbJob.startCron();
+                debug('updated jobId: %s', jobId);
+                iostatus.sendJobChange(jobId);
+            }
+
+            function deleteJob(jobId, partOfUpdate) {
+                if (_loadedJobs[jobId]) {
+                    // Get it
+                    const loadedJob = _loadedJobs[jobId];
+                    // Remove it from list
+                    delete _loadedJobs[jobId];
+                    // Stop it
+                    loadedJob.stopCron();
+                    debug('removed jobId: %s', jobId);
+                }
+
+                if (!partOfUpdate) {
+                    iostatus.sendJobChange(jobId);
+                }
+            }
+
+            switch (message.action) {
+                case constants.SCHEDULERACTION.NEW:
+                    // New job has been added.  Make sure to handle case where
+                    // message is old and job has already been loaded in scheduler
+                    // if this is the case we ignore the message
+                    await updateJob(message.jobId);
+                    break;
+
+                case constants.SCHEDULERACTION.DELETED:
+                    // Job has been deleted
+                    deleteJob(message.jobId, false);
+                    break;
+
+                case constants.SCHEDULERACTION.UPDATED:
+                    // Job has changed
+                    await updateJob(message.jobId);
+                    break;
+            }
+
+            return true;
+        });
     }
     catch (err) {
         console.error('Error loading jobs', err);
@@ -54,52 +104,3 @@ const _loadedJobs = {};
 })();
 
 
-// Used so scheduler is notified of changes and can add/remove/change jobs
-rabbit.subscribe(constants.QUEUES.SCHEDULER, async (message) => {
-    async function updateJob(jobId) {
-        deleteJob(jobId, true);
-
-        const dbJob = await Job.findById(new ObjectId(jobId));
-        _loadedJobs[jobId] = dbJob;
-        dbJob.startCron();
-        debug('updated jobId: %s', jobId);
-        iostatus.sendJobChange(jobId);
-    }
-
-    function deleteJob(jobId, partOfUpdate) {
-        if (_loadedJobs[jobId]) {
-            // Get it
-            const loadedJob = _loadedJobs[jobId];
-            // Remove it from list
-            delete _loadedJobs[jobId];
-            // Stop it
-            loadedJob.stopCron();
-            debug('removed jobId: %s', jobId);
-        }
-
-        if (!partOfUpdate) {
-            iostatus.sendJobChange(jobId);
-        }
-    }
-
-    switch (message.action) {
-        case constants.SCHEDULERACTION.NEW:
-            // New job has been added.  Make sure to handle case where
-            // message is old and job has already been loaded in scheduler
-            // if this is the case we ignore the message
-            await updateJob(message.jobId);
-            break;
-
-        case constants.SCHEDULERACTION.DELETED:
-            // Job has been deleted
-            deleteJob(message.jobId, false);
-            break;
-
-        case constants.SCHEDULERACTION.UPDATED:
-            // Job has changed
-            await updateJob(message.jobId);
-            break;
-    }
-
-    return true;
-});
