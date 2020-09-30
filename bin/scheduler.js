@@ -9,18 +9,13 @@ const rabbit = require('../lib/rabbitfactory');
 const config = require('../lib/config');
 const constants = require('../lib/constants');
 const Job = require('../models/job');
-// Don't remove.  Loading this causes logger to start
-const logger = require('../lib/logwriter'); // eslint-disable-line no-unused-vars
-// Don't remove.  Loading this causes status to start
-const status = require('../lib/mqstatus'); // eslint-disable-line no-unused-vars
-// Don't remove.  Loading this causes jobwatcher to start
-const jobWatcher = require('../lib/k8s/jobwatcher'); // eslint-disable-line no-unused-vars
-// Don't remove.  Loading this causes eventwatcher to start
-const eventWatcher = require('../lib/k8s/eventwatcher'); // eslint-disable-line no-unused-vars
-// Don't remove.  Loading this causes the zombieRuns to start
-const zombieRuns = require('../lib/k8s/zombieruns'); // eslint-disable-line no-unused-vars
-// Don't remove.  Loading this causes the cleanupJobs to start
-const jobCleanup = require('../lib/k8s/jobcleanup'); // eslint-disable-line no-unused-vars
+
+const logwriter = require('../lib/logwriter');
+const status = require('../lib/mqstatus');
+const jobWatcher = require('../lib/k8s/jobwatcher');
+const eventWatcher = require('../lib/k8s/eventwatcher');
+const zombieRuns = require('../lib/k8s/zombieruns');
+const jobCleanup = require('../lib/k8s/jobcleanup');
 
 const iostatus = require('../lib/iostatus');
 
@@ -30,6 +25,14 @@ const _loadedJobs = {};
 
 (async () => {
     try {
+        await rabbit.initialize();
+        debug('starting services');
+        status.start();
+        logwriter.start();
+        eventWatcher.start();
+        jobWatcher.start();
+        zombieRuns.start();
+        jobCleanup.start();
         const jobs = await Job.loadAllJobs();
         debug('loading jobs');
         jobs.forEach((job) => {
@@ -43,6 +46,56 @@ const _loadedJobs = {};
 
         console.info('Scheduler started');
         debug('Scheduler started connected to %s', config.db);
+
+        // Used so scheduler is notified of changes and can add/remove/change jobs
+        rabbit.subscribe(constants.QUEUES.SCHEDULER, async (message) => {
+            async function updateJob(jobId) {
+                deleteJob(jobId, true);
+
+                const dbJob = await Job.findById(new ObjectId(jobId));
+                _loadedJobs[jobId] = dbJob;
+                dbJob.startCron();
+                debug('updated jobId: %s', jobId);
+                iostatus.sendJobChange(jobId);
+            }
+
+            function deleteJob(jobId, partOfUpdate) {
+                if (_loadedJobs[jobId]) {
+                    // Get it
+                    const loadedJob = _loadedJobs[jobId];
+                    // Remove it from list
+                    delete _loadedJobs[jobId];
+                    // Stop it
+                    loadedJob.stopCron();
+                    debug('removed jobId: %s', jobId);
+                }
+
+                if (!partOfUpdate) {
+                    iostatus.sendJobChange(jobId);
+                }
+            }
+
+            switch (message.action) {
+                case constants.SCHEDULERACTION.NEW:
+                    // New job has been added.  Make sure to handle case where
+                    // message is old and job has already been loaded in scheduler
+                    // if this is the case we ignore the message
+                    await updateJob(message.jobId);
+                    break;
+
+                case constants.SCHEDULERACTION.DELETED:
+                    // Job has been deleted
+                    deleteJob(message.jobId, false);
+                    break;
+
+                case constants.SCHEDULERACTION.UPDATED:
+                    // Job has changed
+                    await updateJob(message.jobId);
+                    break;
+            }
+
+            return true;
+        });
     }
     catch (err) {
         console.error('Error loading jobs', err);
@@ -51,52 +104,3 @@ const _loadedJobs = {};
 })();
 
 
-// Used so scheduler is notified of changes and can add/remove/change jobs
-rabbit.subscribe(constants.QUEUES.SCHEDULER, async (message) => {
-    async function updateJob(jobId) {
-        deleteJob(jobId, true);
-
-        const dbJob = await Job.findById(new ObjectId(jobId));
-        _loadedJobs[jobId] = dbJob;
-        dbJob.startCron();
-        debug('updated jobId: %s', jobId);
-        iostatus.sendJobChange(jobId);
-    }
-
-    function deleteJob(jobId, partOfUpdate) {
-        if (_loadedJobs[jobId]) {
-            // Get it
-            const loadedJob = _loadedJobs[jobId];
-            // Remove it from list
-            delete _loadedJobs[jobId];
-            // Stop it
-            loadedJob.stopCron();
-            debug('removed jobId: %s', jobId);
-        }
-
-        if (!partOfUpdate) {
-            iostatus.sendJobChange(jobId);
-        }
-    }
-
-    switch (message.action) {
-        case constants.SCHEDULERACTION.NEW:
-            // New job has been added.  Make sure to handle case where
-            // message is old and job has already been loaded in scheduler
-            // if this is the case we ignore the message
-            await updateJob(message.jobId);
-            break;
-
-        case constants.SCHEDULERACTION.DELETED:
-            // Job has been deleted
-            deleteJob(message.jobId, false);
-            break;
-
-        case constants.SCHEDULERACTION.UPDATED:
-            // Job has changed
-            await updateJob(message.jobId);
-            break;
-    }
-
-    return true;
-});
