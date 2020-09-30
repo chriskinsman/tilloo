@@ -26,6 +26,7 @@ const _loadedJobs = {};
 (async () => {
     try {
         await rabbit.initialize();
+        debug('starting services');
         status.start();
         logwriter.start();
         eventWatcher.start();
