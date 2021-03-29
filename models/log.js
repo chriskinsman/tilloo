@@ -24,6 +24,16 @@ Log.statics.append = async function append(runId, output, createdAt) {
     }
 };
 
+Log.statics.upsert = async function upsert(runId, output, createdAt) {
+    try {
+        return await Model.findOneAndUpdate({ runId: new mongoose.Types.ObjectId(runId), createdAt: createdAt, output: output }, { runId: runId, output: output, createdAt: createdAt }, { upsert: true });
+    }
+    catch (err) {
+        console.error('Error upserting to log', err);
+        throw err;
+    }
+};
+
 Log.statics.findOutputForRun = async function findOutputForRun(runId) {
     try {
         return await Model.find({ runId: new mongoose.Types.ObjectId(runId) }, 'output', { sort: { createdAt: 1 } }).exec();

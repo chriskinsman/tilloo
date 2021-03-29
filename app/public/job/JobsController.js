@@ -118,7 +118,7 @@ angular.module('tillooApp.job')
             $scope.OkTitle = 'Add';
             $scope.job = {
                 schedule: '0 0 */1 * * *',
-                queueName: 'tilloo.worker',
+                nodeSelector: 'nodegroup=worker',
                 args: [],
                 enabled: true,
                 mutex: true,
@@ -139,6 +139,17 @@ angular.module('tillooApp.job')
         function EditController($scope, $mdDialog, jobId) {
             $scope.title = 'Edit Job';
             $scope.OkTitle = 'Update';
+            // Put some defaults in
+            $scope.job = {
+                schedule: '0 0 */1 * * *',
+                nodeSelector: 'nodegroup=worker',
+                args: [],
+                enabled: true,
+                mutex: true,
+                failuresBeforeAlert: 1,
+                timeout: 0
+            };
+
             jobService.getJob(jobId).then(function (result) {
                 $scope.job = result.data;
             });
