@@ -50,28 +50,38 @@ const _loadedJobs = {};
         // Used so scheduler is notified of changes and can add/remove/change jobs
         rabbit.subscribe(constants.QUEUES.SCHEDULER, async (message) => {
             async function updateJob(jobId) {
-                deleteJob(jobId, true);
+                try {
+                    deleteJob(jobId, true);
 
-                const dbJob = await Job.findById(new ObjectId(jobId));
-                _loadedJobs[jobId] = dbJob;
-                dbJob.startCron();
-                debug('updated jobId: %s', jobId);
-                iostatus.sendJobChange(jobId);
+                    const dbJob = await Job.findById(new ObjectId(jobId));
+                    _loadedJobs[jobId] = dbJob;
+                    dbJob.startCron();
+                    debug('updated jobId: %s', jobId);
+                    iostatus.sendJobChange(jobId);
+                }
+                catch (e) {
+                    console.error('scheduler:updateJob err', e);
+                }
             }
 
             function deleteJob(jobId, partOfUpdate) {
-                if (_loadedJobs[jobId]) {
-                    // Get it
-                    const loadedJob = _loadedJobs[jobId];
-                    // Remove it from list
-                    delete _loadedJobs[jobId];
-                    // Stop it
-                    loadedJob.stopCron();
-                    debug('removed jobId: %s', jobId);
-                }
+                try {
+                    if (_loadedJobs[jobId]) {
+                        // Get it
+                        const loadedJob = _loadedJobs[jobId];
+                        // Remove it from list
+                        delete _loadedJobs[jobId];
+                        // Stop it
+                        loadedJob.stopCron();
+                        debug('removed jobId: %s', jobId);
+                    }
 
-                if (!partOfUpdate) {
-                    iostatus.sendJobChange(jobId);
+                    if (!partOfUpdate) {
+                        iostatus.sendJobChange(jobId);
+                    }
+                }
+                catch (e) {
+                    console.error('scheduler:deleteJob err', e);
                 }
             }
 
