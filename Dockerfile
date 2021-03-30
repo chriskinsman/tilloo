@@ -20,7 +20,8 @@ RUN cd /tilloo && npm ci && cd app/public && npm ci && npm run lint
 FROM base AS dependencies
 # install required bits for npm
 RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh
+    apk add --no-cache bash git openssh & \
+    apk add --no-cache --virtual .gyp python make g++
 # install node packages
 RUN cd /tilloo && npm ci --only=production && cd app/public && npm ci --only=production
 
