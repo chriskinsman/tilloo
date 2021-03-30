@@ -36,7 +36,7 @@ jobs:
           fi
           echo ::set-output name=version::${VERSION}
           echo ::set-output name=tags::${TAGS}
-          echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')          
+          echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
@@ -53,14 +53,14 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GH_CR_PAT }}        
+          password: ${{ secrets.GH_CR_PAT }}
       - name: Cache Docker layers
         uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx2-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-buildx2-        
+            ${{ runner.os }}-buildx2-
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
@@ -68,9 +68,10 @@ jobs:
           context: .
           file: ./Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
-          platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
+          platforms: linux/amd64
+          #,linux/arm64,linux/arm/v7,linux/arm/v6
           tags: ${{ steps.prep.outputs.tags }}
           cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache      
+          cache-to: type=local,dest=/tmp/.buildx-cache
       - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }} #this is for logging.        
+        run: echo ${{ steps.docker_build.outputs.digest }} #this is for logging.
