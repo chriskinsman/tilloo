@@ -112,15 +112,3 @@ const _loadedJobs = {};
         process.exit(1);
     }
 })();
-
-const heapdump = require('@contrast/heapdump');
-function dump() {
-    const fileName = '/var/log/' + Date.now() + '.heapsnapshot';
-    console.info('Writing heapdump to: ' + fileName);
-    heapdump.writeSnapshot(fileName);
-}
-dump();
-
-setInterval(function () {
-    dump();
-}, 1000 * 60 * 60);
