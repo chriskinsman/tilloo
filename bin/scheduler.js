@@ -108,9 +108,13 @@ const _loadedJobs = {};
         });
     }
     catch (err) {
-        console.error('Error loading jobs', err);
+        console.error('Scheduler error', err);
         process.exit(1);
     }
 })();
 
+const heapdump = require('heapdump');
+setInterval(function () {
+    heapdump.writeSnapshot('/var/log/' + Date.now() + '.heapsnapshot');
+}, 1000 * 60 * 60);
 
