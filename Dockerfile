@@ -1,6 +1,6 @@
 #
 # ---- Base Node ----
-FROM node:14.15.0-alpine AS base
+FROM node:14.1.0-alpine AS base
 WORKDIR /tilloo
 COPY package.json package-lock.json /tilloo/
 COPY app/public/package.json app/public/package-lock.json /tilloo/app/public/
@@ -10,18 +10,16 @@ COPY app/public/package.json app/public/package-lock.json /tilloo/app/public/
 FROM base AS build
 # install required bits for npm
 RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh && \
-    apk add --no-cache --virtual .gyp python make g++
+    apk add --no-cache bash git openssh 
 # install node packages
-RUN cd /tilloo && npm ci && cd app/public && npm ci && npm run lint
+RUN cd /tilloo && npm ci && cd app/public && npm ci
 
 #
 # ---- Dependencies ----
 FROM base AS dependencies
 # install required bits for npm
 RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh & \
-    apk add --no-cache --virtual .gyp python make g++
+    apk add --no-cache bash git openssh
 # install node packages
 RUN cd /tilloo && npm ci --only=production && cd app/public && npm ci --only=production
 
