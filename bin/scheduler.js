@@ -113,8 +113,14 @@ const _loadedJobs = {};
     }
 })();
 
-const heapdump = require('heapdump');
+const heapdump = require('@contrast/heapdump');
+function dump() {
+    const fileName = '/var/log/' + Date.now() + '.heapsnapshot';
+    console.info('Writing heapdump to: ' + fileName);
+    heapdump.writeSnapshot(fileName);
+}
+dump();
+
 setInterval(function () {
-    heapdump.writeSnapshot('/var/log/' + Date.now() + '.heapsnapshot');
+    dump();
 }, 1000 * 60 * 60);
-heapdump.writeSnapshot('/var/log/' + Date.now() + '.heapsnapshot');
