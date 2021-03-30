@@ -117,4 +117,4 @@ const heapdump = require('heapdump');
 setInterval(function () {
     heapdump.writeSnapshot('/var/log/' + Date.now() + '.heapsnapshot');
 }, 1000 * 60 * 60);
-
+heapdump.writeSnapshot('/var/log/' + Date.now() + '.heapsnapshot');
