@@ -10,7 +10,8 @@ COPY app/public/package.json app/public/package-lock.json /tilloo/app/public/
 FROM base AS build
 # install required bits for npm
 RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh
+    apk add --no-cache bash git openssh && \
+    apk add --no-cache --virtual .gyp python make g++
 # install node packages
 RUN cd /tilloo && npm ci && cd app/public && npm ci && npm run lint
 
