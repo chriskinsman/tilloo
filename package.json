@@ -31,7 +31,7 @@
     "rabbot": "^2.1.0",
     "serve-favicon": "^2.5.0",
     "socket.io": "^2.4.1",
-    "tail": "^2.2.0",
+    "tail": "^2.0.2",
     "tilloo-plugin-mandrill": "^1.0.0",
     "tilloo-plugin-sns": "^1.0.0"
   },
