@@ -16,7 +16,7 @@
     "tilloo-web": "./app/app.js"
   },
   "dependencies": {
-    "@kubernetes/client-node": "^0.12.2",
+    "@kubernetes/client-node": "^0.14.0",
     "async": "^3.2.0",
     "body-parser": "^1.19.0",
     "chokidar": "^3.4.2",
@@ -27,11 +27,8 @@
     "easy-table": "^1.1.1",
     "express": "^4.17.1",
     "moment": "^2.27.0",
-    "mongodb": "^3.6.5",
     "mongoose": "^5.12.2",
-    "morgan": "^1.10.0",
     "rabbot": "^2.1.0",
-    "request": "^2.88.2",
     "serve-favicon": "^2.5.0",
     "socket.io": "^2.3.0",
     "tail": "^2.0.4",
