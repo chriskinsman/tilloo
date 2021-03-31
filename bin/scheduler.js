@@ -82,7 +82,7 @@ const _loadedJobs = {};
                 }
                 catch (e) {
                     console.error('scheduler:deleteJob err', e);
-                } x
+                }
             }
 
             switch (message.action) {
