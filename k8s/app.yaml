@@ -54,6 +54,13 @@ spec:
           image: rabbitmq:3-alpine
           ports:
             - containerPort: 5672
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 800m
+              memory: 1Gi
 ---
 apiVersion: v1
 kind: Service
@@ -62,7 +69,7 @@ metadata:
   namespace: tilloo-services
   annotations:
     alb.ingress.kubernetes.io/healthcheck-path: /socket.io/
-    alb.ingress.kubernetes.io/success-codes: '400'
+    alb.ingress.kubernetes.io/success-codes: "400"
     alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=86400
 spec:
   type: NodePort
@@ -95,13 +102,20 @@ spec:
       serviceAccountName: tilloo-admin
       containers:
         - name: scheduler
-          image: ghcr.io/chriskinsman/tilloo:sha-81619203
+          image: ghcr.io/chriskinsman/tilloo:latest
           # env:
           # - name: DEBUG
           #   value: tilloo:*
           command: ["/tilloo/bin/scheduler.js"]
           ports:
             - containerPort: 80
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
           volumeMounts:
             - mountPath: /tilloo/config
               name: config-volume
@@ -146,13 +160,20 @@ spec:
       serviceAccountName: tilloo-admin
       containers:
         - name: web
-          image: ghcr.io/chriskinsman/tilloo:sha-81619203
+          image: ghcr.io/chriskinsman/tilloo:latest
           # env:
           # - name: DEBUG
           #   value: tilloo:*
           command: ["/tilloo/app/app.js"]
           ports:
             - containerPort: 80
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 800m
+              memory: 1Gi
           volumeMounts:
             - mountPath: /tilloo/config
               name: config-volume
@@ -183,11 +204,18 @@ spec:
           effect: NoSchedule
       containers:
         - name: logger
-          image: ghcr.io/chriskinsman/tilloo:sha-81619203
+          image: ghcr.io/chriskinsman/tilloo:latest
           # env:
           # - name: DEBUG
           #   value: tilloo:logforwarder
           command: ["/tilloo/bin/k8slogger.js"]
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
           volumeMounts:
             - name: varlog
               mountPath: /var/log
