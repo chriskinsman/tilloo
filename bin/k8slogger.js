@@ -55,24 +55,29 @@ setInterval(async function () {
     if (!_runningCheck) {
         debug('Starting liveness check');
         _runningCheck = true;
-        for (const runId in _runningLoggers) { // eslint-disable-line guard-for-in
-            debug(`Checking runId: ${runId}`);
-            const jobs = await k8sClient.api.batch.listNamespacedJob(constants.NAMESPACE, undefined, undefined, undefined, undefined, `runId={runId}`, 1, undefined, undefined, false, undefined); // eslint-disable-line no-await-in-loop
-            debug('checking job', jobs);
-            if (jobs.body.items.length > 0) {
-                const job = jobs.body.items[0];
-                debug('job', job);
-                if (job.status.completionTime || job.status.failed) {
-                    debug(`Stopping tail on runId: ${runId}`);
+        try {
+            for (const runId in _runningLoggers) { // eslint-disable-line guard-for-in
+                debug(`Checking runId: ${runId}`);
+                const jobs = await k8sClient.api.batch.listNamespacedJob(constants.NAMESPACE, undefined, undefined, undefined, undefined, `runId={runId}`, 1, undefined, undefined, false, undefined); // eslint-disable-line no-await-in-loop
+                debug('checking job', jobs);
+                if (jobs.body.items.length > 0) {
+                    const job = jobs.body.items[0];
+                    debug('job', job);
+                    if (job.status.completionTime || job.status.failed) {
+                        debug(`Stopping tail on runId: ${runId}`);
+                        _runningLoggers[runId].stop();
+                        delete _runningLoggers[runId];
+                    }
+                }
+                else {
+                    debug(`Job not found stopping tail on runId: ${runId}`);
                     _runningLoggers[runId].stop();
                     delete _runningLoggers[runId];
                 }
             }
-            else {
-                debug(`Job not found stopping tail on runId: ${runId}`);
-                _runningLoggers[runId].stop();
-                delete _runningLoggers[runId];
-            }
+        }
+        catch (e) {
+            console.error('Liveness check error', e);
         }
         debug('Finished liveness check');
         _runningCheck = false;

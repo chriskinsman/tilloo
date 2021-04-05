@@ -108,9 +108,7 @@ const _loadedJobs = {};
         });
     }
     catch (err) {
-        console.error('Error loading jobs', err);
+        console.error('Scheduler error', err);
         process.exit(1);
     }
 })();
-
-
