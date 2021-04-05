@@ -1,6 +1,6 @@
 #
 # ---- Base Node ----
-FROM node:15-alpine AS base
+FROM node:14-alpine AS base
 WORKDIR /tilloo
 COPY package.json package-lock.json /tilloo/
 COPY app/public/package.json app/public/package-lock.json /tilloo/app/public/
