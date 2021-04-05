@@ -1,4 +1,3 @@
-// vue.config.js
 module.exports = {
   configureWebpack: {
     devServer: {
@@ -8,5 +7,6 @@ module.exports = {
         }
       }
     }
-  }
+  },
+  transpileDependencies: ["vuetify"]
 };
