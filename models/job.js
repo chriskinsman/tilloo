@@ -127,7 +127,6 @@ Job.statics.loadAllJobs = async function loadAllJobs() {
 };
 
 Job.statics.findAllJobs = async function findAllJobs() {
-    console.info('findAllJobs');
     try {
         return await Model.find({ deleted: false }, null, { sort: { name: 1 } });
     }
