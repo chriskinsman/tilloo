@@ -22,10 +22,10 @@ Mandrill.prototype.notify = async function notify(message, lastErrorTime, failur
 
         var html;
         if (job && job.name) {
-            html = '<b>' + statusDescription + '.</b> View job: <a href="http://' + this.pluginConfig.web_host + '/run/' + runId + '">' + job.name + '.</a>';
+            html = `<b>${statusDescription}.</b> View job: <a href="http://${this.pluginConfig.web_host}/run/${runId}">${job.name}.</a>`;
         }
         else {
-            html = '<b>' + statusDescription + '.</b> <a href="http://' + this.pluginConfig.web_host + '/run/' + runId + '">Click here to view job.</a>';
+            html = `<b>${statusDescription}.</b> <a href="http://${this.pluginConfig.web_host}/run/${runId}">Click here to view job.</a>`;
         }
 
         var body = {
