@@ -6,7 +6,6 @@ const http = require('http');
 
 const express = require('express');
 const compression = require('compression');
-const bodyParser = require('body-parser');
 const favicon = require('serve-favicon');
 
 const mongoose = require('../lib/mongooseinit');
@@ -21,8 +20,8 @@ app.set('port', process.env.PORT || 80);
 //app.use(morgan('dev'));
 app.use(compression());
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(favicon(path.join(__dirname, '/public/assets/favicon.ico')));
 app.use('/node_modules', express.static(path.join(__dirname, 'public/node_modules')));
 app.use('/public', express.static(path.join(__dirname, 'public')));

@@ -13,9 +13,9 @@ roleRef:
   kind: ClusterRole
   name: cluster-admin
 subjects:
-- kind: ServiceAccount
-  name: tilloo-admin
-  namespace: tilloo-services
+  - kind: ServiceAccount
+    name: tilloo-admin
+    namespace: tilloo-services
 ---
 apiVersion: v1
 kind: Service
@@ -24,8 +24,8 @@ metadata:
   namespace: tilloo-services
 spec:
   ports:
-  - port: 5672
-    targetPort: 5672
+    - port: 5672
+      targetPort: 5672
   selector:
     app: rabbitmq
     namespace: tilloo-services
@@ -38,7 +38,7 @@ metadata:
 spec:
   replicas: 1
   strategy:
-    type: Recreate  
+    type: Recreate
   selector:
     matchLabels:
       app: rabbitmq
@@ -50,10 +50,17 @@ spec:
         namespace: tilloo-services
     spec:
       containers:
-      - name: rabbitmq
-        image: rabbitmq:3-alpine
-        ports:
-        - containerPort: 5672
+        - name: rabbitmq
+          image: rabbitmq:3-alpine
+          ports:
+            - containerPort: 5672
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 800m
+              memory: 1Gi
 ---
 apiVersion: v1
 kind: Service
@@ -62,13 +69,13 @@ metadata:
   namespace: tilloo-services
   annotations:
     alb.ingress.kubernetes.io/healthcheck-path: /socket.io/
-    alb.ingress.kubernetes.io/success-codes: 400
+    alb.ingress.kubernetes.io/success-codes: "400"
     alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=86400
 spec:
   type: NodePort
   ports:
-  - port: 80
-    targetPort: 80
+    - port: 80
+      targetPort: 80
   selector:
     app: scheduler
     namespace: tilloo-services
@@ -78,10 +85,10 @@ kind: Deployment
 metadata:
   name: scheduler-deployment
   namespace: tilloo-services
-spec:  
+spec:
   replicas: 1
   strategy:
-    type: Recreate  
+    type: Recreate
   selector:
     matchLabels:
       app: scheduler
@@ -94,21 +101,28 @@ spec:
     spec:
       serviceAccountName: tilloo-admin
       containers:
-      - name: scheduler
-        image: ghcr.io/chriskinsman/tilloo/master-latest
-        # env:
-        # - name: DEBUG
-        #   value: tilloo:*
-        command: ['/tilloo/bin/scheduler.js']
-        ports:
-        - containerPort: 80
-        volumeMounts:
-        - mountPath: /tilloo/config
-          name: config-volume
+        - name: scheduler
+          image: ghcr.io/chriskinsman/tilloo:latest
+          # env:
+          # - name: DEBUG
+          #   value: tilloo:*
+          command: ["/tilloo/bin/scheduler.js"]
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+          volumeMounts:
+            - mountPath: /tilloo/config
+              name: config-volume
       volumes:
-      - name: config-volume
-        configMap:
-          name: tilloo-config
+        - name: config-volume
+          configMap:
+            name: tilloo-config
 ---
 apiVersion: v1
 kind: Service
@@ -118,12 +132,12 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - port: 80
-    targetPort: 80
+    - port: 80
+      targetPort: 80
   selector:
     app: web
     namespace: tilloo-services
----  
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -132,7 +146,7 @@ metadata:
 spec:
   replicas: 1
   strategy:
-    type: Recreate  
+    type: Recreate
   selector:
     matchLabels:
       app: web
@@ -145,21 +159,28 @@ spec:
     spec:
       serviceAccountName: tilloo-admin
       containers:
-      - name: web
-        image: ghcr.io/chriskinsman/tilloo/master-latest
-        # env:
-        # - name: DEBUG
-        #   value: tilloo:*
-        command: ['/tilloo/app/app.js']
-        ports:
-        - containerPort: 80
-        volumeMounts:
-        - mountPath: /tilloo/config
-          name: config-volume
+        - name: web
+          image: ghcr.io/chriskinsman/tilloo:latest
+          # env:
+          # - name: DEBUG
+          #   value: tilloo:*
+          command: ["/tilloo/app/app.js"]
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 800m
+              memory: 1Gi
+          volumeMounts:
+            - mountPath: /tilloo/config
+              name: config-volume
       volumes:
-      - name: config-volume
-        configMap:
-          name: tilloo-config
+        - name: config-volume
+          configMap:
+            name: tilloo-config
 ---
 apiVersion: apps/v1
 kind: DaemonSet
@@ -176,34 +197,41 @@ spec:
       labels:
         app: logger
         namespace: tilloo-services
-    spec:      
+    spec:
       serviceAccountName: tilloo-admin
       tolerations:
-      - key: node-role.kubernetes.io/master
-        effect: NoSchedule
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
       containers:
-      - name: logger
-        image: ghcr.io/chriskinsman/tilloo/master-latest
-        # env:
-        # - name: DEBUG
-        #   value: tilloo:logforwarder
-        command: ['/tilloo/bin/k8slogger.js']
-        volumeMounts:
-        - name: varlog
-          mountPath: /var/log
-        - mountPath: /tilloo/config
-          name: config-volume
+        - name: logger
+          image: ghcr.io/chriskinsman/tilloo:latest
+          # env:
+          # - name: DEBUG
+          #   value: tilloo:logforwarder
+          command: ["/tilloo/bin/k8slogger.js"]
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+          volumeMounts:
+            - name: varlog
+              mountPath: /var/log
+            - mountPath: /tilloo/config
+              name: config-volume
       terminationGracePeriodSeconds: 30
       volumes:
-      - name: varlog
-        hostPath:
-          path: /var/log
-          type: Directory
-      - name: config-volume
-        configMap:
-          name: tilloo-config
+        - name: varlog
+          hostPath:
+            path: /var/log
+            type: Directory
+        - name: config-volume
+          configMap:
+            name: tilloo-config
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: tilloo-ingress
@@ -211,26 +239,32 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internal
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 7700}, {"HTTP": 7770}]'
     alb.ingress.kubernetes.io/ip-address-type: ipv4
     alb.ingress.kubernetes.io/target-type: instance
-    # Status code = 404 for socket.io, code = 200 for web front end
     alb.ingress.kubernetes.io/success-codes: 200,404
+    alb.ingress.kubernetes.io/security-groups: sg-0d6a7053d46a50e84
 
 spec:
   rules:
-    - host: tilloo.example.com
+    - host: tilloo4.pushspring.com
       http:
         paths:
-          - path: /socket.io/*
+          - path: /socket.io/
+            pathType: Prefix
             backend:
-              serviceName: scheduler-service
-              servicePort: 80
-          - path: /*
+              service:
+                name: scheduler-service
+                port:
+                  number: 80
+          - path: /
+            pathType: Prefix
             backend:
-              serviceName: web-service
-              servicePort: 80
+              service:
+                name: web-service
+                port:
+                  number: 80
 ---
+
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -242,7 +276,7 @@ metadata:
 data:
   config.json: |-
     {
-        "db": "mongodb://root:pAssw0rd1@mongodb.tilloo-services.svc.cluster.local:27017/tilloo?authSource=admin",
+        "db": "mongodb://root:kFGJgJEdrE@mongodb.tilloo-services.svc.cluster.local:27017/tilloo?authSource=admin",
         "rabbitmq": {
             "host": "rabbitmq-service.tilloo-services",
             "port": 5672

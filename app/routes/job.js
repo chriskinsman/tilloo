@@ -17,7 +17,7 @@ JobRoutes.getJobs = async function getJobs(req, res) {
         res.status(200).send(jobs);
     }
     catch (err) {
-        console.error(err);
+        console.error('getJobs', err);
         res.status(500).send(err);
     }
     return;
@@ -30,6 +30,7 @@ JobRoutes.getJob = async function getJob(req, res) {
         res.status(200).send(job);
     }
     catch (err) {
+        console.error('getJob', err);
         res.status(500).send(err);
     }
 };
@@ -41,6 +42,7 @@ JobRoutes.getRun = async function getRun(req, res) {
         res.status(200).send(run);
     }
     catch (err) {
+        console.error('getRun', err);
         res.status(500).send(err);
     }
 };
@@ -53,6 +55,7 @@ JobRoutes.getJobByRunId = async function getJobByRunId(req, res) {
         res.status(200).send(job);
     }
     catch (err) {
+        console.error('getJobByRunId', err);
         res.status(500).send(err);
     }
 };
@@ -87,6 +90,7 @@ JobRoutes.getRuns = async function getRuns(req, res) {
         });
     }
     catch (err) {
+        console.error('getRuns', err);
         res.status(500).send(err);
     }
 };
@@ -99,6 +103,7 @@ JobRoutes.outputForRun = async function outputForRun(req, res) {
         res.status(200).send(output);
     }
     catch (err) {
+        console.error('outputForRun', err);
         res.status(500).send(err);
     }
 };
@@ -111,6 +116,7 @@ JobRoutes.stopRun = async function stopRun(req, res) {
         res.status(200).send('message sent');
     }
     catch (err) {
+        console.error('stopRun', err);
         res.status(500).send(err);
     }
 };
@@ -123,6 +129,7 @@ JobRoutes.triggerRun = async function triggerRun(req, res) {
         res.status(200).send('triggered');
     }
     catch (err) {
+        console.error('triggerRun', err);
         res.status(500).send(err);
     }
 
@@ -136,6 +143,7 @@ JobRoutes.deleteJob = async function deleteJob(req, res) {
         res.status(200).send('deleted');
     }
     catch (err) {
+        console.error('deleteJob', err);
         res.status(500).send(err);
     }
 };
@@ -148,6 +156,7 @@ JobRoutes.createJob = async function createJob(req, res) {
         res.status(200).send(job._id);
     }
     catch (err) {
+        console.error('createJob', err);
         res.status(500).send(err);
     }
 };
@@ -161,6 +170,7 @@ JobRoutes.updateJob = async function updateJob(req, res) {
         res.status(200).send('updated');
     }
     catch (err) {
+        console.error('updateJob', err);
         res.status(500).send(err);
     }
 };

@@ -9,6 +9,35 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+## [3.6.0] - 2021-09-16
+### Added
+- Support for containerd log formats
+
+### Changed
+- Update packages
+- Removed body-parser
+
+## [3.5.0] - 2021-08-09
+### Changed
+- Merged in notification plugins
+- Fixed to work with new config format
+
+## [3.4.0] - 2021-04-05
+### Changed
+- Moved to official @kubernetes-client/javascript
+- Refactored RabbitMQ startup in scheduler
+
+## [3.3.0] - 2020-09-30
+### Changed
+- Update packages
+- Fix memory leak (due to @kubernetes/client-node leak)
+
+## [3.2.0] - 2020-09-21
+### Changed
+- Moved from disqueue to rabbitmq
+- Moved to Async/Await
+- Updated dependencies
+
 ## [2.0.6] - 2019-09-24
 ### Changed
 - Added a+x privileges to bin/*
