@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
-      <v-breadcrumbs :items="items" large>
+    <v-app-bar app color="primary" dark dense>
+      <v-breadcrumbs :items="breadcrumbs" large>
         <template v-slot:divider>
           <v-icon>mdi-chevron-right</v-icon>
         </template>
@@ -15,46 +15,39 @@
     </v-app-bar>
 
     <v-main>
-      <HelloWorld />
+      <alerts />
+      <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
+import Alerts from "./components/alerts/Alerts.vue";
 
 export default {
   name: "App",
 
-  components: {
-    HelloWorld
-  },
+  components: { Alerts },
 
-  data: () => ({
-    items: [
-      {
-        text: "TILLOO",
-        disabled: false,
-        href: "/"
-      },
-      {
-        text: "Backup",
-        disabled: false,
-        href: "/job/foo"
-      },
-      {
-        text: "asdfl;akjsdfl;kasjdfas",
-        disabled: true
-      }
-    ]
-  })
+  data: () => ({}),
+  computed: {
+    breadcrumbs() {
+      return this.$store.state.breadcrumbs;
+    }
+  }
 };
 </script>
 
 <style lang="scss">
 .v-application {
-  .v-breadcrumbs a {
-    color: white;
+  .v-breadcrumbs {
+    a {
+      color: white;
+    }
+
+    i.v-icon {
+      padding-bottom: 0px;
+    }
   }
 }
 </style>

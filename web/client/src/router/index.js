@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import Jobs from "../views/Jobs.vue";
+import Runs from "../views/Runs.vue";
+import Run from "../views/Run.vue";
 
 Vue.use(VueRouter);
 
@@ -8,7 +10,17 @@ const routes = [
   {
     path: "/",
     name: "Jobs",
-    component: Home
+    component: Jobs
+  },
+  {
+    path: "/job/:jobid",
+    name: "Runs",
+    component: Runs
+  },
+  {
+    path: "/run/:runid",
+    name: "Run",
+    component: Run
   }
 ];
 

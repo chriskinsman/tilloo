@@ -23,6 +23,7 @@
     "chokidar": "^3.5.2",
     "commander": "^3.0.2",
     "compression": "^1.7.4",
+    "connect-history-api-fallback": "^1.6.0",
     "cron": "^1.8.2",
     "debug": "^4.3.2",
     "easy-table": "^1.1.1",
