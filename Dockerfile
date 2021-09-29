@@ -12,6 +12,7 @@ FROM base AS build
 # install required bits for npm
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh 
+COPY web/client /tilloo/web/client
 # install node packages
 RUN cd /tilloo && npm ci && cd app/public && npm ci && cd /tilloo/web/client && npm ci && npm run build
 
