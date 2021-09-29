@@ -1,12 +1,11 @@
 #! /usr/bin/env node
 'use strict';
 
-const bodyParser = require('body-parser');
-const compression = require('compression');
 const express = require('express');
 const favicon = require('serve-favicon');
 const http = require('http');
 const path = require('path');
+const history = require('connect-history-api-fallback');
 
 const mongoose = require('../../lib/mongooseinit');
 
@@ -14,18 +13,10 @@ const mongoose = require('../../lib/mongooseinit');
 const routes = require('./routes');
 
 const app = express();
+app.set('port', process.env.PORT || 80);
 
-// All environments
-app.set('port', process.env.PORT || 3050);
-//app.use(morgan('dev'));
-app.use(compression());
+app.use(favicon(path.join(__dirname, '../client/dist/favicon.ico')));
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-//app.use('/node_modules', express.static(path.join(__dirname, 'public/node_modules')));
-
-
-app.use('/api/config', express.static(path.join(__dirname, '../../config/config.json')));
 app.get('/api/job', routes.getJobs);
 app.post('/api/job/create', routes.createJob);
 app.get('/api/job/:jobId', routes.getJob);
@@ -38,13 +29,16 @@ app.get('/api/run/:runId', routes.getRun);
 app.get('/api/run/:runId/output', routes.outputForRun);
 app.post('/api/run/:runId/stop', routes.stopRun);
 
-if (process.env.NODE_ENV === 'production') {
-    app.use(favicon(path.join(__dirname, '../client/dist/favicon.ico')));
-    app.use('/', express.static(path.join(__dirname, '../client/dist')));
-}
-else {
-    console.log('Debug environment not mounting public or favicon.ico');
-}
+// UI
+const publicPath = path.resolve(__dirname, '../client/dist');
+const staticConf = { maxAge: '1y', etag: false };
+
+app.use(history());
+app.use(express.static(publicPath, staticConf));
+
+app.get('/', function (req, res) {
+    res.render(path.join(__dirname, '../client/dist/index.html'));
+});
 
 app.use(function (err, req, res, next) {
     console.dir(err);
