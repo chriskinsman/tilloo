@@ -23,7 +23,7 @@ FROM base AS dependencies
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
 # install node packages
-RUN cd /tilloo && npm ci --only=production && npm i https://github.com/chriskinsman/node-tail && mkdir -p /tilloo/node_modules/tail/lib && cp /tilloo/node_modules/tail/src/tail.js /tilloo/node_modules/tail/lib/tail.js && cd app/public && npm ci --only=production && cd /tilloo/web/client && npm ci --only=production
+RUN cd /tilloo && npm ci --only=production && cd app/public && npm ci --only=production && cd /tilloo/web/client && npm ci --only=production
 
 #
 # ---- Release ----
