@@ -23,9 +23,9 @@ RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh 
 COPY web/client /tilloo/web/client
 # install node packages
-RUN cd /tilloo && npm ci && cd app/public && npm ci && cd /tilloo/web/client && npm ci
+RUN cd /tilloo && npm ci
 # build vue app
-RUN npm run build
+RUN cd /tilloo/web/client && npm ci && npm run build
 
 #
 # ---- Release ----
@@ -34,10 +34,8 @@ FROM base AS release
 LABEL org.opencontainers.image.source = "https://github.com/chriskinsman/tilloo"
 # copy production node_modules
 COPY --from=dependencies /tilloo/node_modules ./node_modules
-COPY --from=dependencies /tilloo/app/public/node_modules ./app/public/node_modules
 COPY --from=build /tilloo/web/client/dist ./web/client/dist
 # copy app sources
-COPY app /tilloo/app 
 COPY bin /tilloo/bin
 COPY models /tilloo/models
 COPY lib /tilloo/lib
