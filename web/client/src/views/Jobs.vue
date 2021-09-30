@@ -11,7 +11,7 @@
       :search="search"
       :custom-filter="filterOnlyCapsText"
       :footer-props="{
-        'items-per-page-options': [25, 50, 100]
+        'items-per-page-options': [25, 50, 100],
       }"
       :items-per-page="25"
       :item-class="rowClasses"
@@ -38,7 +38,7 @@
           @click="jobRun(item)"
           :disabled="
             item.mutex &&
-              (item.lastStatus === 'busy' || item.lastStatus === 'scheduled')
+            (item.lastStatus === 'busy' || item.lastStatus === 'scheduled')
           "
         >
           mdi-play
@@ -58,7 +58,7 @@ export default {
     return {
       jobs: [],
       loading: false,
-      search: ""
+      search: "",
     };
   },
   mounted() {
@@ -66,8 +66,8 @@ export default {
       {
         text: "Jobs",
         disabled: false,
-        href: "/"
-      }
+        href: "/",
+      },
     ]);
     this.getData();
   },
@@ -82,7 +82,7 @@ export default {
           text: "Last Status",
           value: "lastStatus",
           width: "1%",
-          filterable: false
+          filterable: false,
         },
         {
           text: "",
@@ -90,10 +90,10 @@ export default {
           align: "end",
           sortable: false,
           filterable: false,
-          width: "1%"
-        }
+          width: "1%",
+        },
       ];
-    }
+    },
   },
   methods: {
     async getData() {
@@ -108,7 +108,6 @@ export default {
       await jobService.runJob(job._id);
     },
     async jobAdd() {
-      console.dir("foo4");
       await this.showModal(AddEditJobModal);
     },
     async jobSettings(job) {
@@ -118,7 +117,7 @@ export default {
       const res = await this.showModal(ConfirmModal, {
         title: "Confirm Delete",
         textContent: `Are you sure you want to delete ${job.name}?`,
-        ok: "Delete"
+        ok: "Delete",
       });
       if (res === "ok") {
         await jobService.deleteJob(job._id);
@@ -129,19 +128,16 @@ export default {
         value !== null &&
         search !== null &&
         typeof value === "string" &&
-        value
-          .toString()
-          .toLowerCase()
-          .indexOf(search.toLowerCase()) !== -1
+        value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
       );
     },
     rowClasses(row) {
       return `job-${row.lastStatus} ${row.enabled ? "" : "job-disabled"}`;
-    }
+    },
   },
   sockets: {
     status(statusUpdate) {
-      const job = this.jobs.find(job => job._id === statusUpdate.jobId);
+      const job = this.jobs.find((job) => job._id === statusUpdate.jobId);
       if (job) {
         this.$set(job, "lastStatus", statusUpdate.status);
         if (statusUpdate.status === "busy") {
@@ -152,7 +148,7 @@ export default {
     async jobchange(jobMessage) {
       const job = await jobService.getJob(jobMessage.jobId);
       if (job) {
-        const jobIndex = this.jobs.findIndex(item => item._id === job._id);
+        const jobIndex = this.jobs.findIndex((item) => item._id === job._id);
         if (jobIndex !== -1) {
           if (job.deleted) {
             this.$delete(this.jobs, jobIndex);
@@ -163,8 +159,8 @@ export default {
           this.jobs.push(job);
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
