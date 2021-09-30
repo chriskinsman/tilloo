@@ -9,6 +9,11 @@ import VueVirtualScroller from "vue-virtual-scroller";
 import Modal from "./plugins/modal.js";
 import vueSocketIoExtended from "./plugins/vue-socket-io-extended.js";
 
+Vue.use(dayjs);
+Vue.use(VueVirtualScroller);
+Vue.use(Modal);
+Vue.use(Vuelidate);
+
 Vue.config.productionTip = false;
 new Vue({
   store,
@@ -18,7 +23,3 @@ new Vue({
   render: h => h(App)
 }).$mount("#app");
 
-Vue.use(dayjs);
-Vue.use(VueVirtualScroller);
-Vue.use(Modal);
-Vue.use(Vuelidate);
