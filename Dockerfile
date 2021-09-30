@@ -6,25 +6,25 @@ COPY package.json package-lock.json /tilloo/
 COPY app/public/package.json app/public/package-lock.json /tilloo/app/public/
 COPY web/client/package.json web/client/package-lock.json /tilloo/web/client/
 
-#
-# ---- Dependencies ----
-FROM base AS dependencies
+# Base with tools
+FROM base as tools
 # install required bits for npm
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
+
+#
+# ---- Dependencies ----
+FROM tools AS dependencies
 # install node packages
 RUN cd /tilloo && npm ci --only=production && cd /tilloo/web/client && npm ci --only=production
 
 #
 # ---- Build ----
-FROM base AS build
-# install required bits for npm
-RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh 
-COPY web/client /tilloo/web/client
+FROM tools AS build
 # install node packages
 RUN cd /tilloo && npm ci
 # build vue app
+COPY web/client /tilloo/web/client
 RUN cd /tilloo/web/client && npm ci && npm run build
 
 #
