@@ -21,8 +21,6 @@ RUN cd /tilloo && npm ci --only=production && cd /tilloo/web/client && npm ci --
 #
 # ---- Build ----
 FROM tools AS build
-# install node packages
-RUN cd /tilloo && npm ci
 # build vue app
 COPY web/client /tilloo/web/client
 RUN cd /tilloo/web/client && npm ci && npm run build

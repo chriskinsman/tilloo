@@ -33,7 +33,7 @@
     "rabbot": "^2.1.0",
     "serve-favicon": "^2.5.0",
     "socket.io": "^2.4.1",
-    "tail": "git+https://github.com/chriskinsman/node-tail.git"
+    "tail": "^2.2.3"
   },
   "devDependencies": {
     "eslint": "^6.0.0"
