@@ -3,7 +3,6 @@
 FROM node:14-alpine AS base
 WORKDIR /tilloo
 COPY package.json package-lock.json /tilloo/
-COPY app/public/package.json app/public/package-lock.json /tilloo/app/public/
 COPY web/client/package.json web/client/package-lock.json /tilloo/web/client/
 
 # Base with tools
