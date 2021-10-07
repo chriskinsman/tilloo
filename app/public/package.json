@@ -17,7 +17,7 @@
     "angular-material-data-table": "0.10.9",
     "angular-messages": "1.8.0",
     "angular-route": "1.8.0",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "socket.io-client": "2.3.0"
   },
   "devDependencies": {
