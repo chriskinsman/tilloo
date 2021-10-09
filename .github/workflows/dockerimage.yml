@@ -55,7 +55,7 @@ jobs:
           else
             PLATFORMS="linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6"
           fi          
-          echo ::set-output name=platforms::%{PLATFORMS}
+          echo ::set-output name=platforms::${PLATFORMS}
       - name: Login to GitHub Container Registry
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v1
