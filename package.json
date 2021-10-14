@@ -1,6 +1,6 @@
 {
   "name": "tilloo",
-  "version": "3.4.0",
+  "version": "4.0.0",
   "description": "A distributed cron with cli and web ui",
   "repository": "https://github.com/chriskinsman/tilloo.git",
   "scripts": {
@@ -18,24 +18,25 @@
   "dependencies": {
     "@kubernetes/client-node": "^0.15.1",
     "async": "^3.2.1",
-    "aws-sdk": "^2.990.0",
-    "axios": "^0.21.4",
+    "aws-sdk": "^2.1003.0",
+    "axios": "^0.22.0",
     "chokidar": "^3.5.2",
     "commander": "^3.0.2",
     "compression": "^1.7.4",
+    "connect-history-api-fallback": "^1.6.0",
     "cron": "^1.8.2",
     "debug": "^4.3.2",
-    "easy-table": "^1.1.1",
+    "easy-table": "^1.2.0",
     "express": "^4.17.1",
     "moment": "^2.29.1",
-    "mongoose": "^5.13.9",
+    "mongoose": "^5.13.10",
     "rabbot": "^2.1.0",
     "serve-favicon": "^2.5.0",
     "socket.io": "^2.4.1",
-    "tail": "^2.2.3"
+    "tail": "^2.2.4"
   },
   "devDependencies": {
-    "eslint": "^6.0.0"
+    "eslint": "^6.8.0"
   },
   "engines": {
     "node": ">= 10.13.0"

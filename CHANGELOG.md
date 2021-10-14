@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+## [4.0.0] - 2021-10-09
+### Added
+- New web interface based on Vue
+
+### Changed
+- Removed old AngularJS interface
+- Update packages
+
 ## [3.6.0] - 2021-09-16
 ### Added
 - Support for containerd log formats

@@ -7,11 +7,16 @@ npm-debug.log*
 # https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
 node_modules
 app/node_modules
+web/client/node_modules
 .idea
+.github
+.vscode
 *.docker
+k8s
+config
 tests
-build-*.sh
-shippable.yml
+CHANGELOG.md
+debugcluster.sh
 README.md
 LICENSE
 .gitignore
