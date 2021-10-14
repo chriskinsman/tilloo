@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.22.0",
     "core-js": "^3.18.2",
+    "cronstrue": "^1.119.0",
     "dayjs": "^1.10.7",
     "socket.io-client": "^2.3.0",
     "vue": "^2.6.14",

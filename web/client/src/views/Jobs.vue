@@ -27,6 +27,15 @@
         <a :href="`/job/${item._id}`">{{ item.name }}</a>
       </template>
 
+      <template v-slot:item.schedule="{ item }">
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <span v-bind="attrs" v-on="on">{{ item.schedule }} </span>
+          </template>
+          <span>{{ friendlyCron(item.schedule) }}</span>
+        </v-tooltip>
+      </template>
+
       <template v-slot:item.lastRanAt="{ item }">
         {{ item.lastRanAt | formatDate }}
       </template>
@@ -52,6 +61,7 @@
 import jobService from "../services/job.service.js";
 import AddEditJobModal from "./AddEditJob.modal.vue";
 import ConfirmModal from "./Confirm.modal.vue";
+import cronstrue from "cronstrue";
 
 export default {
   data() {
@@ -133,6 +143,9 @@ export default {
     },
     rowClasses(row) {
       return `job-${row.lastStatus} ${row.enabled ? "" : "job-disabled"}`;
+    },
+    friendlyCron(schedule) {
+      return cronstrue.toString(schedule);
     },
   },
   sockets: {
