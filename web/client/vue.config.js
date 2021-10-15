@@ -1,4 +1,5 @@
-const configureAPI = require("../server/configure");
+// Hack to allow container build without server pieces
+const configureAPI = process.env.DOCKER_BUILD ? { before: () => { return; } } : require("../server/configure");
 
 module.exports = {
   configureWebpack: {
