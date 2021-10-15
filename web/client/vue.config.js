@@ -3,10 +3,10 @@ const configureAPI = require("../server/configure");
 module.exports = {
   configureWebpack: {
     devServer: {
-      before: configureAPI.before,
+      after: configureAPI.after,
       proxy: {
         "/socket.io": {
-          target: "http://localhost:8081",
+          target: "ws://localhost:8081",
           ws: true
         }
       }

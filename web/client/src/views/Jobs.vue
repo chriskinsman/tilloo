@@ -34,7 +34,7 @@
           </template>
           <span
             >Runs: {{ friendlyCron(item.schedule) }}<br />Next run:
-            {{ nextRun(item.schedule) | formatDate }}</span
+            {{ nextRun(item.schedule, item.lastRanAt) | formatDate }}</span
           >
         </v-tooltip>
       </template>
