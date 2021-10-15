@@ -44,11 +44,11 @@
         <v-icon @click="jobDelete(item)"> mdi-delete </v-icon>
         <v-icon @click="jobSettings(item)"> mdi-cog </v-icon>
         <v-icon
-          @click="jobRun(item)"
           :disabled="
             item.mutex &&
               (item.lastStatus === 'busy' || item.lastStatus === 'scheduled')
           "
+          @click="jobRun(item)"
         >
           mdi-play
         </v-icon>
@@ -70,16 +70,6 @@ export default {
       loading: false,
       search: ""
     };
-  },
-  mounted() {
-    this.$store.commit("setBreadcrumbs", [
-      {
-        text: "Jobs",
-        disabled: false,
-        href: "/"
-      }
-    ]);
-    this.getData();
   },
   computed: {
     headers() {
@@ -104,6 +94,16 @@ export default {
         }
       ];
     }
+  },
+  mounted() {
+    this.$store.commit("setBreadcrumbs", [
+      {
+        text: "Jobs",
+        disabled: false,
+        href: "/"
+      }
+    ]);
+    this.getData();
   },
   methods: {
     async getData() {
