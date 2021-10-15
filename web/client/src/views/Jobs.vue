@@ -151,10 +151,12 @@ export default {
     friendlyCron(schedule) {
       return cronstrue.toString(schedule);
     },
-    nextRun(schedule) {
+    nextRun(schedule, lastRanAt) {
       const job = new CronJob(
         schedule,
         () => {
+          // used so that this invalidates and updates each time lastRanAt changes
+          this.lastRanAt = lastRanAt;
           return;
         },
         null,
