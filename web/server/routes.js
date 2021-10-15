@@ -1,6 +1,8 @@
 'use strict';
 
 const async = require('async');
+const express = require('express');
+const router = express.Router();
 
 const Job = require('../../models/job');
 const Run = require('../../models/run');
@@ -9,9 +11,7 @@ const Log = require('../../models/log');
 const runs = require('../../lib/runs');
 const jobs = require('../../lib/jobs');
 
-const JobRoutes = {};
-
-JobRoutes.getJobs = async function getJobs(req, res) {
+router.get('/job', async function getJobs(req, res) {
     try {
         const jobs = await Job.findAllJobs();
         res.status(200).send(jobs);
@@ -21,9 +21,9 @@ JobRoutes.getJobs = async function getJobs(req, res) {
         res.status(500).send(err);
     }
     return;
-};
+});
 
-JobRoutes.getJob = async function getJob(req, res) {
+router.get('/job/:jobId', async function getJob(req, res) {
     try {
         const jobId = req.params.jobId;
         const job = await Job.findByJobId(jobId);
@@ -32,9 +32,9 @@ JobRoutes.getJob = async function getJob(req, res) {
     catch (err) {
         res.status(500).send(err);
     }
-};
+});
 
-JobRoutes.getRun = async function getRun(req, res) {
+router.get('/run/:runId', async function getRun(req, res) {
     try {
         const runId = req.params.runId;
         const run = await Run.findByRunId(runId);
@@ -43,9 +43,9 @@ JobRoutes.getRun = async function getRun(req, res) {
     catch (err) {
         res.status(500).send(err);
     }
-};
+});
 
-JobRoutes.getJobByRunId = async function getJobByRunId(req, res) {
+router.get('/job/run/:runId', async function getJobByRunId(req, res) {
     try {
         const runId = req.params.runId;
         const run = await Run.findByRunId(runId);
@@ -55,9 +55,9 @@ JobRoutes.getJobByRunId = async function getJobByRunId(req, res) {
     catch (err) {
         res.status(500).send(err);
     }
-};
+});
 
-JobRoutes.getRuns = async function getRuns(req, res) {
+router.get('/job/:jobId/runs', async function getRuns(req, res) {
     try {
         const jobId = req.params.jobId;
         const page = parseInt(req.query.page, 10);
@@ -89,9 +89,9 @@ JobRoutes.getRuns = async function getRuns(req, res) {
     catch (err) {
         res.status(500).send(err);
     }
-};
+});
 
-JobRoutes.outputForRun = async function outputForRun(req, res) {
+router.get('/run/:runId/output', async function outputForRun(req, res) {
     try {
         const runId = req.params.runId;
 
@@ -101,9 +101,9 @@ JobRoutes.outputForRun = async function outputForRun(req, res) {
     catch (err) {
         res.status(500).send(err);
     }
-};
+});
 
-JobRoutes.stopRun = async function stopRun(req, res) {
+router.post('/run/:runId/stop', async function stopRun(req, res) {
     try {
         const runId = req.params.runId;
 
@@ -113,9 +113,9 @@ JobRoutes.stopRun = async function stopRun(req, res) {
     catch (err) {
         res.status(500).send(err);
     }
-};
+});
 
-JobRoutes.triggerRun = async function triggerRun(req, res) {
+router.post('/job/:jobId/run', async function triggerRun(req, res) {
     try {
         const jobId = req.params.jobId;
 
@@ -126,9 +126,9 @@ JobRoutes.triggerRun = async function triggerRun(req, res) {
         res.status(500).send(err);
     }
 
-};
+});
 
-JobRoutes.deleteJob = async function deleteJob(req, res) {
+router.post('/job/:jobId/delete', async function deleteJob(req, res) {
     try {
         const jobId = req.params.jobId;
 
@@ -138,9 +138,9 @@ JobRoutes.deleteJob = async function deleteJob(req, res) {
     catch (err) {
         res.status(500).send(err);
     }
-};
+});
 
-JobRoutes.createJob = async function createJob(req, res) {
+router.post('/job/create', async function createJob(req, res) {
     try {
         const jobDef = req.body.jobDef;
 
@@ -150,9 +150,9 @@ JobRoutes.createJob = async function createJob(req, res) {
     catch (err) {
         res.status(500).send(err);
     }
-};
+});
 
-JobRoutes.updateJob = async function updateJob(req, res) {
+router.post('/job/:jobId/update', async function updateJob(req, res) {
     try {
         const jobDef = req.body.jobDef;
         const jobId = req.params.jobId;
@@ -163,6 +163,6 @@ JobRoutes.updateJob = async function updateJob(req, res) {
     catch (err) {
         res.status(500).send(err);
     }
-};
+});
 
-module.exports = JobRoutes;
+module.exports = router;
