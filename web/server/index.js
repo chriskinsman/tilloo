@@ -5,7 +5,6 @@ const express = require('express');
 const favicon = require('serve-favicon');
 const http = require('http');
 const path = require('path');
-const history = require('connect-history-api-fallback');
 
 // Routes
 const configureAPI = require('./configure');
@@ -21,7 +20,6 @@ configureAPI.before(app);
 const publicPath = path.resolve(__dirname, '../client/dist');
 const staticConf = { maxAge: '1y', etag: false };
 
-app.use(history());
 app.use(express.static(publicPath, staticConf));
 
 app.get('/', function (req, res) {

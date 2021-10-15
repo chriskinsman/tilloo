@@ -54,7 +54,7 @@ Run.statics.findRunsForJobPaginated = async function findRunsForJobPaginated(job
 
 Run.statics.countRunsForJob = async function countRunsForJob(jobId) {
     try {
-        return await Model.count({ jobId: new mongoose.Types.ObjectId(jobId) }).exec();
+        return await Model.countDocuments({ jobId: new mongoose.Types.ObjectId(jobId) }).exec();
     }
     catch (err) {
         console.error('Error counting runs for job', err);
