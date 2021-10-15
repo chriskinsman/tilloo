@@ -21,7 +21,7 @@ RUN cd /tilloo && npm ci --only=production && cd /tilloo/web/client && npm ci --
 # ---- Build ----
 FROM tools AS build
 # build vue app
-COPY web /tilloo/web
+COPY web/client /tilloo/web/client
 RUN cd /tilloo/web/client && \
     npm ci && \
     DOCKER_BUILD=true npm run build

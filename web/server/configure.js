@@ -1,11 +1,10 @@
-const routes = require("./routes");
-const history = require('connect-history-api-fallback');
-
-const mongoose = require('../../lib/mongooseinit');
-
 module.exports = {
     before: (app) => {
-        app.use('/api', routes);
-        app.use(history());
+        if (!process.env.DOCKER_BUILD) {
+            const mongoose = require('../../lib/mongooseinit');
+
+            app.use('/api', require("./routes"));
+            app.use(require('connect-history-api-fallback')());
+        }
     }
 }
