@@ -22,4 +22,3 @@ new Vue({
   vueSocketIoExtended,
   render: h => h(App)
 }).$mount("#app");
-

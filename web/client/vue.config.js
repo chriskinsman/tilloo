@@ -1,10 +1,10 @@
+const configureAPI = require("../server/configure");
+
 module.exports = {
   configureWebpack: {
     devServer: {
+      before: configureAPI.before,
       proxy: {
-        "/api": {
-          target: "http://localhost:3050"
-        },
         "/socket.io": {
           target: "http://localhost:8081",
           ws: true
