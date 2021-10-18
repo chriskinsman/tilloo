@@ -16,7 +16,7 @@
       :item-class="rowClasses"
     >
       <template v-slot:header.actions="{}">
-        <v-icon @click="jobRun()" :disabled="runDisabled"> mdi-play </v-icon>
+        <v-icon :disabled="runDisabled" @click="jobRun()"> mdi-play </v-icon>
       </template>
 
       <template v-slot:item._id="{ item }">
@@ -31,7 +31,7 @@
       </template>
 
       <template v-slot:item.actions="{ item }">
-        <v-icon @click="runStop(item._id)" v-if="item.status === 'busy'">
+        <v-icon v-if="item.status === 'busy'" @click="runStop(item._id)">
           mdi-stop
         </v-icon>
       </template>
@@ -49,10 +49,6 @@ export default {
       loading: false,
       job: null
     };
-  },
-  mounted() {
-    this.getBreadcrumbs(this.$route.params.jobid);
-    this.getData(this.$route.params.jobid);
   },
   computed: {
     headers() {
@@ -78,6 +74,10 @@ export default {
             this.job.lastStatus === "scheduled"))
       );
     }
+  },
+  mounted() {
+    this.getBreadcrumbs(this.$route.params.jobid);
+    this.getData(this.$route.params.jobid);
   },
   methods: {
     async getBreadcrumbs(jobId) {
