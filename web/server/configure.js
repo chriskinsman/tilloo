@@ -1,5 +1,5 @@
 module.exports = {
-    before: (app) => {
+    after: (app) => {
         if (!process.env.DOCKER_BUILD) {
             const mongoose = require('../../lib/mongooseinit');
 

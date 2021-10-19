@@ -167,11 +167,6 @@ export default {
       failuresBeforeAlert: { required, integer }
     }
   },
-  mounted() {
-    if (this.jobId) {
-      this.getData(this.jobId);
-    }
-  },
   computed: {
     action() {
       return this.jobId ? "Update" : "Add";
@@ -243,6 +238,11 @@ export default {
         }
       }
       return errors;
+    }
+  },
+  mounted() {
+    if (this.jobId) {
+      this.getData(this.jobId);
     }
   },
   methods: {

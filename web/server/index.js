@@ -14,7 +14,7 @@ app.set('port', process.env.PORT || 80);
 
 app.use(favicon(path.join(__dirname, '../client/dist/favicon.ico')));
 
-configureAPI.before(app);
+configureAPI.after(app);
 
 // UI
 const publicPath = path.resolve(__dirname, '../client/dist');

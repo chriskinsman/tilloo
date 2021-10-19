@@ -1,11 +1,11 @@
 <template>
   <v-container :fluid="true">
-    <v-icon @click="jobStop()" :disabled="stopDisabled"> mdi-stop </v-icon>
+    <v-icon :disabled="stopDisabled" @click="jobStop()"> mdi-stop </v-icon>
     <RecycleScroller
+      v-slot="{ item }"
       class="scroller"
       :items="loglines"
       :item-size="19"
-      v-slot="{ item }"
       key-field="_id"
       :page-mode="true"
     >
@@ -29,6 +29,11 @@ export default {
       loglines: [],
       job: null
     };
+  },
+  computed: {
+    stopDisabled() {
+      return !this.job || this.job.lastStatus !== "busy";
+    }
   },
   mounted() {
     this.getBreadcrumbs(this.$route.params.runid);
@@ -62,11 +67,6 @@ export default {
     },
     async jobStop() {
       await jobService.stopRun(this.$route.params.runid);
-    }
-  },
-  computed: {
-    stopDisabled() {
-      return !this.job || this.job.lastStatus !== "busy";
     }
   },
   sockets: {

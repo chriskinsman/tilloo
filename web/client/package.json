@@ -1,6 +1,6 @@
 {
   "name": "tilloo",
-  "version": "4.0.2",
+  "version": "4.0.1",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.22.0",
     "core-js": "^3.18.2",
+    "cron": "^1.8.2",
     "cronstrue": "^1.119.0",
     "dayjs": "^1.10.7",
     "socket.io-client": "^2.3.0",
@@ -44,7 +45,7 @@
       "node": true
     },
     "extends": [
-      "plugin:vue/essential",
+      "plugin:vue/recommended",
       "eslint:recommended",
       "@vue/prettier"
     ],

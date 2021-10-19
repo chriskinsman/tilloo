@@ -1,13 +1,19 @@
 // Hack to allow container build without server pieces
-const configureAPI = process.env.DOCKER_BUILD ? { before: () => { return; } } : require("../server/configure");
+const configureAPI = process.env.DOCKER_BUILD
+  ? {
+      before: () => {
+        return;
+      }
+    }
+  : require("../server/configure");
 
 module.exports = {
   configureWebpack: {
     devServer: {
-      before: configureAPI.before,
+      after: configureAPI.after,
       proxy: {
         "/socket.io": {
-          target: "http://localhost:8081",
+          target: "ws://localhost:8081",
           ws: true
         }
       }

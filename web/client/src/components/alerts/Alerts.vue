@@ -1,5 +1,5 @@
 <template>
-  <v-container :fluid="true" v-if="messages.length > 0">
+  <v-container v-if="messages.length > 0" :fluid="true">
     <v-alert
       v-for="m in messages"
       :id="'message-' + m.id"
