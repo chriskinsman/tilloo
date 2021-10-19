@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+## [4.0.2] - 2021-10-19
+### Changed
+- Fixed issue with failed disabled jobs still being highlighted in red
+
+## [4.0.1] - 2021-10-18
+### Added
+- New tooltip to show cron repetition in english
+- New tooltip to show next time job runs
+- Fix issues with docker builds of web app
+
 ## [4.0.0] - 2021-10-09
 ### Added
 - New web interface based on Vue

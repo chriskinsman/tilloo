@@ -215,7 +215,7 @@ export default {
       transition: background-color 1s;
     }
 
-    &.job-fail:not(&.disabled) {
+    &.job-fail:not(&.job-disabled) {
       background-color: rgba(169, 68, 66, 0.2);
       transition: background-color 1s;
     }
