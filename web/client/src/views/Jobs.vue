@@ -12,6 +12,7 @@
       :custom-filter="filterOnlyCapsText"
       :item-class="rowClasses"
       :hide-default-footer="true"
+      :disable-pagination="true"
     >
       <template v-slot:top>
         <v-text-field v-model="search" label="Search" class="mx-4" />
