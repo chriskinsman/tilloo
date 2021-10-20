@@ -10,11 +10,8 @@
       sort-by="name"
       :search="search"
       :custom-filter="filterOnlyCapsText"
-      :footer-props="{
-        'items-per-page-options': [25, 50, 100],
-      }"
-      :items-per-page="25"
       :item-class="rowClasses"
+      :hide-default-footer="true"
     >
       <template v-slot:top>
         <v-text-field v-model="search" label="Search" class="mx-4" />

@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+## [4.0.3] - 2021-10-20
+### Changed
+- Fixed issue with missing body-parser
+
 ## [4.0.2] - 2021-10-19
 ### Changed
 - Fixed issue with failed disabled jobs still being highlighted in red
