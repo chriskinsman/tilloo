@@ -1,6 +1,6 @@
 {
   "name": "tilloo",
-  "version": "4.0.1",
+  "version": "4.0.3",
   "description": "A distributed cron with cli and web ui",
   "repository": "https://github.com/chriskinsman/tilloo.git",
   "scripts": {
@@ -20,6 +20,7 @@
     "async": "^3.2.1",
     "aws-sdk": "^2.1003.0",
     "axios": "^0.22.0",
+    "body-parser": "^1.19.0",
     "chokidar": "^3.5.2",
     "commander": "^3.0.2",
     "compression": "^1.7.4",
