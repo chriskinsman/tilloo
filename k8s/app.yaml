@@ -164,7 +164,7 @@ spec:
           # env:
           # - name: DEBUG
           #   value: tilloo:*
-          command: ["/tilloo/app/app.js"]
+          command: ["/tilloo/web/server/index.js"]
           ports:
             - containerPort: 80
           resources:

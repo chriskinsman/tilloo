@@ -25,7 +25,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.0.0] - 2021-10-09
 ### Added
-- New web interface based on Vue
+- New web interface based on Vue.  You will have to update your web-deployment to start /web/server/index.js
 
 ### Changed
 - Removed old AngularJS interface
