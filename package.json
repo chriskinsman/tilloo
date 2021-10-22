@@ -1,6 +1,6 @@
 {
   "name": "tilloo",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "A distributed cron with cli and web ui",
   "repository": "https://github.com/chriskinsman/tilloo.git",
   "scripts": {
@@ -13,12 +13,12 @@
     "tilloo-scheduler": "./bin/scheduler.js",
     "tilloo-cli": "./bin/tilloo-cli.js",
     "tilloo-worker": "./bin/worker.js",
-    "tilloo-web": "./app/app.js"
+    "tilloo-web": "./web/server/index.js"
   },
   "dependencies": {
     "@kubernetes/client-node": "^0.15.1",
     "async": "^3.2.1",
-    "aws-sdk": "^2.1012.0",
+    "aws-sdk": "^2.1013.0",
     "axios": "^0.23.0",
     "body-parser": "^1.19.0",
     "chokidar": "^3.5.2",
