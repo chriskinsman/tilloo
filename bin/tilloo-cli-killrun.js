@@ -9,6 +9,8 @@ commander.version('0.0.1')
     .option('-f, --force', 'Force kill a job.  Immediately sets status in mongodb to fail')
     .parse(process.argv);
 
+const options = commander.opts();
+
 if (commander.args.length !== 1) {
     commander.outputHelp();
     process.exit(1);
@@ -16,7 +18,7 @@ if (commander.args.length !== 1) {
 
 (async () => {
     try {
-        await runs.killRun(commander.args[0], commander.force);
+        await runs.killRun(commander.args[0], options.force);
         console.info('Kill message sent');
         process.exit(0);
     }
