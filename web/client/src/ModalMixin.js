@@ -5,7 +5,7 @@ export default {
   data() {
     return {
       dialog: false,
-      resolve: null
+      resolve: null,
     };
   },
   methods: {
@@ -15,8 +15,8 @@ export default {
     },
     // Call this to mount the VueJS modal and insert it
     // into the DOM.
-    _showModal: async function(parent) {
-      return new Promise(resolve => {
+    _showModal: async function (parent) {
+      return new Promise((resolve) => {
         this.resolve = resolve;
         this.close = this._closeModal.bind(this);
 
@@ -30,7 +30,7 @@ export default {
         this.dialog = true;
       });
     },
-    _closeModal: function(args) {
+    _closeModal: function (args) {
       // Needs to be before .dialog=false
       this.explicitClose = true;
 
@@ -39,18 +39,18 @@ export default {
       // Call the close callback with the passed in arguments
       this.resolve(args);
     },
-    _popstateHandler: function() {
+    _popstateHandler: function () {
       // Hide modal if back button pressed
       this.dialog = false;
     },
-    _cleanup: function() {
+    _cleanup: function () {
       // Eliminate duplicate popstate callbacks
       window.removeEventListener("popstate", this._popstateHandler);
       // Destroy the VueJS component in memory
       this.$destroy();
       // remove el from dom
       this.$el.remove();
-    }
+    },
   },
   watch: {
     dialog(newVal, oldVal) {
@@ -58,6 +58,6 @@ export default {
         this.resolve();
         this._cleanup();
       }
-    }
-  }
+    },
+  },
 };

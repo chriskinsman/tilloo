@@ -10,7 +10,7 @@
       sort-by="startedAt"
       :sort-desc="true"
       :footer-props="{
-        'items-per-page-options': [10, 25, 50, 100]
+        'items-per-page-options': [10, 25, 50, 100],
       }"
       :items-per-page="25"
       :item-class="rowClasses"
@@ -47,7 +47,7 @@ export default {
     return {
       runs: [],
       loading: false,
-      job: null
+      job: null,
     };
   },
   computed: {
@@ -62,8 +62,8 @@ export default {
           value: "actions",
           align: "end",
           sortable: false,
-          width: "1%"
-        }
+          width: "1%",
+        },
       ];
     },
     runDisabled() {
@@ -73,7 +73,7 @@ export default {
           (this.job.lastStatus === "busy" ||
             this.job.lastStatus === "scheduled"))
       );
-    }
+    },
   },
   mounted() {
     this.getBreadcrumbs(this.$route.params.jobid);
@@ -88,12 +88,12 @@ export default {
           {
             text: "Jobs",
             disabled: false,
-            href: "/"
+            href: "/",
           },
           {
             text: job.name,
-            disabled: true
-          }
+            disabled: true,
+          },
         ]);
       }
     },
@@ -113,7 +113,7 @@ export default {
     },
     rowClasses(row) {
       return `run-${row.status}`;
-    }
+    },
   },
   sockets: {
     async status(statusUpdate) {
@@ -123,7 +123,7 @@ export default {
         statusUpdate.runId
       ) {
         const run = await jobService.getRun(statusUpdate.runId);
-        const runIndex = this.runs.findIndex(run => {
+        const runIndex = this.runs.findIndex((run) => {
           return run._id == statusUpdate.runId; // eslint-disable-line eqeqeq
         });
 
@@ -139,7 +139,7 @@ export default {
     async jobchange(jobMessage) {
       const job = await jobService.getJob(jobMessage.jobId);
       if (job) {
-        const jobIndex = this.jobs.findIndex(item => item._id === job._id);
+        const jobIndex = this.jobs.findIndex((item) => item._id === job._id);
         if (jobIndex !== -1) {
           if (job.deleted) {
             this.$delete(this.jobs, jobIndex);
@@ -150,8 +150,8 @@ export default {
           this.jobs.push(job);
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

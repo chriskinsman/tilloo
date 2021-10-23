@@ -17,20 +17,20 @@ const Level = {
   Error: "error",
   Info: "info",
   Warning: "warning",
-  Success: "success"
+  Success: "success",
 };
 
 Alerts.Level = Level;
 
 // This is a plugin that registers a store module for the flash messages.
 // Call when you setup the store by adding it to the plugins array.
-Alerts.storePlugin = function(rootStore) {
+Alerts.storePlugin = function (rootStore) {
   store = rootStore;
 
   store.registerModule("alerts", {
     namespaced: true,
     state: {
-      messages: [] // expected object elements: {level (str), text (str)}
+      messages: [], // expected object elements: {level (str), text (str)}
     },
     mutations: {
       add(state, message) {
@@ -51,8 +51,8 @@ Alerts.storePlugin = function(rootStore) {
       },
       clear(state) {
         state.messages = [];
-      }
-    }
+      },
+    },
   });
 };
 

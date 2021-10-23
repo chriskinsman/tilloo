@@ -21,6 +21,7 @@ commander.version('0.0.1')
     .option('-f, --failures <failures>', 'Number of failures before alert is sent', parseInt)
     .parse(process.argv);
 
+const options = commander.opts();
 
 function showHelpAndExit() {
     commander.outputHelp();
@@ -28,8 +29,8 @@ function showHelpAndExit() {
 }
 
 
-const schedule = commander.args[0];
-const imageUri = commander.args[1];
+const schedule = options.args[0];
+const imageUri = options.args[1];
 
 if (!schedule) {
     console.error('Must specify schedule');
@@ -45,43 +46,43 @@ if (!imageUri) {
     try {
         const jobDef = { schedule: schedule, imageUri: imageUri };
 
-        if (commander.path) {
-            jobDef.path = commander.path;
+        if (options.path) {
+            jobDef.path = options.path;
         }
 
-        if (commander.nodeselector) {
-            jobDef.nodeSelector = commander.nodeselector;
+        if (options.nodeselector) {
+            jobDef.nodeSelector = options.nodeselector;
         }
 
-        if (commander.jobname) {
-            jobDef.name = commander.jobname;
+        if (options.jobname) {
+            jobDef.name = options.jobname;
         }
         else {
             jobDef.name = imageUri;
         }
 
-        if (commander.timeout) {
-            jobDef.timeout = commander.timeout;
+        if (options.timeout) {
+            jobDef.timeout = options.timeout;
         }
 
-        if (commander.queue) {
-            jobDef.queueName = commander.queue;
+        if (options.queue) {
+            jobDef.queueName = options.queue;
         }
 
-        if (commander.jobargs) {
-            jobDef.args = commander.jobargs;
+        if (options.jobargs) {
+            jobDef.args = options.jobargs;
         }
 
-        if (commander.jobdescription) {
-            jobDef.description = commander.jobdescription;
+        if (options.jobdescription) {
+            jobDef.description = options.jobdescription;
         }
 
-        if (commander.mutex !== undefined) {
-            jobDef.mutex = commander.mutex;
+        if (options.mutex !== undefined) {
+            jobDef.mutex = options.mutex;
         }
 
-        if (commander.failures) {
-            jobDef.failuresBeforeAlert = commander.failures;
+        if (options.failures) {
+            jobDef.failuresBeforeAlert = options.failures;
         }
 
         await jobs.add(jobDef);

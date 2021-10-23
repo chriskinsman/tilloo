@@ -137,8 +137,8 @@ export default {
   props: {
     jobId: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
     return {
@@ -153,8 +153,8 @@ export default {
         timeout: 0,
         mutex: true,
         failuresBeforeAlert: 1,
-        description: null
-      }
+        description: null,
+      },
     };
   },
   validations: {
@@ -164,8 +164,8 @@ export default {
       imageUri: { required },
       path: { required },
       timeout: { required, integer },
-      failuresBeforeAlert: { required, integer }
-    }
+      failuresBeforeAlert: { required, integer },
+    },
   },
   computed: {
     action() {
@@ -238,7 +238,7 @@ export default {
         }
       }
       return errors;
-    }
+    },
   },
   mounted() {
     if (this.jobId) {
@@ -256,7 +256,7 @@ export default {
         await jobService.createJob(this.job);
       }
     },
-    removeArg: function(item) {
+    removeArg: function (item) {
       this.job.args.splice(this.job.args.indexOf(item), 1);
       this.job.args = [...this.job.args];
     },
@@ -269,8 +269,8 @@ export default {
     },
     cancelModal() {
       this.close("cancel");
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -5,7 +5,7 @@ import io from "socket.io-client";
 const socket = io(null, {
   reconnection: true,
   reconnectionDelay: 500,
-  maxReconnectionAttempts: Infinity
+  maxReconnectionAttempts: Infinity,
 });
 
 Vue.use(VueSocketIOExt, socket);
@@ -17,6 +17,6 @@ export default {
     },
     connect_error(err) {
       console.error(`connect error ${err.message}`);
-    }
-  }
+    },
+  },
 };

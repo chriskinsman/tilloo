@@ -25,6 +25,7 @@ commander.version('0.0.1')
     .option('-f, --failures <failures>', 'Number of failures before alert is sent', parseInt)
     .parse(process.argv);
 
+const options = commander.opts();
 
 function showHelpAndExit() {
     commander.outputHelp();
@@ -42,52 +43,52 @@ if (!jobId) {
     try {
         const jobDef = {};
 
-        if (commander.enabled) {
-            jobDef.enabled = commander.enabled.toLowerCase() === 'true';
+        if (options.enabled) {
+            jobDef.enabled = options.enabled.toLowerCase() === 'true';
         }
 
-        if (commander.schedule) {
-            jobDef.schedule = commander.schedule;
+        if (options.schedule) {
+            jobDef.schedule = options.schedule;
         }
 
-        if (commander.path) {
-            jobDef.path = commander.path;
+        if (options.path) {
+            jobDef.path = options.path;
         }
 
-        if (commander.imageuri) {
-            jobDef.imageUri = commander.imageuri;
+        if (options.imageuri) {
+            jobDef.imageUri = options.imageuri;
         }
 
-        if (commander.nodeselector) {
-            jobDef.nodeSelector = commander.nodeselector;
+        if (options.nodeselector) {
+            jobDef.nodeSelector = options.nodeselector;
         }
 
-        if (commander.jobname) {
-            jobDef.name = commander.jobname;
+        if (options.jobname) {
+            jobDef.name = options.jobname;
         }
 
-        if (commander.timeout) {
-            jobDef.timeout = commander.timeout;
+        if (options.timeout) {
+            jobDef.timeout = options.timeout;
         }
 
-        if (commander.queue) {
-            jobDef.queueName = commander.queue;
+        if (options.queue) {
+            jobDef.queueName = options.queue;
         }
 
-        if (commander.jobargs) {
-            jobDef.args = commander.jobargs;
+        if (options.jobargs) {
+            jobDef.args = options.jobargs;
         }
 
-        if (commander.jobdescription) {
-            jobDef.description = commander.jobdescription;
+        if (options.jobdescription) {
+            jobDef.description = options.jobdescription;
         }
 
-        if (commander.mutex !== undefined) {
-            jobDef.mutex = commander.mutex;
+        if (options.mutex !== undefined) {
+            jobDef.mutex = options.mutex;
         }
 
-        if (commander.failures) {
-            jobDef.failuresBeforeAlert = commander.failures;
+        if (options.failures) {
+            jobDef.failuresBeforeAlert = options.failures;
         }
 
         await jobs.update(jobId, jobDef);

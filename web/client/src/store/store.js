@@ -7,12 +7,12 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    breadcrumbs: []
+    breadcrumbs: [],
   },
   mutations: {
     setBreadcrumbs(state, payload) {
       state.breadcrumbs = payload;
-    }
+    },
   },
-  plugins: [alerts.storePlugin]
+  plugins: [alerts.storePlugin],
 });

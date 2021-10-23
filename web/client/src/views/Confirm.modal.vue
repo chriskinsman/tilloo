@@ -31,17 +31,17 @@ export default {
     title: {
       type: String,
       required: true,
-      default: ""
+      default: "",
     },
     textContent: {
       type: String,
       required: true,
-      default: ""
+      default: "",
     },
     ok: {
       type: String,
-      default: "Ok"
-    }
+      default: "Ok",
+    },
   },
   data() {
     return {};
@@ -52,8 +52,8 @@ export default {
     },
     cancelModal() {
       this.close("cancel");
-    }
-  }
+    },
+  },
 };
 </script>
 

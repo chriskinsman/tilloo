@@ -19,8 +19,8 @@ export default {
   computed: {
     messages() {
       return this.$store.state.alerts.messages;
-    }
-  }
+    },
+  },
 };
 </script>
 

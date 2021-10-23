@@ -9,8 +9,8 @@ export default new Vuetify({
   theme: {
     themes: {
       light: {
-        primary: colors.lightBlue
-      }
-    }
-  }
+        primary: colors.lightBlue,
+      },
+    },
+  },
 });
