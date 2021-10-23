@@ -20,5 +20,5 @@ new Vue({
   router,
   vuetify,
   vueSocketIoExtended,
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount("#app");

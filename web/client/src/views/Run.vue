@@ -27,13 +27,13 @@ export default {
   data() {
     return {
       loglines: [],
-      job: null
+      job: null,
     };
   },
   computed: {
     stopDisabled() {
       return !this.job || this.job.lastStatus !== "busy";
-    }
+    },
   },
   mounted() {
     this.getBreadcrumbs(this.$route.params.runid);
@@ -48,17 +48,17 @@ export default {
           {
             text: "Jobs",
             disabled: false,
-            href: "/"
+            href: "/",
           },
           {
             text: job.name,
             disabled: false,
-            href: `/job/${job._id}`
+            href: `/job/${job._id}`,
           },
           {
             text: runId,
-            disabled: true
-          }
+            disabled: true,
+          },
         ]);
       }
     },
@@ -67,7 +67,7 @@ export default {
     },
     async jobStop() {
       await jobService.stopRun(this.$route.params.runid);
-    }
+    },
   },
   sockets: {
     status(statusUpdate) {
@@ -79,11 +79,11 @@ export default {
       if (logLine.runId === this.$route.params.runid) {
         this.loglines.push({
           _id: logLine._id ?? new Date(),
-          output: logLine.output
+          output: logLine.output,
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

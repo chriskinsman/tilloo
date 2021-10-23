@@ -5,11 +5,11 @@ export default function install(Vue) {
         const modalComponent = Vue.extend(ModalComponent);
         const modalComponentInstance = new modalComponent({
           parent: this,
-          propsData: params
+          propsData: params,
         });
 
         return await modalComponentInstance.show();
-      }
-    }
+      },
+    },
   });
 }
