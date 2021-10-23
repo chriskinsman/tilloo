@@ -194,10 +194,7 @@ __Settings__
 
 ## Notifications
 
-There are plugins available to send notifications to your monitoring system of choice.  A plugin to send email via Mandrill/MailChimp is included in the project. 
-
-Plugins:
-  * [Mandrill/MailChimp](https://www.npmjs.com/package/tilloo-plugin-mandrill)
+There are notifiers included that can notify of job failures via Mandrill or AWS SNS.  Notifiers are easily added for other destinations.  If you add one please submit a pull request and share it.
 
 ## Resources
 * Running tilloo on Raspberry PI/k3s - [tilloo-k3s] (https://github.com/chriskinsman/tilloo-k3s)
