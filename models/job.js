@@ -32,7 +32,8 @@ const Job = new mongoose.Schema({
     mutex: { type: Boolean, default: true },
     timeout: { type: Number, default: 0 },
     deleted: { type: Boolean, default: false },
-    failuresBeforeAlert: { type: Number, default: 1 }
+    failuresBeforeAlert: { type: Number, default: 1 },
+    alternateFailureEmail: { type: String },
 });
 
 Job.pre('save', function save(done) {

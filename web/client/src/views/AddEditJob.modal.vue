@@ -111,6 +111,15 @@
                 />
               </v-col>
             </v-row>
+            <v-row dense>
+              <v-col>
+                <v-text-field
+                  v-model="job.alternateFailureEmail"
+                  label="Alternate Failure Email"
+                  :error-messages="emailErrors"
+                ></v-text-field>
+              </v-col>
+            </v-row>
           </v-form>
         </v-container>
 
@@ -130,7 +139,7 @@
 import jobService from "../services/job.service.js";
 import modalMixin from "../ModalMixin.js";
 import { validationMixin } from "vuelidate";
-import { required, integer } from "vuelidate/lib/validators";
+import { required, integer, email } from "vuelidate/lib/validators";
 
 export default {
   mixins: [modalMixin, validationMixin],
@@ -165,6 +174,7 @@ export default {
       path: { required },
       timeout: { required, integer },
       failuresBeforeAlert: { required, integer },
+      alternateFailureEmail: { email },
     },
   },
   computed: {
@@ -235,6 +245,15 @@ export default {
           !(parseInt(this.$v.job.failuresBeforeAlert.$model) >= 0)
         ) {
           errors.push("Failures before alert must be an integer > 0");
+        }
+      }
+      return errors;
+    },
+    emailErrors() {
+      const errors = [];
+      if (this.$v.job.alternateFailureEmail.$dirty) {
+        if (!this.$v.job.alternateFailureEmail.email) {
+          errors.push("Email is invalid");
         }
       }
       return errors;
