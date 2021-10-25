@@ -20,9 +20,9 @@
           label="Search"
           class="mx-4"
           autofocus
-          autocomplete="false"
-          autocorrect="false"
-          autocapitalize="false"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
         />
       </template>
       <template v-slot:header.actions="{}">
