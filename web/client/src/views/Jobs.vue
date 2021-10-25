@@ -15,7 +15,15 @@
       :disable-pagination="true"
     >
       <template v-slot:top>
-        <v-text-field v-model="search" label="Search" class="mx-4" />
+        <v-text-field
+          v-model="search"
+          label="Search"
+          class="mx-4"
+          autofocus
+          autocomplete="false"
+          autocorrect="false"
+          autocapitalize="false"
+        />
       </template>
       <template v-slot:header.actions="{}">
         <v-icon @click="jobAdd()"> mdi-plus </v-icon>
