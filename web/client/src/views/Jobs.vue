@@ -19,10 +19,10 @@
           v-model="search"
           label="Search"
           class="mx-4"
-          autofocus
-          autocomplete="off"
-          autocorrect="off"
-          autocapitalize="off"
+          :autofocus="autofocus"
+          :autocomplete="off"
+          :autocorrect="off"
+          :autocapitalize="off"
         />
       </template>
       <template v-slot:header.actions="{}">
