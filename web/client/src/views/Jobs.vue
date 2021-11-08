@@ -15,14 +15,33 @@
       :disable-pagination="true"
     >
       <template v-slot:top>
-        <v-text-field v-model="search" label="Search" class="mx-4" />
+        <v-text-field
+          v-model="search"
+          label="Search"
+          class="mx-4"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+        />
       </template>
       <template v-slot:header.actions="{}">
         <v-icon @click="jobAdd()"> mdi-plus </v-icon>
       </template>
 
       <template v-slot:item.name="{ item }">
-        <a :href="`/job/${item._id}`">{{ item.name }}</a>
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <span v-bind="attrs" v-on="on"
+              ><a :href="`/job/${item._id}`">{{ item.name }}</a></span
+            >
+          </template>
+          <span>
+            Container: {{ item.imageUri }}<br />
+            Path: {{ item.path }}<br />
+            Args: {{ item.args.join(" ") }}<br />
+            JobId: {{ item._id }}
+          </span>
+        </v-tooltip>
       </template>
 
       <template v-slot:item.schedule="{ item }">
