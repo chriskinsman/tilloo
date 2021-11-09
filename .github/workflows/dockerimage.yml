@@ -49,7 +49,7 @@ jobs:
       - name: Available platforms
         run: echo ${{ steps.buildx.outputs.platforms }}
       - name: Built platforms
-        run: echo ${{ steps.prepare.outputs.platforms }}
+        run: echo ${{ steps.prep.outputs.platforms }}
       - name: Login to GitHub Container Registry
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v1
@@ -71,7 +71,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
-          platforms: ${{ steps.prepare.outputs.platforms }}
+          platforms: ${{ steps.prep.outputs.platforms }}
           tags: ${{ steps.prep.outputs.tags }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
