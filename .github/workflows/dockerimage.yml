@@ -61,8 +61,10 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx2-${{ github.sha }}
+          key: ${{ runner.os }}-buildx2-${{ github.ref }}
           restore-keys: |
+            ${{ runner.os }}-buildx2-${{ github.ref }}
+            ${{ runner.os }}-buildx2-refs/heads/${{ github.event.repository.default_branch }}
             ${{ runner.os }}-buildx2-
       - name: Build and push
         id: docker_build
