@@ -284,7 +284,8 @@ data:
         "scheduler": {
             "zombieAge": 5,
             "zombieFrequency": 5,
-            "jobCleanupFrequency": 60
+            "jobCleanupFrequency": 60,
+            "runHistoryDays": 90
         },
         "notification": {
             "threshold": 3600,

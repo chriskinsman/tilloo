@@ -16,6 +16,7 @@ const jobWatcher = require('../lib/k8s/jobwatcher');
 const eventWatcher = require('../lib/k8s/eventwatcher');
 const zombieRuns = require('../lib/k8s/zombieruns');
 const jobCleanup = require('../lib/k8s/jobcleanup');
+const runLogCleanup = require('../lib/runlogcleanup');
 
 const iostatus = require('../lib/iostatus');
 
@@ -33,6 +34,7 @@ const _loadedJobs = {};
         jobWatcher.start();
         zombieRuns.start();
         jobCleanup.start();
+        runLogCleanup.start();
         const jobs = await Job.loadAllJobs();
         debug('loading jobs');
         jobs.forEach((job) => {
