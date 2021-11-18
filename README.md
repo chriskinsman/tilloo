@@ -189,6 +189,7 @@ __Settings__
   * port - The port the web sockets interface is exposed on.
   * zombieAge - If a job hasn't seen a heartbeat in this many minutes it is marked as failed.
   * zombieFrequency - How frequently the zombie garbage collector should start in minutes
+  * runHistoryDays - How long to keep logs of each run around.  No default.  If not set no expiration is done.  Recommended setting of 90 days depending on volume of jobs.
 * web - Settings pertaining to the web interface
   * port - The port to start the web interface on  
 
