@@ -46,7 +46,7 @@ Log.statics.findOutputForRun = async function findOutputForRun(runId) {
 
 Log.statics.deleteOutputForRun = async function deleteOutputForRun(runId) {
     try {
-        return await Model.remove({ runId: new mongoose.Types.ObjectId(runId) });
+        return await Model.deleteMany({ runId: new mongoose.Types.ObjectId(runId) });
     }
     catch (err) {
         console.error('Error deleting output for run', err);
