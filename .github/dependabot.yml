@@ -13,4 +13,10 @@ updates:
       interval: 'monthly'
     allow:
       dependency-type: 'direct'
+    ignore:
+      - dependency-name: "eslint"
+      - dependency-name: "eslint-plugin-prettier"
+      - dependency-name: "eslint-plugin-vue"
+      - dependency-name: "sass"
+      - dependency-name: "sass-loader"
 
