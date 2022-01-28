@@ -1,6 +1,15 @@
 <template>
   <v-container :fluid="true">
-    <v-icon :disabled="stopDisabled" @click="jobStop()"> mdi-stop </v-icon>
+    <v-icon :disabled="stopDisabled" @click="jobStop()" title="Stop Job">
+      mdi-stop
+    </v-icon>
+    <v-icon
+      :disabled="downloadDisabled"
+      @click="downloadLog()"
+      title="Download Log"
+    >
+      mdi-download
+    </v-icon>
     <RecycleScroller
       v-slot="{ item }"
       class="scroller"
@@ -17,6 +26,7 @@
 </template>
 
 <script>
+import Vue from "vue";
 import jobService from "../services/job.service.js";
 import { RecycleScroller } from "vue-virtual-scroller";
 
@@ -33,6 +43,9 @@ export default {
   computed: {
     stopDisabled() {
       return !this.job || this.job.lastStatus !== "busy";
+    },
+    downloadDisabled() {
+      return this.loglines.length === 0;
     },
   },
   mounted() {
@@ -67,6 +80,37 @@ export default {
     },
     async jobStop() {
       await jobService.stopRun(this.$route.params.runid);
+    },
+    downloadLog() {
+      const filename = `${this.$route.params.runid}.log`;
+      const blob = new Blob(
+        [
+          this.loglines.reduce((log, item) => {
+            return log + item.output + "\r\n";
+          }, ""),
+        ],
+        { type: "text/plain" }
+      );
+
+      if (window.navigator.msSaveBlob) {
+        // Support for IE 11
+        window.navigator.msSaveBlob(blob, filename);
+      } else {
+        // For other browsers. Need to add it to the document for it to work in Firefox.
+        let url = window.URL.createObjectURL(blob);
+        let a = window.document.createElement("a");
+        a.download = filename;
+        a.cssText = "display: 'none'";
+        a.href = url;
+        window.document.body.append(a);
+        a.click();
+        if (a.remove) a.remove();
+        if (url) {
+          Vue.nextTick(() => {
+            window.URL.revokeObjectURL(url);
+          });
+        }
+      }
     },
   },
   sockets: {
