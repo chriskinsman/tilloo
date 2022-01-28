@@ -5,14 +5,14 @@ updates:
     schedule:
       interval: 'monthly'
     allow:
-      dependency-type: 'direct'
+      - dependency-type: 'direct'
 
   - package-ecosystem: 'npm'
     directory: '/web/client'
     schedule:
       interval: 'monthly'
     allow:
-      dependency-type: 'direct'
+      - dependency-type: 'direct'
     ignore:
       - dependency-name: "eslint"
       - dependency-name: "eslint-plugin-prettier"
