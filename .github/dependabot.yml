@@ -1,0 +1,16 @@
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'monthly'
+    allow:
+      dependency-type: 'direct'
+
+  - package-ecosystem: 'npm'
+    directory: '/web/client'
+    schedule:
+      interval: 'monthly'
+    allow:
+      dependency-type: 'direct'
+
