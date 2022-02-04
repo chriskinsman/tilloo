@@ -1,12 +1,12 @@
 <template>
   <v-container :fluid="true">
-    <v-icon :disabled="stopDisabled" @click="jobStop()" title="Stop Job">
+    <v-icon :disabled="stopDisabled" title="Stop Job" @click="jobStop()">
       mdi-stop
     </v-icon>
     <v-icon
       :disabled="downloadDisabled"
-      @click="downloadLog()"
       title="Download Log"
+      @click="downloadLog()"
     >
       mdi-download
     </v-icon>
