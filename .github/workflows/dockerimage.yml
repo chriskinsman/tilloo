@@ -4,9 +4,10 @@ on:
   release:
     types: [published, edited]
   push:
-    branches: master
-  pull_request:
-    branches: master
+  #   branches: master
+  # pull requests are broken when pushing to ghcr
+  # pull_request:
+  #   branches: master
 jobs:
   buildx:
     runs-on: ubuntu-latest
