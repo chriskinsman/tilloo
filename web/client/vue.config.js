@@ -1,10 +1,10 @@
 // Hack to allow container build without server pieces
 const configureAPI = process.env.DOCKER_BUILD
   ? {
-      before: () => {
-        return;
-      },
-    }
+    before: () => {
+      return;
+    },
+  }
   : require("../server/configure");
 
 module.exports = {
@@ -18,6 +18,14 @@ module.exports = {
         },
       },
     },
+  },
+  chainWebpack: config => {
+    config
+      .plugin('html')
+      .tap(args => {
+        args[0].title = "Tilloo";
+        return args;
+      })
   },
   transpileDependencies: ["vuetify"],
 };
