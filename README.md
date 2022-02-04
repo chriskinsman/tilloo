@@ -213,5 +213,3 @@ The author is [Chris Kinsman](https://github.com/chriskinsman)
 
 [github-build-image]: https://img.shields.io/github/workflow/status/chriskinsman/tilloo/tilloo
 [github-build-url]: https://github.com/chriskinsman/tilloo/actions?query=workflow%3Atilloo
-
-t
