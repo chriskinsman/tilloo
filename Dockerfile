@@ -25,7 +25,8 @@ COPY web/client /tilloo/web/client
 RUN cd /tilloo/web/client && \
     npm ci
 
-RUN DOCKER_BUILD=true npm run build
+RUN cd /tilloo/web/client && \
+    DOCKER_BUILD=true npm run build
 
 #
 # ---- Release ----
