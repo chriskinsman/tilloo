@@ -23,8 +23,9 @@ FROM tools AS build
 # build vue app
 COPY web/client /tilloo/web/client
 RUN cd /tilloo/web/client && \
-    npm ci && \
-    DOCKER_BUILD=true npm run build
+    npm ci
+
+RUN DOCKER_BUILD=true npm run build
 
 #
 # ---- Release ----
