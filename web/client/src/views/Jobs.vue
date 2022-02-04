@@ -92,7 +92,6 @@ export default {
       jobs: [],
       loading: false,
       search: "",
-      nextRun: null,
     };
   },
   computed: {
