@@ -15,15 +15,17 @@ RUN apk update && apk upgrade && \
 # ---- Dependencies ----
 FROM tools AS dependencies
 # install node packages
-RUN cd /tilloo && npm ci --only=production && cd /tilloo/web/client && npm ci --only=production
+RUN cd /tilloo && \
+    npm ci --only=production --ignore-scripts && \
+    cd /tilloo/web/client && \
+    npm ci --only=production --ignore-scripts
 
 #
 # ---- Build ----
 FROM tools AS build
 # build vue app
-COPY web/client/package.json web/client/package-lock.json /tilloo/web/client/
 RUN cd /tilloo/web/client && \
-    npm ci
+    npm ci --ignore-scripts
 
 COPY web/client /tilloo/web/client
 RUN cd /tilloo/web/client && \
