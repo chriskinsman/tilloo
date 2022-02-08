@@ -47,11 +47,13 @@
       <template v-slot:item.schedule="{ item }">
         <v-tooltip top>
           <template v-slot:activator="{ on, attrs }">
-            <span v-bind="attrs" v-on="on">{{ item.schedule }} </span>
+            <span v-bind="attrs" v-on="on" @mouseover="calculateNextRun(item)"
+              >{{ item.schedule }}
+            </span>
           </template>
           <span
             >Runs: {{ friendlyCron(item.schedule) }}<br />Next run:
-            {{ nextRun(item.schedule, item.lastRanAt) | formatDate }}</span
+            {{ item.nextRun | formatDate }}</span
           >
         </v-tooltip>
       </template>
@@ -168,18 +170,19 @@ export default {
     friendlyCron(schedule) {
       return cronstrue.toString(schedule);
     },
-    nextRun(schedule, lastRanAt) {
+    calculateNextRun(item) {
       const job = new CronJob(
-        schedule,
+        item.schedule,
         () => {
           // used so that this invalidates and updates each time lastRanAt changes
-          this.lastRanAt = lastRanAt;
+          this.lastRanAt = item.lastRanAt;
           return;
         },
         null,
         true
       );
-      return job.nextDates(1)[0];
+
+      this.$set(item, "nextRun", job.nextDates(1)[0]?.local());
     },
   },
   sockets: {
