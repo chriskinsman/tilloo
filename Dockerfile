@@ -1,6 +1,6 @@
 #
 # ---- Base Node ----
-FROM node:16-alpine AS base
+FROM node:14-alpine AS base
 WORKDIR /tilloo
 COPY package.json package-lock.json /tilloo/
 COPY web/client/package.json web/client/package-lock.json /tilloo/web/client/
@@ -17,14 +17,13 @@ FROM tools AS dependencies
 # install node packages
 RUN cd /tilloo && \
     npm ci --only=production --ignore-scripts && \
+    cd /tilloo/web/client && \
+    npm ci --ignore-scripts
 
 #
 # ---- Build ----
 FROM tools AS build
 # build vue app
-RUN cd /tilloo/web/client && \
-    npm ci --ignore-scripts
-
 COPY web/client /tilloo/web/client
 RUN cd /tilloo/web/client && \
     DOCKER_BUILD=true npm run build
