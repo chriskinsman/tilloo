@@ -22,7 +22,7 @@ RUN cd /tilloo && \
 
 #
 # ---- Build ----
-FROM tools AS build
+FROM dependencies AS build
 # build vue app
 COPY web/client /tilloo/web/client
 RUN cd /tilloo/web/client && \
