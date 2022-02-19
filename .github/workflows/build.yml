@@ -25,6 +25,7 @@ jobs:
         working-directory: ./web/client
         name: Install Packages for client
       - run: DOCKER_BUILD=true npm run build
+        working-directory: ./web/client
         name: Build
   container:
     needs: client
