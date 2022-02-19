@@ -2,7 +2,6 @@
 # ---- Base Node ----
 FROM node:16-alpine AS base
 WORKDIR /tilloo
-COPY package.json package-lock.json /tilloo/
 
 # Base with tools
 FROM base as tools
@@ -14,8 +13,9 @@ RUN apk update && apk upgrade && \
 # ---- Dependencies ----
 FROM tools AS dependencies
 # install node packages
+COPY package.json package-lock.json node_modules /tilloo/
 RUN cd /tilloo && \
-    npm ci --only=production --ignore-scripts
+    npm rebuild
 
 #
 # ---- Release ----

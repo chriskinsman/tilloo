@@ -21,12 +21,14 @@ jobs:
           cache: "npm"
           cache-dependency-path: "web/client/package-lock.json"
           node-version-file: ".nvmrc"
-      - name: Install Packages for client
+      - name: Install Packages for web client
         run: npm ci --ignore-scripts
         working-directory: ./web/client
-      - name: Build
+      - name: Build web client
         run: DOCKER_BUILD=true npm run build
         working-directory: ./web/client
+      - name: Install packages for server
+        run: npm ci --only=production --ignore-scripts
       - name: Prepare
         id: prep
         run: |
