@@ -9,7 +9,24 @@ on:
   # pull_request:
   #   branches: master
 jobs:
-  buildx:
+  client:
+    name: build web client
+    runs-on: ubuntu-latest
+    steps:
+      - uses:
+          actions/checkout@v2
+          # this is required to run npm install from our other private github repo
+      - uses: actions/setup-node@v2
+        with:
+          cache: "npm"
+          cache-dependency-path: "web/client/package-lock.json"
+          node-version-file: ".nvmrc"
+      - run: npm ci --ignore-scripts
+        working-directory: ./web/client
+        name: Install Packages for client
+      - run: DOCKER_BUILD=true npm run build
+        name: Build
+  container:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
