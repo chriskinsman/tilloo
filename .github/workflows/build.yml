@@ -27,6 +27,7 @@ jobs:
       - run: DOCKER_BUILD=true npm run build
         name: Build
   container:
+    needs: client
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
