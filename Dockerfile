@@ -13,7 +13,9 @@ RUN apk update && apk upgrade && \
 # ---- Dependencies ----
 FROM tools AS dependencies
 # install node packages
-COPY package.json package-lock.json node_modules /tilloo/
+COPY package.json package-lock.json /tilloo/
+COPY node_modules /tilloo/node_modules
+
 RUN cd /tilloo && \
     npm rebuild
 
@@ -23,7 +25,7 @@ FROM base AS release
 # repo URL
 LABEL org.opencontainers.image.source = "https://github.com/chriskinsman/tilloo"
 # copy production node_modules
-COPY --from=dependencies /tilloo/node_modules ./node_modules
+COPY --from=dependencies /tilloo/node_modules /tilloo/node_modules
 # copy app sources
 COPY bin /tilloo/bin
 COPY models /tilloo/models
