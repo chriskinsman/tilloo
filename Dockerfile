@@ -1,9 +1,7 @@
 #
 # ---- Base Node ----
-FROM node:14-alpine AS base
+FROM node:16-alpine AS base
 WORKDIR /tilloo
-COPY package.json package-lock.json /tilloo/
-COPY web/client/package.json web/client/package-lock.json /tilloo/web/client/
 
 # Base with tools
 FROM base as tools
@@ -15,21 +13,11 @@ RUN apk update && apk upgrade && \
 # ---- Dependencies ----
 FROM tools AS dependencies
 # install node packages
+COPY package.json package-lock.json /tilloo/
+COPY node_modules /tilloo/node_modules
+
 RUN cd /tilloo && \
-    npm ci --only=production --ignore-scripts && \
-    cd /tilloo/web/client && \
-    npm ci --only=production --ignore-scripts
-
-#
-# ---- Build ----
-FROM tools AS build
-# build vue app
-RUN cd /tilloo/web/client && \
-    npm ci --ignore-scripts
-
-COPY web/client /tilloo/web/client
-RUN cd /tilloo/web/client && \
-    DOCKER_BUILD=true npm run build
+    npm rebuild
 
 #
 # ---- Release ----
@@ -37,11 +25,11 @@ FROM base AS release
 # repo URL
 LABEL org.opencontainers.image.source = "https://github.com/chriskinsman/tilloo"
 # copy production node_modules
-COPY --from=dependencies /tilloo/node_modules ./node_modules
-COPY --from=build /tilloo/web/client/dist ./web/client/dist
+COPY --from=dependencies /tilloo/node_modules /tilloo/node_modules
 # copy app sources
 COPY bin /tilloo/bin
 COPY models /tilloo/models
 COPY lib /tilloo/lib
 COPY web/server /tilloo/web/server
+COPY web/client/dist /tilloo/web/client/dist
 
