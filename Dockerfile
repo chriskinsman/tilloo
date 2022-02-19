@@ -29,5 +29,5 @@ COPY bin /tilloo/bin
 COPY models /tilloo/models
 COPY lib /tilloo/lib
 COPY web/server /tilloo/web/server
-COPY web/client/dist ./web/client/dist
+COPY web/client/dist /tilloo/web/client/dist
 
