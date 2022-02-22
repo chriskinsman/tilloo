@@ -175,7 +175,7 @@ export default {
         item.schedule,
         () => {
           // used so that this invalidates and updates each time lastRanAt changes
-          this.lastRanAt = item.lastRanAt;
+          this.lastRanAt = item.lastRanAt.local();
           return;
         },
         null,
