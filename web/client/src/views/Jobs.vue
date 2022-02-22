@@ -179,10 +179,11 @@ export default {
           return;
         },
         null,
-        true
+        true,
+        "UTC"
       );
 
-      this.$set(item, "nextRun", job.nextDates(1)[0]?.local());
+      this.$set(item, "nextRun", job.nextDates(1)[0]);
     },
   },
   sockets: {
