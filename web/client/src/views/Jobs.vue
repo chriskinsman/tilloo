@@ -183,7 +183,7 @@ export default {
         "UTC"
       );
 
-      this.$set(item, "nextRun", job.nextDates(1)[0]?.local());
+      this.$set(item, "nextRun", job.nextDates(1)[0]);
     },
   },
   sockets: {
