@@ -175,11 +175,12 @@ export default {
         item.schedule,
         () => {
           // used so that this invalidates and updates each time lastRanAt changes
-          this.lastRanAt = item.lastRanAt.local();
+          this.lastRanAt = item.lastRanAt;
           return;
         },
         null,
-        true
+        true,
+        "UTC"
       );
 
       this.$set(item, "nextRun", job.nextDates(1)[0]?.local());
