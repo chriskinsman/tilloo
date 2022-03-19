@@ -76,15 +76,17 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GH_CR_PAT }}
+      - name: Short sha
+        id: short
+        run: echo ::set-output name=sha::${GITHUB_SHA::8}
       - name: Cache Docker layers
         uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx2-refs/heads/${{ github.ref }}
+          key: ${{ runner.os }}-buildx2-refs/heads/${{ github.ref }}-${{steps.short.outputs.sha}}
           restore-keys: |
-            ${{ runner.os }}-buildx2-refs/heads/${{ github.ref }}
-            ${{ runner.os }}-buildx2-refs/heads/${{ github.event.repository.default_branch }}
-            ${{ runner.os }}-buildx2-
+            ${{ runner.os }}-buildx2-refs/heads/${{ github.ref }}-
+            ${{ runner.os }}-buildx2-refs/heads/${{ github.event.repository.default_branch }}-
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
