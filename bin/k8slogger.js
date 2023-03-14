@@ -2,6 +2,7 @@
 'use strict';
 
 const path = require('path');
+const fs = require('node:fs');
 
 const chokidar = require('chokidar');
 const debug = require('debug')('tilloo:k8slogger');
@@ -10,9 +11,15 @@ const constants = require('../lib/constants');
 const k8sClient = require('../lib/k8s/clientFactory');
 const LogForwarder = require('../lib/logforwarder');
 
-const _logRoot = '/var/log/pods/';
+const _dockerLogRoot = '/var/log/containers/';
+const _containerdLogRoot = '/var/log/containers/';
 const _processStartTime = new Date();
 const _runningLoggers = {};
+
+// eslint-disable-next-line no-sync
+const containerdPathFound = fs.existsSync(_containerdLogRoot);
+
+const _logRoot = containerdPathFound ? _containerdLogRoot : _dockerLogRoot;
 
 debug(`Starting watch for namespace: ${constants.NAMESPACE} on dir: ${_logRoot}`);
 const logWatcher = chokidar.watch(_logRoot, { persistent: true, usePolling: true, followSymlinks: true });
