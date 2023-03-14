@@ -10,7 +10,7 @@ const constants = require('../lib/constants');
 const k8sClient = require('../lib/k8s/clientFactory');
 const LogForwarder = require('../lib/logforwarder');
 
-const _logRoot = '/var/log/containers/';
+const _logRoot = '/var/log/pods/';
 const _processStartTime = new Date();
 const _runningLoggers = {};
 
