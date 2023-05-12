@@ -1,0 +1,277 @@
+<template>
+  <v-container :fluid="true">
+    <v-data-table
+      :headers="headers"
+      :items="jobs"
+      item-key="jobid"
+      class="elevation-1 jobs"
+      :loading="loading"
+      loading-text="Loading jobs..."
+      sort-by="name"
+      :search="search"
+      :custom-filter="filterOnlyCapsText"
+      :item-class="rowClasses"
+      :hide-default-footer="true"
+      :disable-pagination="true"
+    >
+      <template v-slot:top>
+        <v-text-field
+          v-model="search"
+          label="Search"
+          class="mx-4"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+        />
+      </template>
+      <template v-slot:header.actions="{}">
+        <v-icon @click="jobAdd()"> mdi-plus </v-icon>
+      </template>
+
+      <template v-slot:item.name="{ item }">
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <span v-bind="attrs" v-on="on"
+              ><a :href="`/job/${item._id}`">{{ item.name }}</a></span
+            >
+          </template>
+          <span>
+            Container: {{ item.imageUri }}<br />
+            Path: {{ item.path }}<br />
+            Args: {{ item.args.join(" ") }}<br />
+            JobId: {{ item._id }}
+          </span>
+        </v-tooltip>
+      </template>
+
+      <template v-slot:item.schedule="{ item }">
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <span v-bind="attrs" v-on="on" @mouseover="calculateNextRun(item)"
+              >{{ item.schedule }}
+            </span>
+          </template>
+          <span
+            >Runs: {{ friendlyCron(item.schedule) }}<br />Next run:
+            {{ item.nextRun | formatDate }}</span
+          >
+        </v-tooltip>
+      </template>
+
+      <template v-slot:item.lastRanAt="{ item }">
+        {{ item.lastRanAt | formatDate }}
+      </template>
+
+      <template v-slot:item.actions="{ item }">
+        <v-icon @click="jobDelete(item)"> mdi-delete </v-icon>
+        <v-icon @click="jobSettings(item)"> mdi-cog </v-icon>
+        <v-icon
+          :disabled="
+            item.mutex &&
+            (item.lastStatus === 'busy' || item.lastStatus === 'scheduled')
+          "
+          @click="jobRun(item)"
+        >
+          mdi-play
+        </v-icon>
+      </template>
+    </v-data-table>
+  </v-container>
+</template>
+
+<script setup>
+import { computed, ref, onMounted } from 'vue';
+import { useStore } from 'vuex';
+import jobService from "../services/job.service.js";
+//import AddEditJobModal from "./AddEditJob.modal.vue";
+//import ConfirmModal from "./Confirm.modal.vue";
+import cronstrue from "cronstrue";
+import { CronJob } from "cron";
+
+import 
+
+const store = useStore();
+
+const jobs = ref([]);
+const loading = ref(false);
+const search = ref("");
+
+const headers = [
+  { text: "Name", align: "start", value: "name" },
+  { text: "Schedule", value: "schedule", width: "1%", filterable: false },
+  { text: "Node Selector", value: "nodeSelector", width: "1%" },
+  { text: "Last Ran", value: "lastRanAt", width: "1%" },
+  {
+    text: "Last Status",
+    value: "lastStatus",
+    width: "1%",
+    filterable: false,
+  },
+  {
+    text: "",
+    value: "actions",
+    align: "end",
+    sortable: false,
+    filterable: false,
+    width: "1%",
+  },
+];
+
+onMounted(() => {
+  store.commit("setBreadcrumbs", [
+    {
+      text: "Jobs",
+      disabled: false,
+      href: "/",
+    },
+  ]);
+  //this.getData();
+});
+
+async function getData() {
+  this.loading = true;
+  try {
+    this.jobs = await jobService.listJobs();
+  } finally {
+    this.loading = false;
+  }
+}
+
+async function jobRun(job) {
+  await jobService.runJob(job._id);
+}
+
+async function jobAdd() {
+  await this.showModal(AddEditJobModal);
+}
+
+async function jobSettings(job) {
+  await this.showModal(AddEditJobModal, { jobId: job._id });
+}
+
+async function jobDelete(job) {
+  const res = await this.showModal(ConfirmModal, {
+    title: "Confirm Delete",
+    textContent: `Are you sure you want to delete ${job.name}?`,
+    ok: "Delete",
+  });
+  if (res === "ok") {
+    await jobService.deleteJob(job._id);
+  }
+}
+
+function filterOnlyCapsText(value, search) {
+  return (
+    value !== null &&
+    search !== null &&
+    typeof value === "string" &&
+    value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
+  );
+}
+
+function rowClasses(row) {
+  return `job-${row.lastStatus} ${row.enabled ? "" : "job-disabled"}`;
+}
+
+function friendlyCron(schedule) {
+  return cronstrue.toString(schedule);
+}
+
+function calculateNextRun(item) {
+  const job = new CronJob(
+    item.schedule,
+    () => {
+      // used so that this invalidates and updates each time lastRanAt changes
+      this.lastRanAt = item.lastRanAt.local();
+      return;
+    },
+    null,
+    true,
+    "UTC"
+  );
+
+  this.$set(item, "nextRun", job.nextDates(1)[0]);
+}
+
+
+// export default {
+
+//   sockets: {
+//     status(statusUpdate) {
+//       const job = this.jobs.find((job) => job._id === statusUpdate.jobId);
+//       if (job) {
+//         this.$set(job, "lastStatus", statusUpdate.status);
+//         if (statusUpdate.status === "busy") {
+//           this.$set(job, "lastRanAt", new Date());
+//         }
+//       }
+//     },
+//     async jobchange(jobMessage) {
+//       const job = await jobService.getJob(jobMessage.jobId);
+//       if (job) {
+//         const jobIndex = this.jobs.findIndex((item) => item._id === job._id);
+//         if (jobIndex !== -1) {
+//           if (job.deleted) {
+//             this.$delete(this.jobs, jobIndex);
+//           } else {
+//             this.$set(this.jobs, jobIndex, job);
+//           }
+//         } else {
+//           this.jobs.push(job);
+//         }
+//       }
+//     },
+//   },
+// };
+</script>
+
+<style lang="scss">
+.jobs > div.v-data-table__wrapper > table {
+  thead > tr > th {
+    white-space: nowrap;
+  }
+
+  tbody > tr {
+    td:nth-child(2),
+    td:nth-child(3),
+    td:nth-child(4),
+    td:nth-child(6) {
+      white-space: nowrap;
+
+      button.v-icon {
+        margin-right: 10px;
+        &:last-child {
+          margin-right: 0px;
+        }
+      }
+    }
+
+    &.job-disabled td {
+      color: rgb(191, 191, 191);
+    }
+
+    &.job-disabled a,
+    &.job-disabled a:link {
+      color: rgb(191, 191, 191);
+    }
+
+    &.job-busy {
+      background-color: rgba(92, 184, 92, 0.2);
+      transition: background-color 1s;
+    }
+
+    &.job-fail:not(&.job-disabled) {
+      background-color: rgba(169, 68, 66, 0.2);
+      transition: background-color 1s;
+    }
+  }
+
+  i.v-icon {
+    padding-bottom: 0px;
+  }
+}
+
+button.v-icon {
+  padding-bottom: 0px;
+}
+</style>
