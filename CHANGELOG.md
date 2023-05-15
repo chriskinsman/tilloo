@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+## [4.0.12] - 2023-05-15
+### Changed
+- Removed the timestamp prefix from the collected logs on containerd to match docker behavior
+
+
 ## [4.0.3] - 2021-10-20
 ### Changed
 - Fixed issue with missing body-parser
