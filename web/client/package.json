@@ -11,7 +11,7 @@
   "dependencies": {
     "@mdi/font": "^7.2.96",
     "axios": "^1.4.0",
-    "cron": "^1.8.3",
+    "cron": "^2.3.0",
     "cronstrue": "^1.125.0",
     "dayjs": "^1.11.7",
     "socket.io-client": "^4.6.1",
