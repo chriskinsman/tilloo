@@ -3,7 +3,10 @@
 
 const commander = require('commander');
 const Table = require('easy-table');
-const moment = require('moment');
+const dayjs = require('dayjs');
+const localizedFormat = require('dayjs/plugin/localizedFormat');
+
+dayjs.extend(localizedFormat);
 
 const Run = require('../models/run');
 
@@ -25,8 +28,8 @@ if (commander.args.length !== 1) {
             table.cell('Worker', run.worker);
             table.cell('Pod', run.pod);
             table.cell('Result', run.result);
-            table.cell('Started', moment(run.startedAt).format('l LTS'));
-            table.cell('Completed', moment(run.completedAt).format('l LTS'));
+            table.cell('Started', dayjs(run.startedAt).format('l LTS'));
+            table.cell('Completed', dayjs(run.completedAt).format('l LTS'));
             table.cell('Status', run.status);
             table.newRow();
         });

@@ -1,6 +1,5 @@
 const constants = require('../lib/constants');
 
-const moment = require('moment');
 const mongoose = require('../lib/mongooseinit');
 
 const Run = new mongoose.Schema({
@@ -75,7 +74,7 @@ Run.statics.findByRunId = async function findByRunId(runId) {
 
 Run.statics.findRunsOlderThan = async function findRunsOlderThan(days) {
     try {
-        return await Model.find({ createdAt: { $lte: moment().subtract(days, 'days').toDate() } }, '_id', { sort: { createdAt: 1 } }).exec();
+        return await Model.find({ createdAt: { $lte: dayjs().subtract(days, 'days').toDate() } }, '_id', { sort: { createdAt: 1 } }).exec();
     }
     catch (err) {
         console.error('Error finding runs older than', err);
