@@ -5,7 +5,13 @@
   "repository": "https://github.com/chriskinsman/tilloo.git",
   "scripts": {
     "lint": "eslint .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:rabbit": "kubectl port-forward -n tilloo-services service/rabbitmq-service 5672",
+    "start:mongodb": "kubectl port-forward -n tilloo-services service/mongodb-service 27017",
+    "start:client": "vite preview web/client --port 4173",
+    "start:server": "PORT=8080 node ./web/server/index.js",
+    "start:scheduler": "kubectl port-forward -n tilloo-services service/scheduler-service 8081:80",
+    "start": "concurrently -c \"auto\" \"npm:start:*\""
   },
   "author": "Chris Kinsman",
   "license": "MIT",
@@ -37,7 +43,8 @@
     "tail": "^2.2.6"
   },
   "devDependencies": {
-    "eslint": "^8.7.0"
+    "concurrently": "^8.0.1",
+    "eslint": "^8.40.0"
   },
   "engines": {
     "node": ">= 14.17.0"

@@ -2,7 +2,7 @@
   <v-app>
     <v-app-bar app color="primary" dark dense>
       <v-breadcrumbs :items="breadcrumbs" large>
-        <template v-slot:divider>
+        <template #divider>
           <v-icon>mdi-chevron-right</v-icon>
         </template>
       </v-breadcrumbs>
