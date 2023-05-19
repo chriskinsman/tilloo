@@ -1,6 +1,6 @@
 {
   "name": "tilloo-web-client",
-  "version": "4.0.13",
+  "version": "4.0.14",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -24,17 +24,17 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@rushstack/eslint-patch": "^1.1.0",
-    "@vitejs/plugin-legacy": "^2.0.0",
-    "@vitejs/plugin-vue2": "^1.1.2",
-    "@vue/eslint-config-prettier": "^7.0.0",
-    "eslint": "^8.5.0",
-    "eslint-plugin-vue": "^9.0.0",
-    "prettier": "^2.5.1",
-    "sass": "1.32.13",
-    "terser": "^5.14.2",
+    "@rushstack/eslint-patch": "^1.2.0",
+    "@vitejs/plugin-legacy": "^4.0.3",
+    "@vitejs/plugin-vue2": "^2.2.0",
+    "@vue/eslint-config-prettier": "^7.1.0",
+    "eslint": "^8.40.0",
+    "eslint-plugin-vue": "^9.13.0",
+    "prettier": "^2.8.8",
+    "sass": "1.62.1",
+    "terser": "^5.17.4",
     "unplugin-vue-components": "^0.24.1",
-    "vite": "^3.0.2",
+    "vite": "^4.3.8",
     "vuetify-loader": "^1.9.2"
   }
 }

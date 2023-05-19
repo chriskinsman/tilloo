@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+## [4.0.14] - 2023-05-19
+
+### Changed
+- Updated web/client devDependencies to latest versions
+
+
 ## [4.0.13] - 2023-05-18
 ### Changed
 - Moved from vue-cli to Vite
