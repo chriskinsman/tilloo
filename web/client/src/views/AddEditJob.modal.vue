@@ -72,7 +72,7 @@
                   label="Args"
                   multiple
                 >
-                  <template v-slot:no-data>
+                  <template #no-data>
                     <v-list-item>
                       <v-list-item-content>
                         <v-list-item-title>
@@ -81,7 +81,7 @@
                       </v-list-item-content>
                     </v-list-item>
                   </template>
-                  <template v-slot:selection="{ attrs, item }">
+                  <template #selection="{ attrs, item }">
                     <v-chip
                       v-bind="attrs"
                       close

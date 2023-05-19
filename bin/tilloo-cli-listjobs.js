@@ -2,7 +2,10 @@
 'use strict';
 
 const Table = require('easy-table');
-const moment = require('moment');
+const dayjs = require('dayjs');
+const localizedFormat = require('dayjs/plugin/localizedFormat');
+
+dayjs.extend(localizedFormat);
 
 const Job = require('../models/job');
 
@@ -16,7 +19,7 @@ const Job = require('../models/job');
             table.cell('Schedule', job.schedule);
             table.cell('Enabled', job.enabled);
             table.cell('Node Selector', job.nodeSelector);
-            table.cell('Last Ran', job.lastRanAt ? moment(job.lastRanAt).format('l LTS') : '');
+            table.cell('Last Ran', job.lastRanAt ? dayjs(job.lastRanAt).format('l LTS') : '');
             table.cell('Last Status', job.lastStatus);
             table.newRow();
         });

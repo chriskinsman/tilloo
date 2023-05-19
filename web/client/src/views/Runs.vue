@@ -15,22 +15,22 @@
       :items-per-page="25"
       :item-class="rowClasses"
     >
-      <template v-slot:header.actions="{}">
+      <template #header.actions="{}">
         <v-icon :disabled="runDisabled" @click="jobRun()"> mdi-play </v-icon>
       </template>
 
-      <template v-slot:item._id="{ item }">
+      <template #item._id="{ item }">
         <a :href="`/run/${item._id}`">{{ item._id }}</a>
       </template>
 
-      <template v-slot:item.startedAt="{ item }">
+      <template #item.startedAt="{ item }">
         {{ item.startedAt | formatDate }}
       </template>
-      <template v-slot:item.completedAt="{ item }">
+      <template #item.completedAt="{ item }">
         {{ item.completedAt | formatDate }}
       </template>
 
-      <template v-slot:item.actions="{ item }">
+      <template #item.actions="{ item }">
         <v-icon v-if="item.status === 'busy'" @click="runStop(item._id)">
           mdi-stop
         </v-icon>

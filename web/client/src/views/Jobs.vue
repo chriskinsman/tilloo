@@ -14,7 +14,7 @@
       :hide-default-footer="true"
       :disable-pagination="true"
     >
-      <template v-slot:top>
+      <template #top>
         <v-text-field
           v-model="search"
           label="Search"
@@ -24,13 +24,13 @@
           autocapitalize="off"
         />
       </template>
-      <template v-slot:header.actions="{}">
+      <template #header.actions="{}">
         <v-icon @click="jobAdd()"> mdi-plus </v-icon>
       </template>
 
-      <template v-slot:item.name="{ item }">
+      <template #item.name="{ item }">
         <v-tooltip top>
-          <template v-slot:activator="{ on, attrs }">
+          <template #activator="{ on, attrs }">
             <span v-bind="attrs" v-on="on"
               ><a :href="`/job/${item._id}`">{{ item.name }}</a></span
             >
@@ -44,9 +44,9 @@
         </v-tooltip>
       </template>
 
-      <template v-slot:item.schedule="{ item }">
+      <template #item.schedule="{ item }">
         <v-tooltip top>
-          <template v-slot:activator="{ on, attrs }">
+          <template #activator="{ on, attrs }">
             <span v-bind="attrs" v-on="on" @mouseover="calculateNextRun(item)"
               >{{ item.schedule }}
             </span>
@@ -58,11 +58,11 @@
         </v-tooltip>
       </template>
 
-      <template v-slot:item.lastRanAt="{ item }">
+      <template #item.lastRanAt="{ item }">
         {{ item.lastRanAt | formatDate }}
       </template>
 
-      <template v-slot:item.actions="{ item }">
+      <template #item.actions="{ item }">
         <v-icon @click="jobDelete(item)"> mdi-delete </v-icon>
         <v-icon @click="jobSettings(item)"> mdi-cog </v-icon>
         <v-icon
