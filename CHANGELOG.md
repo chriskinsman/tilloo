@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+## [4.0.13] - 2023-05-18
+### Changed
+- Moved from vue-cli to Vite
+- Moved from momentjs to dayjs
+- Updated to node v18.16.0
+- Updated construe and cron
+- Updated GitHub Action versions
+- Split backend from client
+- New npm run start command to bring client up for debugging
+
+
 ## [4.0.12] - 2023-05-15
 ### Changed
 - Removed the timestamp prefix from the collected logs on containerd to match docker behavior

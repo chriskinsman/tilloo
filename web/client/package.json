@@ -1,6 +1,6 @@
 {
   "name": "tilloo-web-client",
-  "version": "4.0.12",
+  "version": "4.0.13",
   "private": true,
   "scripts": {
     "dev": "vite",
