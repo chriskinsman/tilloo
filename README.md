@@ -195,7 +195,7 @@ __Settings__
 
 ## Notifications
 
-There are notifiers included that can notify of job failures via Mandrill or AWS SNS.  Notifiers are easily added for other destinations.  If you add one please submit a pull request and share it.
+There are notifiers included that can notify of job failures via Mandrill, AWS SNS, or AWS SES.  Notifiers are easily added for other destinations.  If you add one please submit a pull request and share it.
 
 ## Resources
 * Running tilloo on Raspberry PI/k3s - [tilloo-k3s] (https://github.com/chriskinsman/tilloo-k3s)
