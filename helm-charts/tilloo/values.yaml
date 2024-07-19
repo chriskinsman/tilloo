@@ -1,0 +1,22 @@
+# Chart name override if not using "tilloo"
+nameOverride: ""
+
+# Connection string to use for MongoDB
+mongodb:
+  connectionString: "mongodb://root:kFGJgJEdrE@mongodb.tilloo-services.svc.cluster.local:27017/tilloo?authSource=admin"
+
+# Scheduler variables
+scheduler:
+  name: "scheduler"
+
+# Web deployment variables
+web-deployment:
+  name: "web-deployment"
+
+# Logger variables
+logger:
+  name: "logger"
+
+# Variables to set the ingress
+ingress:
+  security-group: ""

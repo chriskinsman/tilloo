@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: logger
+  namespace: tilloo-services
+spec:
+  selector:
+    matchLabels:
+      app: logger
+      namespace: tilloo-services
+  template:
+    metadata:
+      labels:
+        app: logger
+        namespace: tilloo-services
+    spec:
+      serviceAccountName: tilloo-admin
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+      containers:
+        - name: logger
+          image: ghcr.io/chriskinsman/tilloo:latest
+          # env:
+          # - name: DEBUG
+          #   value: tilloo:logforwarder
+          command: ["/tilloo/bin/k8slogger.js"]
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+          volumeMounts:
+            - name: varlog
+              mountPath: /var/log
+            - mountPath: /tilloo/config
+              name: config-volume
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: varlog
+          hostPath:
+            path: /var/log
+            type: Directory
+        - name: config-volume
+          configMap:
+            name: tilloo-config

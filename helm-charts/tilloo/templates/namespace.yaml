@@ -1,0 +1,14 @@
+# TODO: Remove -test once the chart is tested as working
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tilloo-services-test
+  labels:
+    name: tilloo-services-test
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tilloo-jobs-test
+  labels:
+    name: tilloo-jobs-test
