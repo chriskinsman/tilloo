@@ -3,18 +3,18 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: tilloo-ingress
-  namespace: tilloo-services
+  namespace: {{ .Values.namespace }}
   annotations:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internal
     alb.ingress.kubernetes.io/ip-address-type: ipv4
     alb.ingress.kubernetes.io/target-type: instance
     alb.ingress.kubernetes.io/success-codes: 200,404
-    alb.ingress.kubernetes.io/security-groups: {{ include "ingress.security-group" . }}
+    alb.ingress.kubernetes.io/security-groups: {{ .Values.ingress.securityGroupId }}
 
 spec:
   rules:
-    - host: tilloo4.pushspring.com
+    - host: {{ .Values.ingress.host }}
       http:
         paths:
           - path: /socket.io/

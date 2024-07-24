@@ -1,9 +1,7 @@
+apiVersion: "v2"
 name: tilloo
-version: 0.1.0
+version: 1.0.0
 description: Tilloo Helm chart
 keywords:
   - tilloo
   - kubernetes
-dependencies:
-  - name: mongodb
-    version: ^4.0.0

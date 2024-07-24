@@ -1,22 +1,36 @@
 # Chart name override if not using "tilloo"
 nameOverride: ""
 
-# Connection string to use for MongoDB
+# -- Namespace to use for services
+namespace: "tilloo-services"
+
+# -- Used to override the repository the Tilloo image is pulled from for development purposes
+imageRepository: ""
+imageTag: ""
+
+# -- When set to "true", enables debug logging for Tilloo services
+debug: false
+
+# -- Environment variable used to update the ConfigMap
+environment: "production"
+
+# -- Connection string to use for MongoDB
 mongodb:
   connectionString: "mongodb://root:kFGJgJEdrE@mongodb.tilloo-services.svc.cluster.local:27017/tilloo?authSource=admin"
 
-# Scheduler variables
+# -- Scheduler variables
 scheduler:
   name: "scheduler"
 
-# Web deployment variables
+# -- Web deployment variables
 web-deployment:
   name: "web-deployment"
 
-# Logger variables
+# -- Logger variables
 logger:
   name: "logger"
 
-# Variables to set the ingress
+# -- Variables to set the ingress
 ingress:
-  security-group: ""
+  host: ""
+  securityGroupId: ""

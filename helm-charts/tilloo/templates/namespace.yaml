@@ -2,13 +2,13 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: tilloo-services-test
+  name: {{ .Values.namespace }}
   labels:
-    name: tilloo-services-test
+    name: {{ .Values.namespace }}
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: tilloo-jobs-test
+  name: tilloo-jobs
   labels:
-    name: tilloo-jobs-test
+    name: tilloo-jobs

@@ -2,17 +2,17 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: logger
-  namespace: tilloo-services
+  namespace: {{ .Values.namespace }}
 spec:
   selector:
     matchLabels:
       app: logger
-      namespace: tilloo-services
+      namespace: {{ .Values.namespace }}
   template:
     metadata:
       labels:
         app: logger
-        namespace: tilloo-services
+        namespace: {{ .Values.namespace }}
     spec:
       serviceAccountName: tilloo-admin
       tolerations:
@@ -20,10 +20,12 @@ spec:
           effect: NoSchedule
       containers:
         - name: logger
-          image: ghcr.io/chriskinsman/tilloo:latest
-          # env:
-          # - name: DEBUG
-          #   value: tilloo:logforwarder
+          image: {{ .Values.imageRepository | default "ghcr.io/chriskinsman/" }}/{{ .Values.imageTag | default "latest" }}
+          {{ if .Values.debug }}
+          env:
+          - name: DEBUG
+            value: tilloo:logforwarder
+          {{ end }}
           command: ["/tilloo/bin/k8slogger.js"]
           resources:
             requests:

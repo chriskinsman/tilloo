@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: web-service
-  namespace: tilloo-services
+  namespace: {{ .Values.namespace }}
 spec:
   type: NodePort
   ports:
@@ -10,13 +10,13 @@ spec:
       targetPort: 80
   selector:
     app: web
-    namespace: tilloo-services
+    namespace: {{ .Values.namespace }}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: web-deployment
-  namespace: tilloo-services
+  namespace: {{ .Values.namespace }}
 spec:
   replicas: 1
   strategy:
@@ -24,12 +24,12 @@ spec:
   selector:
     matchLabels:
       app: web
-      namespace: tilloo-services
+      namespace: {{ .Values.namespace }}
   template:
     metadata:
       labels:
         app: web
-        namespace: tilloo-services
+        namespace: {{ .Values.namespace }}
     spec:
       serviceAccountName: tilloo-admin
       containers:

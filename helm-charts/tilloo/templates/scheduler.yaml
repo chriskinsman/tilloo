@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: scheduler-service
-  namespace: tilloo-services
+  namespace: {{ .Values.namespace }}
   annotations:
     alb.ingress.kubernetes.io/healthcheck-path: /socket.io/
     alb.ingress.kubernetes.io/success-codes: "400"
@@ -14,13 +14,13 @@ spec:
       targetPort: 80
   selector:
     app: scheduler
-    namespace: tilloo-services
+    namespace: {{ .Values.namespace }}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: scheduler-deployment
-  namespace: tilloo-services
+  namespace: {{ .Values.namespace }}
 spec:
   replicas: 1
   strategy:
@@ -28,20 +28,22 @@ spec:
   selector:
     matchLabels:
       app: scheduler
-      namespace: tilloo-services
+      namespace: {{ .Values.namespace }}
   template:
     metadata:
       labels:
         app: scheduler
-        namespace: tilloo-services
+        namespace: {{ .Values.namespace }}
     spec:
       serviceAccountName: tilloo-admin
       containers:
         - name: scheduler
-          image: ghcr.io/chriskinsman/tilloo:latest
-          # env:
-          # - name: DEBUG
-          #   value: tilloo:*
+          image: {{ .Values.imageRepository | default "ghcr.io/chriskinsman/" }}/{{ .Values.imageTag | default "latest" }}
+          {{ if .Values.debug }}
+          env:
+          - name: DEBUG
+            value: tilloo:*
+          {{ end }}
           command: ["/tilloo/bin/scheduler.js"]
           ports:
             - containerPort: 80

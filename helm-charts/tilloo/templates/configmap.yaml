@@ -8,7 +8,7 @@ metadata:
 data:
   config.json: |-
     {
-        "db": {{ include Values.mongodb.connectionString . }},
+        "db": {{ .Values.mongodb.connectionString }},
         "rabbitmq": {
             "host": "rabbitmq-service.tilloo-services",
             "port": 5672
@@ -24,6 +24,6 @@ data:
             "plugins": {}
         },
         "jobEnvironmentVariables": {
-            "NODE_ENV": "production"
+            "NODE_ENV": "{{ .Values.environment }}"
         }
     }
