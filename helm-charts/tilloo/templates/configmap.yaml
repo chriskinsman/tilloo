@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: tilloo-config
-  namespace: tilloo-services
+  namespace: {{ .Values.namespace }}
   labels:
     app: config
 data:
@@ -10,7 +10,7 @@ data:
     {
         "db": {{ .Values.mongodb.connectionString }},
         "rabbitmq": {
-            "host": "rabbitmq-service.tilloo-services",
+            "host": "rabbitmq-service.{{ .Values.namespace }}",
             "port": 5672
         },
         "scheduler": {

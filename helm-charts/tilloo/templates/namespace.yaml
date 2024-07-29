@@ -1,4 +1,3 @@
-# TODO: Remove -test once the chart is tested as working
 apiVersion: v1
 kind: Namespace
 metadata:
