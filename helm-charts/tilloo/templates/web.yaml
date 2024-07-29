@@ -34,11 +34,12 @@ spec:
       serviceAccountName: tilloo-admin
       containers:
         - name: web
-          image: ghcr.io/chriskinsman/tilloo:latest
-          # TODO: Add debug switch to chart values/ helpers 
-          # env:
-          # - name: DEBUG
-          #   value: tilloo:*
+          image: {{ .Values.imageRepository | default "ghcr.io/chriskinsman/" }}/{{ .Values.imageTag | default "latest" }}
+          {{ if .Values.debug }}
+          env:
+          - name: DEBUG
+            value: tilloo:*
+          {{ end }}
           command: ["/tilloo/web/server/index.js"]
           ports:
             - containerPort: 80
