@@ -29,6 +29,7 @@
                   v-model="job.schedule"
                   label="Schedule"
                   :error-messages="scheduleErrors"
+                  :hint="scheduleDescription"
                 />
               </v-col>
               <v-col cols="5">
@@ -140,6 +141,7 @@ import jobService from "../services/job.service.js";
 import modalMixin from "../ModalMixin.js";
 import { validationMixin } from "vuelidate";
 import { required, integer, email } from "vuelidate/lib/validators";
+import cronstrue from "cronstrue";
 
 export default {
   mixins: [modalMixin, validationMixin],
@@ -180,6 +182,17 @@ export default {
   computed: {
     action() {
       return this.jobId ? "Update" : "Add";
+    },
+    scheduleDescription() {
+      if (this.job.schedule) {
+        try {
+          return cronstrue.toString(this.job.schedule);
+        } catch (e) {
+          return "Invalid schedule";
+        }
+      } else {
+        return undefined;
+      }
     },
     nameErrors() {
       const errors = [];
