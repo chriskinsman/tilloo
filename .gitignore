@@ -34,5 +34,6 @@ app/node_modules
 .vscode
 config.batch04
 config.json
+*.iml
 
 
