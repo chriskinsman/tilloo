@@ -1,26 +1,8 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: scheduler-service
-  namespace: {{ .Values.namespace }}
-  annotations:
-    alb.ingress.kubernetes.io/healthcheck-path: /socket.io/
-    alb.ingress.kubernetes.io/success-codes: "400"
-    alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=86400
-spec:
-  type: NodePort
-  ports:
-    - port: 80
-      targetPort: 80
-  selector:
-    app: scheduler
-    namespace: {{ .Values.namespace }}
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: scheduler-deployment
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.servicesNamespace }}
 spec:
   replicas: 1
   strategy:
@@ -28,17 +10,18 @@ spec:
   selector:
     matchLabels:
       app: scheduler
-      namespace: {{ .Values.namespace }}
+      namespace: {{ .Values.servicesNamespace }}
   template:
     metadata:
       labels:
         app: scheduler
-        namespace: {{ .Values.namespace }}
+        namespace: {{ .Values.servicesNamespace }}
     spec:
-      serviceAccountName: tilloo-admin
+      serviceAccountName: {{ .Values.serviceAccountName }}
       containers:
         - name: scheduler
-          image: {{ .Values.imageRepository | default "ghcr.io/chriskinsman/" }}/{{ .Values.imageTag | default "latest" }}
+          image: {{ include "tilloo.image" . }}
+          imagePullPolicy: IfNotPresent
           {{ if .Values.debug }}
           env:
           - name: DEBUG
@@ -57,7 +40,37 @@ spec:
           volumeMounts:
             - mountPath: /tilloo/config
               name: config-volume
+            - name: varlog
+              mountPath: /var/log
+            {{- if .Values.additionalVolumeMounts }}
+            {{- toYaml .Values.additionalVolumeMounts | nindent 12 }} 
+            {{- end }}
       volumes:
         - name: config-volume
           configMap:
             name: tilloo-config
+        - name: varlog
+          hostPath:
+              path: /var/log
+              type: Directory
+        {{- if .Values.additionalVolumes }}
+        {{- toYaml .Values.additionalVolumes | nindent 8}}
+        {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: scheduler-service
+  namespace: {{ .Values.servicesNamespace }}
+  annotations:
+    alb.ingress.kubernetes.io/healthcheck-path: /socket.io/
+    alb.ingress.kubernetes.io/success-codes: "400"
+    alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=86400
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: scheduler
+    namespace: {{ .Values.servicesNamespace }}

@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: web-service
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.servicesNamespace }}
 spec:
   type: NodePort
   ports:
@@ -10,13 +10,13 @@ spec:
       targetPort: 80
   selector:
     app: web
-    namespace: {{ .Values.namespace }}
+    namespace: {{ .Values.servicesNamespace }}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: web-deployment
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.servicesNamespace }}
 spec:
   replicas: 1
   strategy:
@@ -24,17 +24,18 @@ spec:
   selector:
     matchLabels:
       app: web
-      namespace: {{ .Values.namespace }}
+      namespace: {{ .Values.servicesNamespace }}
   template:
     metadata:
       labels:
         app: web
-        namespace: {{ .Values.namespace }}
+        namespace: {{ .Values.servicesNamespace }}
     spec:
-      serviceAccountName: tilloo-admin
+      serviceAccountName: {{ .Values.serviceAccountName }}
       containers:
         - name: web
-          image: {{ .Values.imageRepository | default "ghcr.io/chriskinsman/" }}/{{ .Values.imageTag | default "latest" }}
+          image: {{ include "tilloo.image" . }}
+          imagePullPolicy: IfNotPresent
           {{ if .Values.debug }}
           env:
           - name: DEBUG
@@ -53,7 +54,13 @@ spec:
           volumeMounts:
             - mountPath: /tilloo/config
               name: config-volume
+            {{- if .Values.additionalVolumeMounts }}
+            {{- toYaml .Values.additionalVolumeMounts | nindent 12 }} 
+            {{- end }}
       volumes:
         - name: config-volume
           configMap:
             name: tilloo-config
+        {{- if .Values.additionalVolumes }}
+        {{- toYaml .Values.additionalVolumes | nindent 8}}
+        {{- end }}

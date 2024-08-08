@@ -2,20 +2,20 @@ apiVersion: v1
 kind: Service
 metadata:
   name: rabbitmq-service
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.servicesNamespace }}
 spec:
   ports:
     - port: 5672
       targetPort: 5672
   selector:
     app: rabbitmq
-    namespace: {{ .Values.namespace }}
+    namespace: {{ .Values.servicesNamespace }}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: rabbitmq-deployment
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.servicesNamespace }}
 spec:
   replicas: 1
   strategy:
@@ -23,16 +23,17 @@ spec:
   selector:
     matchLabels:
       app: rabbitmq
-      namespace: {{ .Values.namespace }}
+      namespace: {{ .Values.servicesNamespace }}
   template:
     metadata:
       labels:
         app: rabbitmq
-        namespace: {{ .Values.namespace }}
+        namespace: {{ .Values.servicesNamespace }}
     spec:
       containers:
         - name: rabbitmq
           image: rabbitmq:3-alpine
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5672
           resources:
