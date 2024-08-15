@@ -1,0 +1,7 @@
+apiVersion: "v2"
+name: tilloo
+version: 1.0.0
+description: Tilloo Helm chart
+keywords:
+  - tilloo
+  - kubernetes

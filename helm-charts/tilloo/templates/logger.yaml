@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: logger
+  namespace: {{ .Values.servicesNamespace }}
+spec:
+  selector:
+    matchLabels:
+      app: logger
+      namespace: {{ .Values.servicesNamespace }}
+  template:
+    metadata:
+      labels:
+        app: logger
+        namespace: {{ .Values.servicesNamespace }}
+    spec:
+      serviceAccountName: {{ .Values.serviceAccountName }}
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: logger
+          image: {{ include "tilloo.image" . }}
+          imagePullPolicy: IfNotPresent
+          {{ if .Values.debug }}
+          env:
+          - name: DEBUG
+            value: tilloo:logforwarder
+          {{ end }}
+          command: ["/tilloo/bin/k8slogger.js"]
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+          volumeMounts:
+            - mountPath: /tilloo/config
+              name: config-volume
+            - name: varlog
+              mountPath: /var/log
+            {{- if .Values.additionalVolumeMounts }}
+            {{- toYaml .Values.additionalVolumeMounts | nindent 12 }} 
+            {{- end }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: tilloo-config
+        - name: varlog
+          hostPath:
+              path: /var/log
+              type: Directory
+        {{- if .Values.additionalVolumes }}
+        {{- toYaml .Values.additionalVolumes | nindent 8}}
+        {{- end }}
