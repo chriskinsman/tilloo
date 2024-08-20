@@ -1,6 +1,6 @@
 # tilloo
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square)
+![Version: 1.0.1](https://img.shields.io/badge/Version-1.0.1-informational?style=flat-square)
 
 Tilloo Helm chart
 
@@ -13,10 +13,10 @@ Tilloo Helm chart
 | debug | bool | `false` | When set to "true", enables debug logging for Tilloo services |
 | environment | string | `"production"` | Environment variable used to update the ConfigMap |
 | image | object | `{"repository":"ghcr.io/chriskinsman/tilloo","tag":"latest"}` | Used to override the repository the Tilloo image is pulled from for development purposes |
-| ingress | object | `{"host":"","tags":""}` | Variables to set the ingress |
+| ingress | object | `{"host":"","tags":""}` | Variables to set the ingress. Currently only supports AWS EKS |
 | jobsNamespace | string | `"tilloo-jobs"` |  |
 | logger | object | `{"name":"logger"}` | Logger variables |
-| mongodb | object | `{"connectionString":"mongodb://root:password@mongodb.tilloo-services.svc.cluster.local:27017/tilloo?authSource=admin"}` | Connection string to use for MongoDB. Should be pulled from a Kubernetes secret or AWS secret through Terraform  |
+| mongodb | object | `{"connectionString":""}` | Connection string to connect to a MongoDB instance. Should be pulled from a Kubernetes secret or AWS secret through Terraform  |
 | nameOverride | string | `""` |  |
 | scheduler | object | `{"name":"scheduler"}` | Scheduler variables |
 | serviceAccountName | string | `"tilloo-admin"` | Name of the service account, must be unique within a single cluster |

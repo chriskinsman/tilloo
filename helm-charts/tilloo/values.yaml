@@ -25,9 +25,9 @@ debug: false
 # -- Environment variable used to update the ConfigMap
 environment: "production"
 
-# -- Connection string to use for MongoDB. Should be pulled from a Kubernetes secret or AWS secret through Terraform 
+# -- Connection string to connect to a MongoDB instance. Should be pulled from a Kubernetes secret or AWS secret through Terraform 
 mongodb:
-  connectionString: "mongodb://root:password@mongodb.tilloo-services.svc.cluster.local:27017/tilloo?authSource=admin"
+  connectionString: ""
 
 # -- Scheduler variables
 scheduler:
@@ -41,7 +41,7 @@ web-deployment:
 logger:
   name: "logger"
 
-# -- Variables to set the ingress
+# -- Variables to set the ingress. Currently only supports AWS EKS
 ingress:
   host: ""
   tags: ""
