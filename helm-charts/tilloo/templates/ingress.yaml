@@ -11,6 +11,7 @@ metadata:
     alb.ingress.kubernetes.io/target-type: instance
     alb.ingress.kubernetes.io/success-codes: 200,404
     alb.ingress.kubernetes.io/tags: {{ .Values.ingress.tags }}
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.ingress.host }}
 
 spec:
   rules:
