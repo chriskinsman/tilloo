@@ -1,0 +1,15 @@
+apiVersion: v1
+entries:
+  tilloo:
+  - apiVersion: v2
+    created: "2024-09-17T20:28:48.226839358Z"
+    description: Tilloo Helm chart
+    digest: 52b8004b02fa94daeabc449bbcf388cd0f3e32821d7f16ef48d2ae398a3dc2f2
+    keywords:
+    - tilloo
+    - kubernetes
+    name: tilloo
+    urls:
+    - tilloo-1.0.1.tgz
+    version: 1.0.1
+generated: "2024-09-17T20:28:48.226848776Z"
