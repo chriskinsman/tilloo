@@ -1,7 +1,7 @@
-apiVersion: "v2"
+apiVersion: 'v2'
 name: tilloo
 version: 1.0.1
 description: Tilloo Helm chart
 keywords:
-  - tilloo
-  - kubernetes
+    - tilloo
+    - kubernetes

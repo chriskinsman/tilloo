@@ -8,15 +8,16 @@ Tilloo Helm chart
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| additionalVolumeMounts | list | `[]` | Specify where to mount additional volumes in pods  |
+| additionalVolumeMounts | list | `[]` | Specify where to mount additional volumes in pods |
 | additionalVolumes | list | `[]` | Extra volumes to mount on Tilloo service pods, can be used to add extra ConfigMaps or secrets to pods |
-| debug | bool | `false` | When set to "true", enables debug logging for Tilloo services |
+| debug | bool | `true` | When set to "true", enables debug logging for Tilloo services |
 | environment | string | `"production"` | Environment variable used to update the ConfigMap |
 | image | object | `{"repository":"ghcr.io/chriskinsman/tilloo","tag":"latest"}` | Used to override the repository the Tilloo image is pulled from for development purposes |
 | ingress | object | `{"host":"","tags":""}` | Variables to set the ingress. Currently only supports AWS EKS |
 | jobsNamespace | string | `"tilloo-jobs"` |  |
 | logger | object | `{"name":"logger"}` | Logger variables |
-| mongodb | object | `{"connectionString":""}` | Connection string to connect to a MongoDB instance. Should be pulled from a Kubernetes secret or AWS secret through Terraform  |
+| mongodb.connectionString | string | `""` |  |
+| mongodb.supportDocumentDB | bool | `true` |  |
 | nameOverride | string | `""` |  |
 | scheduler | object | `{"name":"scheduler"}` | Scheduler variables |
 | serviceAccountName | string | `"tilloo-admin"` | Name of the service account, must be unique within a single cluster |
