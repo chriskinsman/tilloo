@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tilloo-config
+  namespace: {{ .Values.servicesNamespace }}
+  labels:
+    app: config
+data:
+  config.json: |-
+    {
+        "db": "{{ .Values.mongodb.connectionString }}",
+        "rabbitmq": {
+            "host": "rabbitmq-service.{{ .Values.servicesNamespace }}",
+            "port": 5672
+        },
+        "scheduler": {
+            "zombieAge": 5,
+            "zombieFrequency": 5,
+            "jobCleanupFrequency": 60,
+            "runHistoryDays": 90
+        },
+        "notification": {
+            "threshold": 3600,
+            "plugins": {}
+        },
+        "jobEnvironmentVariables": {
+            "NODE_ENV": "{{ .Values.environment }}"
+        }
+    }

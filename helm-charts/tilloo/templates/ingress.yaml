@@ -1,0 +1,34 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tilloo-ingress
+  namespace: {{ .Values.servicesNamespace }}
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/ip-address-type: ipv4
+    alb.ingress.kubernetes.io/target-type: instance
+    alb.ingress.kubernetes.io/success-codes: 200,404
+    alb.ingress.kubernetes.io/tags: {{ .Values.ingress.tags }}
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.ingress.host }}
+
+spec:
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /socket.io/
+            pathType: Prefix
+            backend:
+              service:
+                name: scheduler-service
+                port:
+                  number: 80
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web-service
+                port:
+                  number: 80

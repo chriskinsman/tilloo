@@ -1,0 +1,48 @@
+# Chart name override if not using "tilloo"
+nameOverride: ''
+
+# -- Namespace to use for services. The assumption is that the servicesNamespace will be created with `helm install --create-namespace=true`, and the jobsNamespace is created as part of the chart. This is to ensure that extra secrets/ configs added to the namespace are not deleted if the chart is uninstalled
+servicesNamespace: 'tilloo-services'
+jobsNamespace: 'tilloo-jobs'
+
+# -- Name of the service account, must be unique within a single cluster
+serviceAccountName: 'tilloo-admin'
+
+# -- Extra volumes to mount on Tilloo service pods, can be used to add extra ConfigMaps or secrets to pods
+additionalVolumes: []
+
+# -- Specify where to mount additional volumes in pods
+additionalVolumeMounts: []
+
+# -- Used to override the repository the Tilloo image is pulled from for development purposes
+image:
+    repository: 'ghcr.io/chriskinsman/tilloo'
+    tag: 'latest'
+
+# -- When set to "true", enables debug logging for Tilloo services
+debug: true
+
+# -- Environment variable used to update the ConfigMap
+environment: 'production'
+
+
+mongodb:
+    connectionString: '' # -- Connection string to connect to a MongoDB instance
+    supportDocumentDB: true # -- Determines whether to Amazon DocumentDB global PEM is added to pods
+
+# -- Scheduler variables
+scheduler:
+    name: 'scheduler'
+
+# -- Web deployment variables
+web-deployment:
+    name: 'web-deployment'
+
+# -- Logger variables
+logger:
+    name: 'logger'
+
+# -- Variables to set the ingress. Currently only supports AWS EKS
+ingress:
+    host: ''
+    tags: ''
