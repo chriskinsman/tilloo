@@ -29,11 +29,9 @@
       </template>
 
       <template #item.name="{ item }">
-        <v-tooltip top>
+        <v-tooltip top close-on-back="true">
           <template #activator="{ on, attrs }">
-            <span v-bind="attrs" v-on="on"
-              ><a :href="`/job/${item._id}`">{{ item.name }}</a></span
-            >
+            <span v-bind="attrs" v-on="on"><router-link :to="`/job/${item._id}`" v-bind="attrs">{{ item.name }}</router-link></span>
           </template>
           <span>
             Container: {{ item.imageUri }}<br />
