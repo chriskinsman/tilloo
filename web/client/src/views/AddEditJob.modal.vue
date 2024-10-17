@@ -42,7 +42,8 @@
                 <v-checkbox
                   v-model="job.enabled"
                   label="Enabled"
-                  :value="true"
+                  :true-value="true"
+                  :false-value="false"
                 />
               </v-col>
             </v-row>
@@ -102,7 +103,7 @@
                 />
               </v-col>
               <v-col class="d-flex justify-center">
-                <v-checkbox v-model="job.mutex" label="Mutex" :value="true" />
+                <v-checkbox v-model="job.mutex" label="Mutex" :true-value="true" :false-value="false" />
               </v-col>
               <v-col>
                 <v-text-field
