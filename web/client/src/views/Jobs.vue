@@ -106,6 +106,12 @@ export default {
           filterable: false,
         },
         {
+          text: "Enabled",
+          value: "enabled",
+          width: "1%",
+          sort: (a, b) => b - a,
+        },
+        {
           text: "",
           value: "actions",
           align: "end",
@@ -223,7 +229,7 @@ export default {
     td:nth-child(2),
     td:nth-child(3),
     td:nth-child(4),
-    td:nth-child(6) {
+    td:nth-child(7) {
       white-space: nowrap;
 
       button.v-icon {
